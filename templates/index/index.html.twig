@@ -9,12 +9,19 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! âœ…</h1>
+    <h1>Salut {{ detail_club.nom }}!</h1>
 
-    This friendly message is coming from:
+    
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/jjlau/git/site_ttlucon/src/Controller/IndexController.php'|file_link(0) }}">src/Controller/IndexController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/jjlau/git/site_ttlucon/templates/index/index.html.twig'|file_link(0) }}">templates/index/index.html.twig</a></code></li>
+ 		L'adresse de la salle est : {{ detail_club.adresseSalle1 }}	   
     </ul>
+    
+    La dernière actualité est :
+    
+    {% for actu in actus_club %}
+ 		<li>{{ actu.titre }} : {{ actu.description }}</li>
+	{% endfor %}
+    
+    
 </div>
 {% endblock %}
