@@ -33,9 +33,7 @@ class RencontreDetailsFactory
             $joueursA[] = [$joueur['xja'], $joueur['xca']];
             $joueursB[] = [$joueur['xjb'], $joueur['xcb']];
         }
-
         $parties = $this->getParties($array['partie']);
-
         if (is_array($array['resultat']['resa'])) {
             [$scoreA, $scoreB] = $this->getScores($parties);
         } else {
@@ -86,7 +84,6 @@ class RencontreDetailsFactory
             $scoreA += $partie->getScoreA();
             $scoreB += $partie->getScoreB();
         }
-
         return [$scoreA, $scoreB];
     }
 
@@ -143,7 +140,8 @@ class RencontreDetailsFactory
                 $partieData['ja'],
                 $partieData['jb'],
                 $partieData['scorea'] === '-' ? 0 : intval($partieData['scorea']),
-                $partieData['scoreb'] === '-' ? 0 : intval($partieData['scoreb'])
+                $partieData['scoreb'] === '-' ? 0 : intval($partieData['scoreb']),
+                $partieData['detail'] === '-' ? 0 : strval($partieData['detail'])
             );
         }
         return $parties;

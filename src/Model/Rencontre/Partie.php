@@ -12,13 +12,15 @@ class Partie
     private $adversaireB;
     private $scoreA;
     private $scoreB;
+    private $detail;
 
-    public function __construct(string $adversaireA, string $adversaireB, int $scoreA, int $scoreB)
+    public function __construct(string $adversaireA, string $adversaireB, int $scoreA, int $scoreB, string $detail)
     {
         $this->adversaireA = $adversaireA;
         $this->adversaireB = $adversaireB;
         $this->scoreA = $scoreA;
         $this->scoreB = $scoreB;
+        $this->detail = $detail;
     }
 
     public function getAdversaireA(): string
@@ -40,4 +42,10 @@ class Partie
     {
         return $this->scoreB;
     }
+
+    public function getDetail()
+    {
+        return $this->detail;
+    }
+
 }

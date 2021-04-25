@@ -625,7 +625,9 @@ class FFTTApi
      */
     public function getDetailsRencontreByLien(string $lienRencontre, string $clubEquipeA = "", string $clubEquipeB = ""): RencontreDetails
     {
+       // dd($lienRencontre,$clubEquipeA,$clubEquipeB);
         $data = $this->apiRequest->get('xml_chp_renc', [], $lienRencontre);
+     //   dd($data);
         if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
             throw new InvalidLienRencontre($lienRencontre);
         }
