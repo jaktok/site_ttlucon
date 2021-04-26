@@ -18,7 +18,7 @@ class IndexController extends AbstractController
     public function index(): Response
     {
        
-        // Récupération infos config.ini
+        // Rï¿½cupï¿½ration info config.ini
         $ini_array = parse_ini_file("../config/config.ini");
         $idFftt = $ini_array['fftt_id'];
         $passFftt = $ini_array['fftt_password'];
@@ -38,11 +38,11 @@ class IndexController extends AbstractController
         $clubByDepartement = $api->getClubsByDepartement(85);
         $clubByName = $api->getClubsByName("LUCON TT");
         
-        // on doit passer en paramètre le lien renvoyé par le résultat de $rencontrePouleByLienDiv + id club 1 + id club 2
+        // on doit passer en paramï¿½tre le lien renvoyï¿½ par le rï¿½sultat de $rencontrePouleByLienDiv + id club 1 + id club 2
         $lienRencontre = "is_retour=0&phase=1&res_1=11&res_2=9&renc_id=3785251&equip_1=COEX+1&equip_2=LUCON+2&equip_id1=478822&equip_id2=478827";
         // exemple departement
         $detailRencontreByLien = $api->getDetailsRencontreByLien($lienRencontre,"12850097","12850030");
-        // exemple pour région 4 joueurs
+        // exemple pour rï¿½gion 4 joueurs
         $lienRencontreR = "is_retour=0&phase=1&res_1=3&res_2=11&renc_id=3764848&equip_1=MONTAGNE+%28LA%29++1&equip_2=CHALLANS+2&equip_id1=473709&equip_id2=473716";
         $detailRencontreByLienR = $api->getDetailsRencontreByLien($lienRencontreR,"12440094","12850026");
         $equipesByClub = $api->getEquipesByClub("12850097","M");
