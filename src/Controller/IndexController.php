@@ -46,9 +46,9 @@ class IndexController extends AbstractController
         $lienRencontreR = "is_retour=0&phase=1&res_1=3&res_2=11&renc_id=3764848&equip_1=MONTAGNE+%28LA%29++1&equip_2=CHALLANS+2&equip_id1=473709&equip_id2=473716";
         $detailRencontreByLienR = $api->getDetailsRencontreByLien($lienRencontreR,"12440094","12850026");
         $equipesByClub = $api->getEquipesByClub("12850097","M");
-        $histoJoueurByLicence = $api->getHistoriqueJoueurByLicence("852112");*/
-        $detailJoueurByLicence = $api->getJoueurDetailsByLicence("267813");
-        /*$joueurByClub = $api->getJoueursByClub("12850097");
+        $histoJoueurByLicence = $api->getHistoriqueJoueurByLicence("852112");
+        $detailJoueurByLicence = $api->getJoueurDetailsByLicence("852112");
+        $joueurByClub = $api->getJoueursByClub("12850097");
         $joueurByNom = $api->getJoueursByNom("pupin","Jean-marie");
         $organismes = $api->getOrganismes();
         $partieJoueurByLicence = $api->getPartiesJoueurByLicence("852112");
@@ -61,7 +61,7 @@ class IndexController extends AbstractController
         
         dd($actualites, $joueurByLicence, $pouleByLien, $pouleByLienR, $rencontrePouleByLienDiv, $rencontrePouleByLienDivR , $clubDetail, $clubEquipe, $clubByDepartement, $clubByName, $detailRencontreByLien , $detailRencontreByLienR ,$equipesByClub, $histoJoueurByLicence, $detailJoueurByLicence, $joueurByClub, $joueurByNom,$organismes,$partieJoueurByLicence, $prochaineRencontreEquipe, $unvalidatePartiesByJoueur,$virtualPoints);
         */
-        dd($detailJoueurByLicence);
+        //dd($detailRencontreByLien);
         
         /* return $this->render('index/index.html.twig', [
           'controller_name' => 'IndexController',

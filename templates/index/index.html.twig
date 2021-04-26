@@ -16,9 +16,12 @@
  		L'adresse de la salle est : {{ detail_club.adresseSalle1 }}	   
     </ul>
     
-    La dernière actualité est :
-    
+    Actualités :
+    <br>
     {% for actu in actus_club %}
+    <a href="{{ actu.url }}" target="_blank">
+    <img src="{{ actu.photo }}" class="img-thumbnail" alt="Responsive image" width="50%" height="50%" >
+    </a>		
  		<li>{{ actu.titre }} : {{ actu.description }}</li>
 	{% endfor %}
     
