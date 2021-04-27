@@ -18,7 +18,7 @@ class IndexController extends AbstractController
     public function index(): Response
     {
        
-        // Recuperation infos config.ini
+        // Recuperation infoss config.ini
         $ini_array = parse_ini_file("../config/config.ini");
         $idFftt = $ini_array['fftt_id'];
         $passFftt = $ini_array['fftt_password'];
