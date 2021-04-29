@@ -23,5 +23,5 @@
         "bootstrap": "^5.0.0-beta3",
         "postcss-loader": "^5.2.0"
     },
-	"error-ex": "git+https://github.com/Qix-/node-error-ex.git"
+    "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
 }
