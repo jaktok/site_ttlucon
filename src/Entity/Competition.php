@@ -45,9 +45,15 @@ class Competition
      */
     private $type_competition;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="competition")
+     */
+    private $matchs;
+
     public function __construct()
     {
         $this->joueur_compet = new ArrayCollection();
+        $this->matchs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +129,36 @@ class Competition
     public function setTypeCompetition(?TypeCompetition $type_competition): self
     {
         $this->type_competition = $type_competition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getMatchs(): Collection
+    {
+        return $this->matchs;
+    }
+
+    public function addMatch(Matchs $match): self
+    {
+        if (!$this->matchs->contains($match)) {
+            $this->matchs[] = $match;
+            $match->setCompetition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matchs $match): self
+    {
+        if ($this->matchs->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getCompetition() === $this) {
+                $match->setCompetition(null);
+            }
+        }
 
         return $this;
     }

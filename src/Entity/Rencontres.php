@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RencontresRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Rencontres
      * @ORM\OneToOne(targetEntity=EquipeRencontre::class, inversedBy="rencontre", cascade={"persist", "remove"})
      */
     private $equipeRencontre;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="rencontre")
+     */
+    private $matchs;
+
+    public function __construct()
+    {
+        $this->matchs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +132,36 @@ class Rencontres
     public function setEquipeRencontre(?EquipeRencontre $equipeRencontre): self
     {
         $this->equipeRencontre = $equipeRencontre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getMatchs(): Collection
+    {
+        return $this->matchs;
+    }
+
+    public function addMatch(Matchs $match): self
+    {
+        if (!$this->matchs->contains($match)) {
+            $this->matchs[] = $match;
+            $match->setRencontre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matchs $match): self
+    {
+        if ($this->matchs->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getRencontre() === $this) {
+                $match->setRencontre(null);
+            }
+        }
 
         return $this;
     }

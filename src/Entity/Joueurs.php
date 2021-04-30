@@ -139,12 +139,30 @@ class Joueurs
      */
     private $categories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Classement::class, mappedBy="joueur")
+     */
+    private $classements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="joueur")
+     */
+    private $matchs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Articles::class, mappedBy="joueur")
+     */
+    private $articles;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
         $this->equipeTypes = new ArrayCollection();
         $this->equipeRencontres = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->classements = new ArrayCollection();
+        $this->matchs = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -505,6 +523,96 @@ class Joueurs
     {
         if ($this->categories->removeElement($category)) {
             $category->removeJoueur($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Classement[]
+     */
+    public function getClassements(): Collection
+    {
+        return $this->classements;
+    }
+
+    public function addClassement(Classement $classement): self
+    {
+        if (!$this->classements->contains($classement)) {
+            $this->classements[] = $classement;
+            $classement->setJoueur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClassement(Classement $classement): self
+    {
+        if ($this->classements->removeElement($classement)) {
+            // set the owning side to null (unless already changed)
+            if ($classement->getJoueur() === $this) {
+                $classement->setJoueur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getMatchs(): Collection
+    {
+        return $this->matchs;
+    }
+
+    public function addMatch(Matchs $match): self
+    {
+        if (!$this->matchs->contains($match)) {
+            $this->matchs[] = $match;
+            $match->setJoueur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Matchs $match): self
+    {
+        if ($this->matchs->removeElement($match)) {
+            // set the owning side to null (unless already changed)
+            if ($match->getJoueur() === $this) {
+                $match->setJoueur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Articles[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Articles $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setJoueur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Articles $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getJoueur() === $this) {
+                $article->setJoueur(null);
+            }
         }
 
         return $this;
