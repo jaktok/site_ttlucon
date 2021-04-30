@@ -15,6 +15,129 @@
         {% endblock %}
     </head>
     <body>
+    <style>
+        nav{
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            position: sticky;
+            top: 0px;
+            
+        }
+
+        nav ul{
+            list-style-type: none;
+            border: solid 1px grey;
+        }
+
+        nav ul li{
+            float: left;
+            width: 12.5%;
+            text-align: center;
+            position: relative;
+
+        }
+
+        nav ul::after{
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        nav a{
+            display: block;
+            text-decoration: none;
+            color: black;
+            border-bottom: 2px solid transparent;
+            padding: 10px 0px;
+            
+        }
+
+        nav a:hover{
+            color: orange;
+            border-bottom: 2px solid gold;
+        }
+
+        .sous{
+            display: none;
+            box-shadow: 0px 1px 2px #CCC;
+            background-color: white;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+
+        }
+        nav > ul li:hover .sous{
+            display: block;
+        }
+        .sous li{
+            float: none;
+            width: 100%;
+            text-align: left;
+        }
+        .sous a{
+            padding: 10px;
+            border-bottom: none;
+        }
+        .sous a:hover{
+            border-bottom: none;
+            background-color: RGBa(200,200,200,0.1);
+        }
+        .deroulant > a::after{
+            content:" ▼";
+            font-size: 12px;
+        }
+
+    </style>
+    <nav>
+    <ul>
+        <li><a href="/index">Accueil &ensp;</a></li>
+        <li class="deroulant"><a href="#">Le Club &ensp;</a>
+        <ul class="sous">
+            <li><a href="/presentation">Presentation</a></li>
+            <li><a href="/bureau">Bureau</a></li>
+            <li><a href="/joueur">Liste des joueurs</a></li>
+        </ul>
+        </li>
+        <li><a href="/entrainement">Entrainement</a></li>
+        <li class="deroulant"><a href="#">Sportifs Adultes &ensp;</a>
+        <ul class="sous">
+            <li><a href="/equipe">Equipes</a></li>
+            <li><a href="/resultat">Resultat</a></li>
+            <li><a href="/calendrier">Calendrier</a></li>
+            <li><a href="/joueur">Liste joueurs</a></li>
+            <li><a href="/individuel">Individuel</a></li>
+            <li><a href="/statistique">Statistiques</a></li>
+        </ul>
+        </li>
+        <li class="deroulant"><a href="#">Sportifs Jeunes &ensp;</a>
+        <ul class="sous">
+            <li><a href="/equipe">Equipes</a></li>
+            <li><a href="/resultat">Resultat</a></li>
+            <li><a href="/calendrier">Calendrier</a></li>
+            <li><a href="/joueur">Liste joueurs</a></li>
+            <li><a href="/individuel">Individuel</a></li>
+            <li><a href="/statistique">Statistiques</a></li>
+        </ul>
+        </li>
+        <li class="deroulant"><a href="#">Sport Adapte &ensp;</a>
+        <ul class="sous">
+            <li><a href="/resultat">Resultat</a></li>
+            <li><a href="/calendrier">Calendrier</a></li>
+            <li><a href="/joueur">Liste joueurs</a></li>
+        </ul>
+        </li>
+        <li class="deroulant"><a href="#">Liens &ensp;</a>
+        <ul class="sous">
+            <li><a href="http://www.fftt.com/sportif/sportif.htm">Federation</a></li>
+            <li><a href="http://tennisdetablepaysdelaloire.org/">Ligue</a></li>
+            <li><a href="http://www.cd85tt.fr/">Comite</a></li>
+            <li><a href="http://forum.tennis-de-table.com/">Forum</a></li>
+        </ul>
+        </li>
+        <li><a href="/nous/contacter">Nous contacter &ensp;</a></li>
+    </ul>
+    </nav>
         {% block body %}{% endblock %}
     </body>
 </html>
