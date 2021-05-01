@@ -36,10 +36,14 @@ class FFTTApi
     private $password;
     private $apiRequest;
 
-    public function __construct(string $id, string $password)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->password = md5($password);
+        // Recuperation infoss config.ini
+        $ini_array = parse_ini_file("../config/config.ini");
+        $idFftt = $ini_array['fftt_id'];
+        $passFftt = $ini_array['fftt_password'];
+        $this->id = $idFftt;
+        $this->password = md5($passFftt);
         $this->apiRequest = new ApiRequest($this->password, $this->id);
     }
 
