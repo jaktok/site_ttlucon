@@ -1,143 +1,122 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Welcome!{% endblock %}</title> {# Run `composer
+require symfony/webpack-encore-bundle` and uncomment the following
+Encore helpers to start using Symfony UX #} {% block stylesheets %} {{
+encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
+{{ encore_entry_script_tags('app') }} {% endblock %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+</head>
+<body>
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-    <style>
-        nav{
-            width: 100%;
-            margin: 0 auto;
-            background-color: white;
-            position: sticky;
-            top: 0px;
-            
-        }
+	<nav class="navbar navbar-expand-sm navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse nav justify-content-center"
+			id="navbarSupportedContent">
+			<!-- <ul class="navbar-nav mr-auto"> -->
+			<ul class="nav justify-content-center">
+				<li class="nav-item"><a class="nav-link" href="/index">Accueil</a>
+				</li>
 
-        nav ul{
-            list-style-type: none;
-            border: solid 1px grey;
-        }
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Le club </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/presentation">Présentation</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/bureau">Bureau</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/joueur">Liste des joueurs</a>
+					</div></li>
 
-        nav ul li{
-            float: left;
-            width: 12.5%;
-            text-align: center;
-            position: relative;
+				<li class="nav-item"><a class="nav-link" href="/entrainement">Entraînements</a>
+				</li>
 
-        }
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Sportif adultes </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/equipe">Equipes</a> <a
+							class="dropdown-item" href="/calendrier">Calendrier</a> <a
+							class="dropdown-item" href="/resultat">Resultats</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/joueur">Liste des joueurs</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/individuel">Individuel</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/statistique">Statistiques</a>
+					</div></li>
 
-        nav ul::after{
-            content: "";
-            display: table;
-            clear: both;
-        }
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Sportif jeunes </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/equipe">Equipes</a> <a
+							class="dropdown-item" href="/calendrier">Calendrier</a> <a
+							class="dropdown-item" href="/resultat">Resultats</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/joueur">Liste des joueurs</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/individuel">Individuel</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/statistique">Statistiques</a>
+					</div></li>
 
-        nav a{
-            display: block;
-            text-decoration: none;
-            color: black;
-            border-bottom: 2px solid transparent;
-            padding: 10px 0px;
-            
-        }
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Sportif adaptés </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/resultat">Resultats</a> <a
+							class="dropdown-item" href="/calendrier">Calendrier</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/joueur">Liste des joueurs</a>
+					</div></li>
 
-        nav a:hover{
-            color: orange;
-            border-bottom: 2px solid gold;
-        }
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Liens </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item"
+							href="http://www.fftt.com/sportif/sportif.htm">Federation</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item"
+							href="http://tennisdetablepaysdelaloire.org/">Ligue</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="http://www.cd85tt.fr/">Comite</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="http://forum.tennis-de-table.com/">Forum</a>
+					</div></li>
 
-        .sous{
-            display: none;
-            box-shadow: 0px 1px 2px #CCC;
-            background-color: white;
-            position: absolute;
-            width: 100%;
-            z-index: 1000;
+				<li class="nav-item"><a class="nav-link" href="/nous/contacter">Nous
+						contacter</a></li>
+			</ul>
+		</div>
+	</nav>
 
-        }
-        nav > ul li:hover .sous{
-            display: block;
-        }
-        .sous li{
-            float: none;
-            width: 100%;
-            text-align: left;
-        }
-        .sous a{
-            padding: 10px;
-            border-bottom: none;
-        }
-        .sous a:hover{
-            border-bottom: none;
-            background-color: RGBa(200,200,200,0.1);
-        }
-        .deroulant > a::after{
-            content:" ▼";
-            font-size: 12px;
-        }
 
-    </style>
-    <nav>
-    <ul>
-        <li><a href="/index">Accueil &ensp;</a></li>
-        <li class="deroulant"><a href="#">Le Club &ensp;</a>
-        <ul class="sous">
-            <li><a href="/presentation">Presentation</a></li>
-            <li><a href="/bureau">Bureau</a></li>
-            <li><a href="/joueur">Liste des joueurs</a></li>
-        </ul>
-        </li>
-        <li><a href="/entrainement">Entrainement</a></li>
-        <li class="deroulant"><a href="#">Sportifs Adultes &ensp;</a>
-        <ul class="sous">
-            <li><a href="/equipe">Equipes</a></li>
-            <li><a href="/resultat">Resultat</a></li>
-            <li><a href="/calendrier">Calendrier</a></li>
-            <li><a href="/joueur">Liste joueurs</a></li>
-            <li><a href="/individuel">Individuel</a></li>
-            <li><a href="/statistique">Statistiques</a></li>
-        </ul>
-        </li>
-        <li class="deroulant"><a href="#">Sportifs Jeunes &ensp;</a>
-        <ul class="sous">
-            <li><a href="/equipe">Equipes</a></li>
-            <li><a href="/resultat">Resultat</a></li>
-            <li><a href="/calendrier">Calendrier</a></li>
-            <li><a href="/joueur">Liste joueurs</a></li>
-            <li><a href="/individuel">Individuel</a></li>
-            <li><a href="/statistique">Statistiques</a></li>
-        </ul>
-        </li>
-        <li class="deroulant"><a href="#">Sport Adapte &ensp;</a>
-        <ul class="sous">
-            <li><a href="/resultat">Resultat</a></li>
-            <li><a href="/calendrier">Calendrier</a></li>
-            <li><a href="/joueur">Liste joueurs</a></li>
-        </ul>
-        </li>
-        <li class="deroulant"><a href="#">Liens &ensp;</a>
-        <ul class="sous">
-            <li><a href="http://www.fftt.com/sportif/sportif.htm">Federation</a></li>
-            <li><a href="http://tennisdetablepaysdelaloire.org/">Ligue</a></li>
-            <li><a href="http://www.cd85tt.fr/">Comite</a></li>
-            <li><a href="http://forum.tennis-de-table.com/">Forum</a></li>
-        </ul>
-        </li>
-        <li><a href="/nous/contacter">Nous contacter &ensp;</a></li>
-    </ul>
-    </nav>
-        {% block body %}{% endblock %}
-    </body>
+	{% block body %}{% endblock %}
+</body>
 </html>
