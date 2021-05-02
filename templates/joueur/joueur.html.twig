@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
+endblock %} {% block body %}
+<meta charset="UTF-8" />
+
+
+<div class="container">
+{% if joueurs is defined %}
+Joueurs du club :<br>
+{% for joueur in joueurs %}
+{{ joueur.prenom }}
+{{ joueur.nom }}&nbsp;-&nbsp;
+{% endfor %}
+{% endif %}
+
+</div>
+
+{% endblock %}

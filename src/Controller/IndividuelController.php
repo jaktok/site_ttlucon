@@ -13,7 +13,7 @@ class IndividuelController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('individuel/index.html.twig', [
+        return $this->render('individuel/individuel.html.twig', [
             'controller_name' => 'IndividuelController',
         ]);
     }

@@ -13,7 +13,7 @@ class BureauController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('bureau/index.html.twig', [
+        return $this->render('bureau/bureau.html.twig', [
             'controller_name' => 'BureauController',
         ]);
     }

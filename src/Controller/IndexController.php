@@ -53,7 +53,7 @@ class IndexController extends AbstractController
         $equipesByClub = $this->api->getEquipesByClub("12850097","M");
         $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence("852112");
         $detailJoueurByLicence = $this->api->getJoueurDetailsByLicence("852112");*/
-        $joueurByClub = $this->api->getJoueursByClub($this->ini_array['id_club_lucon']);
+        //$joueurByClub = $this->api->getJoueursByClub($this->ini_array['id_club_lucon']);
         /*$joueurByNom = $this->api->getJoueursByNom("pupin","Jean-marie");
         $organismes = $this->api->getOrganismes();
         $partieJoueurByLicence = $this->api->getPartiesJoueurByLicence("852112");
@@ -77,8 +77,7 @@ class IndexController extends AbstractController
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'detail_club' => $clubDetail,
-            'actus_club' => $actualites,
-            'joueurs'   => $joueurByClub
+            'actus_club' => $actualites
         ]);
     }
 }

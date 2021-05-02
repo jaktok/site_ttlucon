@@ -13,7 +13,7 @@ class StatistiqueController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('statistique/index.html.twig', [
+        return $this->render('statistique/statistique.html.twig', [
             'controller_name' => 'StatistiqueController',
         ]);
     }

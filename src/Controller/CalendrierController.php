@@ -13,7 +13,7 @@ class CalendrierController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('calendrier/index.html.twig', [
+        return $this->render('calendrier/calendrier.html.twig', [
             'controller_name' => 'CalendrierController',
         ]);
     }

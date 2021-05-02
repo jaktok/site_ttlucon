@@ -13,7 +13,7 @@ class PresentationController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('presentation/index.html.twig', [
+        return $this->render('presentation/presentation.html.twig', [
             'controller_name' => 'PresentationController',
         ]);
     }

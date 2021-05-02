@@ -17,13 +17,7 @@ endblock %} {% block body %}
 
 	<h1>Salut {{ detail_club.nom }}!</h1>
 
-{% if joueurs is defined %}
-Joueurs du club :<br>
-{% for joueur in joueurs %}
-{{ joueur.prenom }}
-{{ joueur.nom }}&nbsp;-&nbsp;
-{% endfor %}
-{% endif %}
+
 	<ul>L'adresse de la salle est : {{ detail_club.adresseSalle1 }}
 	</ul>
 

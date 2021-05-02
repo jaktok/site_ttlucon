@@ -13,7 +13,7 @@ class NousContacterController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('nous_contacter/index.html.twig', [
+        return $this->render('nous_contacter/contact.html.twig', [
             'controller_name' => 'NousContacterController',
         ]);
     }

@@ -13,7 +13,7 @@ class EntrainementController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('entrainement/index.html.twig', [
+        return $this->render('entrainement/entrainement.html.twig', [
             'controller_name' => 'EntrainementController',
         ]);
     }
