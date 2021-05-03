@@ -1,0 +1,42 @@
+{% extends 'base_parametrage.html.twig' %} {% block title %}Hello
+IndexController!{% endblock %} {% block body %}
+<meta charset="UTF-8" />
+<style>
+</style>
+
+
+<div class="container">
+	<h1>Paramétrage</h1>
+	<table class="table table-striped" data-toggle="table"
+		data-pagination="false">
+		<thead>
+			<tr>
+				<th data-sortable="true" data-field="nom">Fonctionnalité</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Joueurs</a></li></td>
+			</tr>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Equipes</a></li></td>
+			</tr>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Autres compétitions</a></li></td>
+			</tr>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Résultats</a>	</li></td>
+			</tr>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Infos club</a></li></td>
+			</tr>
+			<tr>
+				<td><li class="nav-item"><a class="nav-link" href="#">Entraînements</a></li></td>
+			</tr>
+
+		</tbody>
+	</table>
+</div>
+
+
+{% endblock %}
