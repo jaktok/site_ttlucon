@@ -2,16 +2,20 @@
 endblock %} {% block body %}
 <meta charset="UTF-8" />
 
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
    <div class="container">
-      <h1>Les tableaux Bootstrap</h1>
-      <table class="table table-striped">
+      <h1>Liste des joueurs</h1>
+      <table class="table table-striped" data-toggle="table">
         <thead>
           <tr>
-            <th>Nom</th>
+            <th data-sortable="true" data-field="nom">Nom</th>
             <th>Prénom</th>
-            <th>Classement</th>
+            <th data-sortable="true">Classement</th>
           </tr>
         </thead>
         <tbody>
