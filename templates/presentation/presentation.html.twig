@@ -1,4 +1,193 @@
-{% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
-endblock %} {% block body %}
-<meta charset="UTF-8" />
+{% extends 'base.html.twig' %} 
+{% block title %}
+	Présentation
+{%endblock %} 
+{% block head %}
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{%endblock %}
+{% block body %}
+
+
+<div class="container">
+
+<h1 class="text-center">TENNIS DE TABLE LUÇONNAIS</h1>
+<br><br>
+<p class="text-left"><b>ADRESSE DE LA SALLE</b>&nbsp;:
+{% if infosclub.adresse_salle is defined %}
+	{{	infosclub.adresse_salle }}
+{%endif%}	
+<!--Salle Jean Jaures – 3, rue Jean Jaures – 85400 Luçon – Tél. 02.51.29.01.80</p>-->
+
+<p class="text-left"><b>PRESIDENT</b>&nbsp;:
+{% if infosclub.president is defined %}
+	{{	infosclub.president }}
+{%endif%}
+ </p>
+
+{% if infosclub.vice_president is defined %}
+<p class="text-left"><b>VICE PRESIDENT</b>&nbsp;:
+	{{	infosclub.vice_president }}
+ </p>
+{%endif%}
+
+<p class="text-left"><b>SECRETAIRE</b>&nbsp;:
+{% if infosclub.secretaire is defined %}
+	{{	infosclub.secretaire }}
+{%endif%}
+ </p>
+
+<p class="text-left"><b>TRESORIER</b>&nbsp;:
+{% if infosclub.tresorier is defined %}
+	{{	infosclub.tresorier }}
+{%endif%}
+ </p>
+
+{% if infosclub.tresorier_adjoint is defined %}
+<p class="text-left"><b>TRESORIER ADJOINT</b>&nbsp;:
+	{{	infosclub.tresorier_adjoint }}
+ </p>
+{%endif%}
+
+<p class="text-left"><b>ENTRAINEURS</b>&nbsp;:
+{% if infosclub.entraineurs is defined %}
+	{{	infosclub.entraineurs }}
+{%endif%}
+ </p>
+
+{% if infosclub.logistique_adjoint is defined %}
+<p class="text-left"><b>RESPONSABLE LOGISTIQUE</b>&nbsp;:
+	{{	infosclub.logistique }}
+ </p>
+{%endif%}
+
+
+<p class="text-left"><b>PRESENTATION DE L’ ASSOCIATION</b>&nbsp;:
+
+<p class="text-left">Le TTL a été crée en 1979 pour pratiquer en compétition ou loisir le tennis de table. <br>
+Pour la saison&nbsp;
+{% if infosclub.saison_derniere is defined %}
+	{{	infosclub.saison_derniere }}
+{%endif%}
+ , il y avait&nbsp; 
+ {% if infosclub.nb_licencies_derniere_saison is defined %}
+	{{	infosclub.nb_licencies_derniere_saison }}
+{%endif%}
+ &nbsp;licenciés,&nbsp;
+ {% if infosclub.nb_equipes_der_saison is defined %}
+	{{	infosclub.nb_equipes_der_saison }}
+{%endif%}
+&nbsp;équipes adultes masculin,&nbsp;
+ {% if infosclub.nb_equipes_jeunes_der_saison is defined %}
+	{{	infosclub.nb_equipes_jeunes_der_saison }}
+{%endif%}
+&nbsp;équipes jeunes et&nbsp; 
+ {% if infosclub.nb_indiv_der_saison is defined %}
+	{{	infosclub.nb_indiv_der_saison }}
+{%endif%}
+&nbsp;joueurs participant aux compétions individuelles</p>
+
+<p class="text-left"><b>ADRESSE E-MAIL</b>&nbsp;:
+{% if infosclub.mail is defined %}
+	{{	infosclub.mail }}
+{%endif%}
+ </p>
+
+<p class="text-left"><b>ADRESSE INTERNET FEDERATION</b>&nbsp;:
+<a href="http://www.fftt.com" onclick="window.open(this.href,'_blank');return false;" >www.fftt.com</a>
+</p>
+
+<p class="text-left"><b>JOURS/HORAIRES&nbsp;/LIEU
+POUR LES INCRIPTIONS</b>&nbsp;:
+{% if infosclub.inscriptions is defined %}
+	{{	infosclub.inscriptions }}
+{%endif%}
+</p>
+
+{% if infosclub.forum is defined %}
+	<p class="text-left">{{	infosclub.forum }}&nbsp;:
+	</p>
+{%endif%}
+
+<h3>DATE DE REPRISE DES ACTIVITES : </h3>
+
+{% if infosclub.reprise is defined %}
+	<p class="text-left">{{	infosclub.reprise }}&nbsp;:
+	</p>
+{%endif%}
+
+
+
+<br>
+<h3>TARIFS SAISON&nbsp
+{% if infosclub.saison is defined %}
+	{{	infosclub.saison }}
+{%endif%}
+&nbsp:
+</h3>
+
+<p class="text-left">Cotisation licence&nbsp;:<br>
+{% if infosclub.tarif_loisir is defined %}
+	{{	infosclub.tarif_loisir }}
+{%endif%}&nbsp;€&nbsp;Joueurs loisirs et sports adaptés ne venant que le mardi soir et n’évoluant pas en compétition</p>
+
+{% if infosclub.tarif_adapte_compet is defined %}
+	{{	infosclub.tarif_adapte_compet }}
+{%endif%}&nbsp;€&nbsp;Joueurs évoluant uniquement en compétition « sport adaptés »</p>
+
+{% if infosclub.tarif_jeune is defined %}
+	{{	infosclub.tarif_jeune }}
+{%endif%}&nbsp;€&nbsp;Joueurs de Poussins à Juniors</p>
+ 	
+{% if infosclub.tarif_adulte is defined %}
+	{{	infosclub.tarif_adulte }}
+{%endif%}&nbsp;€&nbsp;Joueurs séniors et vétérans évoluant en compétition FFTT</p> 	
+
+<p class="text-left">Prix à rajouter pour les engagements au critérium fédéral (quatre tours)&nbsp;:<br>
+<br>
+<p class="text-left">Poussins - Benjamins - Minimes - Cadets --&nbsp;
+{% if infosclub.tarif_indiv_jeune is defined %}
+	{{	infosclub.tarif_adapte_compet }}
+{%endif%}&nbsp;€
+<br>
+<p class="text-left">Juniors --&nbsp;
+{% if infosclub.tarif_indiv_junior is defined %}
+	{{	infosclub.tarif_indiv_junior }}
+{%endif%}&nbsp;€
+<br>
+<p class="text-left">Seniors - Vétérans --&nbsp;
+{% if infosclub.tarif_indiv_adulte is defined %}
+	{{	infosclub.tarif_indiv_adulte }}
+{%endif%}&nbsp;€
+<br>
+
+<h3>PIECES A FOURNIR LORS DE L’INSCRIPTION&nbsp;</h3>
+
+<p class="text-left">1 certificat médical</p>
+<br>
+
+<p class="text-left"><b>LIEU/JOURS/HORAIRES D’ENTRAINEMENT&nbsp;:</b>
+
+<p class="text-left">Salle du Tennis de Table, rue Jean-Jaurès ( près du Lycée
+Atlantique)</p>
+
+<p class="text-left">
+Les horaires d'entraînement sont fixés dès que possible en fonction des effectifs, des entraîneurs, des groupes. Ils seront visibles dans la rubrique entraînements.
+</p>
+
+
+<p class="text-left"><b>COMPETITIONS&nbsp;:</b>&nbsp;
+<p class="text-left">- samedi après-midi : compétition Jeunes (possibilité de participer au championnat adulte le dimanche à partir de 12 ans)</p>
+<p class="text-left">- dimanche matin : compétitions adultes niveau départemental</p>
+<p class="text-left">- dimanche après-midi : compétitions adultes niveau régional ou pré-régional</p>
+<br>
+<h3>MANIFESTATIONS PRINCIPALES ANNUELLES</h3>
+
+<p class="text-left">- Tournois internes de tennis de table en septembre et janvier </p><br>
+
+<p class="text-left">- Galette en janvier</p>
+
+</div>
+
+
 {% endblock %}
