@@ -3,15 +3,29 @@ endblock %} {% block body %}
 <meta charset="UTF-8" />
 
 
-<div class="container">
-{% if joueurs is defined %}
-Joueurs du club :<br>
-{% for joueur in joueurs %}
-{{ joueur.prenom }}
-{{ joueur.nom }}&nbsp;-&nbsp;
-{% endfor %}
-{% endif %}
 
-</div>
+   <div class="container">
+      <h1>Les tableaux Bootstrap</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Classement</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if joueurs is defined %}
+        {% for joueur in joueurs %}
+          <tr>
+            <td>{{ joueur.nom }}</td>
+            <td>{{ joueur.prenom }}</td>
+            <td>{{ joueur.points }}</td>
+          </tr>
+        {% endfor %}
+		{% endif %}
+        </tbody>
+      </table>
+    </div>
 
 {% endblock %}
