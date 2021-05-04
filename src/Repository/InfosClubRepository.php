@@ -19,6 +19,8 @@ class InfosClubRepository extends ServiceEntityRepository
         parent::__construct($registry, InfosClub::class);
     }
 
+    
+    
     // /**
     //  * @return InfosClub[] Returns an array of InfosClub objects
     //  */

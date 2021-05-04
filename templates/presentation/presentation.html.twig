@@ -147,7 +147,7 @@ POUR LES INCRIPTIONS</b>&nbsp;:
 <br>
 <p class="text-left">Poussins - Benjamins - Minimes - Cadets --&nbsp;
 {% if infosclub.tarif_indiv_jeune is defined %}
-	{{	infosclub.tarif_adapte_compet }}
+	{{	infosclub.tarif_indiv_jeune }}
 {%endif%}&nbsp;€
 <br>
 <p class="text-left">Juniors --&nbsp;
@@ -183,9 +183,13 @@ Les horaires d'entraînement sont fixés dès que possible en fonction des effec
 <br>
 <h3>MANIFESTATIONS PRINCIPALES ANNUELLES</h3>
 
-<p class="text-left">- Tournois internes de tennis de table en septembre et janvier </p><br>
-
+<p class="text-left">- Tournois internes de tennis de table en septembre et janvier </p>
 <p class="text-left">- Galette en janvier</p>
+
+{% if (infosclub.reprise is defined) and (infosclub.reprise is not empty) %}
+	<p class="text-left">{{	infosclub.divers }}&nbsp;
+	</p>
+{%endif%}
 
 </div>
 
