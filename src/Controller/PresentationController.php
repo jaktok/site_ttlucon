@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\InfosClub;
 use App\Repository\InfosClubRepository;
-use Symfony\Component\Validator\Constraints\Length;
 
 class PresentationController extends AbstractController
 {
@@ -17,10 +16,9 @@ class PresentationController extends AbstractController
     public function index(InfosClubRepository $infosClubRepo): Response
     {
         $infosClub = new InfosClub();
-        
-        
+        // recuperation de tous les enregistrements infoclub
         $listeInfosClub = $infosClubRepo->findAll();
-  
+        // recuperation du resultat dans un tableau infclub a passer a la vue
        foreach($listeInfosClub as $infosClub)
        {
            $infClub[$infosClub->getLibelle()] = $infosClub->getContenu();
