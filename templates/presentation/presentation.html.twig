@@ -25,7 +25,7 @@
 {%endif%}
  </p>
 
-{% if infosclub.vice_president is defined %}
+{% if (infosclub.vice_president is defined) and (infosclub.vice_president is not empty) %}
 <p class="text-left"><b>VICE PRESIDENT</b>&nbsp;:
 	{{	infosclub.vice_president }}
  </p>
@@ -104,7 +104,7 @@ POUR LES INCRIPTIONS</b>&nbsp;:
 {%endif%}
 </p>
 
-{% if infosclub.forum is defined %}
+{% if (infosclub.forum is defined) and (infosclub.forum is not empty) %}
 	<p class="text-left">{{	infosclub.forum }}&nbsp;:
 	</p>
 {%endif%}
