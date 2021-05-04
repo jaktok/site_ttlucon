@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexParamController extends AbstractController
+class CalendrierParamController extends AbstractController
 {
     /**
-     * @Route("/index/param", name="index_param")
+     * @Route("/calendrier/param", name="calendrier_param")
      */
     public function index(): Response
     {
-        return $this->render('parametrage/index_parametrage/index_parametrage.html.twig', [
-            'controller_name' => 'IndexParamController',
+        return $this->render('parametrage/calendrier_param/calendrier_param.html.twig', [
+            'controller_name' => 'CalendrierParamController',
         ]);
     }
 }

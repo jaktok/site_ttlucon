@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\parametrage;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class CompetitionParamController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('competition_param/index.html.twig', [
+        return $this->render('parametrage/competition_param/competition_param.html.twig', [
             'controller_name' => 'CompetitionParamController',
         ]);
     }

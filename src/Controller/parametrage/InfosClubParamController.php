@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\parametrage;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class InfosClubParamController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('infos_club_param/index.html.twig', [
+        return $this->render('parametrage/infos_club_param/infos_club_param.html.twig', [
             'controller_name' => 'InfosClubParamController',
         ]);
     }

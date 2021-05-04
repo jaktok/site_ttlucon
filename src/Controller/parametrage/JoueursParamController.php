@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\parametrage;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class JoueursParamController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('joueurs_param/index.html.twig', [
+        return $this->render('parametrage/joueurs_param/joueurs_param.html.twig', [
             'controller_name' => 'JoueursParamController',
         ]);
     }
