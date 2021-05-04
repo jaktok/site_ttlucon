@@ -15,6 +15,7 @@ class PresentationController extends AbstractController
      */
     public function index(InfosClubRepository $infosClubRepo): Response
     {
+        $infClub = array();
         $infosClub = new InfosClub();
         // recuperation de tous les enregistrements infoclub
         $listeInfosClub = $infosClubRepo->findAll();
@@ -23,6 +24,7 @@ class PresentationController extends AbstractController
        {
            $infClub[$infosClub->getLibelle()] = $infosClub->getContenu();
        }
+       
        return $this->render('presentation/presentation.html.twig', [
             'controller_name' => 'PresentationController',
            'infosclub' => $infClub
