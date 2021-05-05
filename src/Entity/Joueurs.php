@@ -154,6 +154,11 @@ class Joueurs
      */
     private $articles;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="joueur")
+     */
+    private $role;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -614,6 +619,18 @@ class Joueurs
                 $article->setJoueur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(?Role $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }

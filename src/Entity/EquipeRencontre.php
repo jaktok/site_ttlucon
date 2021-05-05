@@ -54,6 +54,11 @@ class EquipeRencontre
      */
     private $categories;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numero;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
@@ -166,6 +171,18 @@ class EquipeRencontre
     public function setCategories(?Categories $categories): self
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function getNumero(): ?int
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(?int $numero): self
+    {
+        $this->numero = $numero;
 
         return $this;
     }

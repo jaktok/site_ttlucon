@@ -54,6 +54,11 @@ class Rencontres
      */
     private $matchs;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $phase;
+
     public function __construct()
     {
         $this->matchs = new ArrayCollection();
@@ -162,6 +167,18 @@ class Rencontres
                 $match->setRencontre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhase(): ?int
+    {
+        return $this->phase;
+    }
+
+    public function setPhase(?int $phase): self
+    {
+        $this->phase = $phase;
 
         return $this;
     }
