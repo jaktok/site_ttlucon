@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EquipesParamController extends AbstractController
 {
     /**
-     * @Route("/param/equipes", name="equipes_param")
+     * @Route("/dirigeant/param/equipes", name="equipes_param")
      */
     public function index(): Response
     {

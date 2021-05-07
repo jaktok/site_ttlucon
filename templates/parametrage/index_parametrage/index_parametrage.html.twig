@@ -11,22 +11,34 @@ IndexController!{% endblock %} {% block body %}
 		data-pagination="false">
 		<tbody>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/joueurs">Joueurs</a></td>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></td>
+			{% endif %}
 			</tr>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/equipes">Equipes</a></td>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/equipes">Equipes</a></td>
+			{% endif %}
 			</tr>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/competition">Autres compétitions</a></td>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/competition">Autres compétitions</a></td>
+			{% endif %}
 			</tr>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/resultat">Résultats</a></td>
+			{% if is_granted('ROLE_CAPITAINE') %}
+				<td class="text-center"><a class="nav-link" href="/capitaine/param/resultat">Résultats</a></td>
+			{% endif %}
 			</tr>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/infos/club">Infos club</a></td>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/infos/club">Infos club</a></td>
+			{% endif %}
 			</tr>
 			<tr>
-				<td class="text-center"><a class="nav-link" href="/param/entrainement">Entraînements</a></td>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></td>
+			{% endif %}
 			</tr>
 
 		</tbody>

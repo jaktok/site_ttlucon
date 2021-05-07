@@ -23,8 +23,12 @@
                                 Utilisateur
                             {% elseif role == "ROLE_ADMIN" %}
                                 Administrateur
-                            {% elseif role == "ROLE_BUREAU" %}
-                                Membre du bureau
+                            {% elseif role == "ROLE_REDACTEUR" %}
+                                Redacteur
+                            {% elseif role == "ROLE_CAPITAINE" %}
+                                Capitaine
+                            {% elseif role == "ROLE_DIRIGEANT" %}
+                                Dirigeant
                             {% endif %}
                         {% endfor %}
                     </td>

@@ -35,19 +35,24 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 			<ul class="nav justify-content-center">
 	
 				<li class="nav-item"><a class="nav-link" href="/param/index">Accueil</a></li>
-	
-				<li class="nav-item"><a class="nav-link" href="/param/joueurs">Joueurs</a></li>
-
-				<li class="nav-item"><a class="nav-link" href="/param/equipes">Equipes</a></li>
-
-				<li class="nav-item"><a class="nav-link" href="/param/competition">Autres compétitions</a></li>
-
-				<li class="nav-item"><a class="nav-link" href="/param/resultat">Résultats</a>	</li>
-
-				<li class="nav-item"><a class="nav-link" href="/param/infos/club">Infos club</a></li>
-				
-				<li class="nav-item"><a class="nav-link" href="/param/entrainement">Entraînements</a></li>
-
+				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></li>
+				{% endif %}
+				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/equipes">Equipes</a></li>
+				{% endif %}
+				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/competition">Autres compétitions</a></li>
+				{% endif %}
+				{% if is_granted('ROLE_CAPITAINE') %}
+				<li class="nav-item"><a class="nav-link" href="/capitaine/param/resultat">Résultats</a>	</li>
+				{% endif %}
+				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/infos/club">Infos club</a></li>
+				{% endif %}
+				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></li>
+				{% endif %}
 				<li class="nav-item"><a class="nav-link" href="/logout">Deconnexion</a></li>
 
 				{% if is_granted('ROLE_ADMIN') %}
