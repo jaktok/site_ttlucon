@@ -50,8 +50,6 @@ jQuery(document).ready(function() {
 
 <div class="container">
 	<h1>Fiche Joueur</h1>
-	<button type="submit" class="btn-succes">Enregistrer</button>
-	<br><br><br>
 
 	<div class="row">
 		<div class="col-sm-3" >
@@ -133,7 +131,18 @@ jQuery(document).ready(function() {
 			{{ form_row(formJoueur.contact_tel) }}
 		</div>
 	</div>
+			<br><br><br>
+	<div class="row">	
+		<div class="col-sm-2">
+		<button type="submit" class="btn btn-success">Enregistrer</button>
+ 		</div>
+ 	<div class="col-sm-2">
+ 		<a href="/joueurs/param/"  class="btn btn-primary" aria-current="page" >Retour</a>
+ 	</div>
+ 	</div>
 </div>
+
+
 {{ form_end(formJoueur) }} {% endblock %}
 
 

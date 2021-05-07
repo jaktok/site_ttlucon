@@ -13,8 +13,10 @@ endblock %}
 
 {{ form_start(formJoueurs) }}
 
- <a href="/joueur/param/nouveau/" class="btn btn-primary active" aria-current="page">Créer un joueur</a>
    <div class="container">
+   	<div align="left">
+ 		<a href="/joueur/param/nouveau/" class="btn btn-primary mb-2" aria-current="page">Créer un joueur</a>
+ 	</div>
       <h1>Liste des Joueurs</h1>
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
@@ -23,6 +25,7 @@ endblock %}
             <th>Prénom</th>
             <th>telephone</th>
             <th>Licence</th>
+            <th>Catégorie</th>
             <th>Certif</th>
             <th>Cotis.</th>
             <th>Classement</th>
@@ -37,6 +40,7 @@ endblock %}
            	<td>{{ joueur.prenom }}</td>
            	<td>{{ joueur.telephone }}</td>
            	<td>{{ joueur.numLicence }}</td>
+           	<td>TODO</td>
            	<td>{{ joueur.certificat }}</td>
            	<td>{{ joueur.cotisation }}</td>
            	<td>{{ joueur.classement }}</td>

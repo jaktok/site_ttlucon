@@ -34,9 +34,9 @@ class JoueursParamController extends AbstractController
         // recuperation de la liste des roles
         $listeRoles = $roleRepo->findAll();
         
-        // recuperation de tous les enregistrements infoclub
+        // recuperation de tous les joueurs
         $listeJoueurs = $joueursRepo->findAll();
-        // recuperation du resultat dans un tableau infclub a passer a la vue
+        // recuperation du resultat dans un tableau licencies a passer a la vue
         foreach($listeJoueurs as $player)
         {
             $licencie = new Licencie();
@@ -49,38 +49,8 @@ class JoueursParamController extends AbstractController
                 }
                 
             }
-            
-            // recuperation de la liste des classements pour le joueur
-            $listeClassements = $classementRepo->findByIdJoueur($player->getId());
-            If ($listeClassements){
-                $licencie->setClassement($listeClassements[0]->getPoints());
-                $this->dernierClassement = $listeClassements[0]->getPoints();
-            }
-            else{
-                $licencie->setClassement("500");
-            }
-            $licencie->setId($joueur->getId());
-            $licencie->setAdresse($joueur->getAdresse());
-            $licencie->setBureau($joueur->getBureau());
-            $licencie->setCertificat($joueur->getCertificat());
-            $licencie->setContactNom($joueur->getContactNom());
-            $licencie->setContactPrenom($joueur->getContactPrenom());
-            $licencie->setContactTel($joueur->getContactTel());
-            $licencie->setCotisation($joueur->getCotisation());
-            $licencie->setCp($joueur->getCp());
-            $dateCertif = $joueur->getDateCertificat()->format('d/m/Y');
-            $licencie->setDateCertificat($joueur->getDateCertificat());
-            $dateNaissance = $joueur->getDateNaissance()->format('d/m/Y');
-            $licencie->setDateNaissance($joueur->getDateNaissance());
-            $licencie->setDivers($joueur->getDivers());
-            $licencie->setIndiv($joueur->getIndiv());
-            $licencie->setMail($joueur->getMail());
-            $licencie->setNom($joueur->getNom());
-            $licencie->setNomPhoto($joueur->getNomPhoto());
-            $licencie->setNumLicence($joueur->getNumLicence());
-            $licencie->setPrenom($joueur->getPrenom());
-            $licencie->setTelephone($joueur->getTelephone());
-            $licencie->setVille($joueur->getVille());
+            // mappage de l entite joueur vers objet licencier
+            $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo, $roleRepo);
             
             $this->licencies[]=$licencie;
         }
@@ -106,21 +76,15 @@ class JoueursParamController extends AbstractController
         $role = new Role();
         // recuperation de la liste des roles
         $listeRoles = $roleRepo->findAll();
-
+        // mise a 0 du dernier classement pour eviter enregistrement si classement non modifie
         $this->dernierClassement = 0;
-        
         $classement = new Classement();
-        
-        
-        
-        //dd($colRoles);
         
         if ($id){
             
             $licencie = new Licencie();
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
-            
             
             foreach ($listeRoles as $role){
                 if ($joueur->getRole() == $role){
@@ -129,38 +93,8 @@ class JoueursParamController extends AbstractController
                 
             }
             
-            // recuperation de la liste des classements pour le joueur
-            $listeClassements = $classementRepo->findByIdJoueur($id);
-            If ($listeClassements){
-                $licencie->setClassement($listeClassements[0]->getPoints());
-                $this->dernierClassement = $listeClassements[0]->getPoints();
-            }
-            else{
-                $licencie->setClassement("500");
-            }
-            $licencie->setAdresse($joueur->getAdresse());
-            $licencie->setBureau($joueur->getBureau());
-            $licencie->setCertificat($joueur->getCertificat());
-            $licencie->setContactNom($joueur->getContactNom());
-            $licencie->setContactPrenom($joueur->getContactPrenom());
-            $licencie->setContactTel($joueur->getContactTel());
-            $licencie->setCotisation($joueur->getCotisation());
-            $licencie->setCp($joueur->getCp());
-            $dateCertif = $joueur->getDateCertificat()->format('d/m/Y');
-            $licencie->setDateCertificat($joueur->getDateCertificat());
-            $dateNaissance = $joueur->getDateNaissance()->format('d/m/Y');
-            $licencie->setDateNaissance($joueur->getDateNaissance());
-            $licencie->setDivers($joueur->getDivers());
-            $licencie->setIndiv($joueur->getIndiv());
-            $licencie->setMail($joueur->getMail());
-            $licencie->setNom($joueur->getNom());
-            $licencie->setNomPhoto($joueur->getNomPhoto());
-            $licencie->setNumLicence($joueur->getNumLicence());
-            $licencie->setPrenom($joueur->getPrenom());
-            $licencie->setTelephone($joueur->getTelephone());
-            $licencie->setVille($joueur->getVille());
-           
-            //dd($licencie);
+            $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo, $roleRepo);
+;
             $form = $this->createForm(LicencieType::class,$licencie);
           // dd($form);
            $form->handleRequest($request);
@@ -224,6 +158,42 @@ class JoueursParamController extends AbstractController
             'joueur' => $licencie,
             'jouer' => $joueur
         ]);
+    }
+    
+    public function mapperJoueurLicencie(Joueurs $joueur,ClassementRepository $classementRepo, RoleRepository $roleRepo):Licencie {
+       $licencier = new Licencie();
+       
+       // recuperation de la liste des classements pour le joueur
+       $listeClassements = $classementRepo->findByIdJoueur($joueur->getId());
+       If ($listeClassements){
+           $licencier->setClassement($listeClassements[0]->getPoints());
+           $this->dernierClassement = $listeClassements[0]->getPoints();
+       }
+       else{
+           $licencier->setClassement("500");
+       }
+       $licencier->setId($joueur->getId());
+       $licencier->setAdresse($joueur->getAdresse());
+       $licencier->setBureau($joueur->getBureau());
+       $licencier->setCertificat($joueur->getCertificat());
+       $licencier->setContactNom($joueur->getContactNom());
+       $licencier->setContactPrenom($joueur->getContactPrenom());
+       $licencier->setContactTel($joueur->getContactTel());
+       $licencier->setCotisation($joueur->getCotisation());
+       $licencier->setCp($joueur->getCp());
+       $licencier->setDateCertificat($joueur->getDateCertificat());
+       $licencier->setDateNaissance($joueur->getDateNaissance());
+       $licencier->setDivers($joueur->getDivers());
+       $licencier->setIndiv($joueur->getIndiv());
+       $licencier->setMail($joueur->getMail());
+       $licencier->setNom($joueur->getNom());
+       $licencier->setNomPhoto($joueur->getNomPhoto());
+       $licencier->setNumLicence($joueur->getNumLicence());
+       $licencier->setPrenom($joueur->getPrenom());
+       $licencier->setTelephone($joueur->getTelephone());
+       $licencier->setVille($joueur->getVille());
+       
+       return $licencier;
     }
 
     
