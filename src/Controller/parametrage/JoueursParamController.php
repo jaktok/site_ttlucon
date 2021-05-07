@@ -20,29 +20,77 @@ class JoueursParamController extends AbstractController
 {
     
     private $dernierClassement; 
+    private $licencies; 
     
     /**
      * @Route("/joueurs/param", name="joueurs_param")
      */
-    public function index(Request $request, JoueursRepository $joueursRepo): Response
+    public function index(Request $request,ClassementRepository $classementRepo, RoleRepository $roleRepo, JoueursRepository $joueursRepo): Response
     {
         $joueurs = new Joueurs();
+        
+        
+        $role = new Role();
+        // recuperation de la liste des roles
+        $listeRoles = $roleRepo->findAll();
         
         // recuperation de tous les enregistrements infoclub
         $listeJoueurs = $joueursRepo->findAll();
         // recuperation du resultat dans un tableau infclub a passer a la vue
-    /*    foreach($listeJoueurs as $joueur)
+        foreach($listeJoueurs as $player)
         {
-            $infClub[$infosClub->getId()][$infosClub->getLibelle()] = $infosClub->getContenu();
-        }*/
+            $licencie = new Licencie();
+            $joueur = new Joueurs();
+            $joueur = $player;
+            
+            foreach ($listeRoles as $role){
+                if ($joueur->getRole() == $role){
+                    $joueur->setRole($role);
+                }
+                
+            }
+            
+            // recuperation de la liste des classements pour le joueur
+            $listeClassements = $classementRepo->findByIdJoueur($player->getId());
+            If ($listeClassements){
+                $licencie->setClassement($listeClassements[0]->getPoints());
+                $this->dernierClassement = $listeClassements[0]->getPoints();
+            }
+            else{
+                $licencie->setClassement("500");
+            }
+            $licencie->setAdresse($joueur->getAdresse());
+            $licencie->setBureau($joueur->getBureau());
+            $licencie->setCertificat($joueur->getCertificat());
+            $licencie->setContactNom($joueur->getContactNom());
+            $licencie->setContactPrenom($joueur->getContactPrenom());
+            $licencie->setContactTel($joueur->getContactTel());
+            $licencie->setCotisation($joueur->getCotisation());
+            $licencie->setCp($joueur->getCp());
+            $dateCertif = $joueur->getDateCertificat()->format('d/m/Y');
+            $licencie->setDateCertificat($joueur->getDateCertificat());
+            $dateNaissance = $joueur->getDateNaissance()->format('d/m/Y');
+            $licencie->setDateNaissance($joueur->getDateNaissance());
+            $licencie->setDivers($joueur->getDivers());
+            $licencie->setIndiv($joueur->getIndiv());
+            $licencie->setMail($joueur->getMail());
+            $licencie->setNom($joueur->getNom());
+            $licencie->setNomPhoto($joueur->getNomPhoto());
+            $licencie->setNumLicence($joueur->getNumLicence());
+            $licencie->setPrenom($joueur->getPrenom());
+            $licencie->setTelephone($joueur->getTelephone());
+            $licencie->setVille($joueur->getVille());
+            
+            $this->licencies[]=$licencie;
+        }
         
-        $form = $this->createFormBuilder($joueurs)
+        $form = $this->createFormBuilder($this->licencies)
         ->getForm();
         
-        
+        //dd( $this->licencies);
         return $this->render('parametrage/joueurs_param/joueurs_param.html.twig', [
             'formJoueurs' => $form->createView(),
-            'joueurs' => $listeJoueurs,
+            'joueurs' => $this->licencies,
         ]);
     }
     

@@ -21,6 +21,10 @@ endblock %}
           <tr>
             <th>Nom</th>
             <th>Prénom</th>
+            <th>telephone</th>
+            <th>Licence</th>
+            <th>Certif</th>
+            <th>Cotis.</th>
             <th>Classement</th>
             <th>Modification</th>
           </tr>
@@ -31,7 +35,11 @@ endblock %}
           <tr>
            	<td>{{ joueur.nom }}</td>
            	<td>{{ joueur.prenom }}</td>
-           	<td>{{ joueur.prenom }}</td>
+           	<td>{{ joueur.telephone }}</td>
+           	<td>{{ joueur.numLicence }}</td>
+           	<td>{{ joueur.certificat }}</td>
+           	<td>{{ joueur.cotisation }}</td>
+           	<td>{{ joueur.classement }}</td>
              <td><a href="/joueur/param/modifier/{{ joueur.id}}" class="btn btn-primary">Modifier</a></td>
           </tr>
         {% endfor %}
