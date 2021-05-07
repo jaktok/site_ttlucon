@@ -59,6 +59,7 @@ class JoueursParamController extends AbstractController
             else{
                 $licencie->setClassement("500");
             }
+            $licencie->setId($joueur->getId());
             $licencie->setAdresse($joueur->getAdresse());
             $licencie->setBureau($joueur->getBureau());
             $licencie->setCertificat($joueur->getCertificat());
