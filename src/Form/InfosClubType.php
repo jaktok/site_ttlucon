@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class InfosClubType extends AbstractType
 {
@@ -14,7 +15,7 @@ class InfosClubType extends AbstractType
     {
         $builder
         ->add('libelle', TextType::class, array ('attr' => array ('readonly' => true)))
-        ->add('contenu', TextType::class)
+        ->add('contenu', TextareaType::class)
         ;
     }
 
