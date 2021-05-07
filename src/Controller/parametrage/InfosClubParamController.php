@@ -13,7 +13,7 @@ use App\Form\InfosClubType;
 class InfosClubParamController extends AbstractController
 {
     /**
-     * @Route("/infos/club/param", name="infos_club_param")
+     * @Route("/param/infos/club/", name="infos_club_param")
      */
     public function index(Request $request, InfosClubRepository $infosClubRepo): Response
     {
@@ -38,7 +38,7 @@ class InfosClubParamController extends AbstractController
     }
     
     /**
-     * @Route("/infos/club/param/gerer/{id}", name="infos_club_param_gerer")
+     * @Route("/param/infos/club/gerer/{id}", name="infos_club_param_gerer")
      * 
      */
     public function gerer(Request $request, InfosClubRepository $infosClubRepo,int $id): Response

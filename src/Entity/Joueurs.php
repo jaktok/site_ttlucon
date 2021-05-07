@@ -159,6 +159,11 @@ class Joueurs
      */
     private $role;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Users::class, mappedBy="joueur", cascade={"persist", "remove"})
+     */
+    private $users;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -631,6 +636,28 @@ class Joueurs
     public function setRole(?Role $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($users === null && $this->users !== null) {
+            $this->users->setJoueur(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($users !== null && $users->getJoueur() !== $this) {
+            $users->setJoueur($this);
+        }
+
+        $this->users = $users;
 
         return $this;
     }

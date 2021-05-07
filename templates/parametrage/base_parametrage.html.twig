@@ -34,20 +34,25 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 			<!-- <ul class="navbar-nav mr-auto"> -->
 			<ul class="nav justify-content-center">
 	
-				<li class="nav-item"><a class="nav-link" href="/index/param">Accueil</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/index">Accueil</a></li>
 	
-				<li class="nav-item"><a class="nav-link" href="/joueurs/param">Joueurs</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/joueurs">Joueurs</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="/equipes/param">Equipes</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/equipes">Equipes</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="/competition/param">Autres compétitions</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/competition">Autres compétitions</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="/resultat/param">Résultats</a>	</li>
+				<li class="nav-item"><a class="nav-link" href="/param/resultat">Résultats</a>	</li>
 
-				<li class="nav-item"><a class="nav-link" href="/infos/club/param">Infos club</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/infos/club">Infos club</a></li>
 				
-				<li class="nav-item"><a class="nav-link" href="/entrainement/param">Entraînements</a></li>
+				<li class="nav-item"><a class="nav-link" href="/param/entrainement">Entraînements</a></li>
 
+				<li class="nav-item"><a class="nav-link" href="/logout">Deconnexion</a></li>
+
+				{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item"><a class="nav-link" href="/admin">Créer user</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</nav>
