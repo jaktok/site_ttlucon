@@ -23,7 +23,7 @@ class JoueursParamController extends AbstractController
     private $licencies; 
     
     /**
-     * @Route("/joueurs/param", name="joueurs_param")
+     * @Route("/dirigeant/param/joueurs", name="joueurs_param")
      */
     public function index(Request $request,ClassementRepository $classementRepo, RoleRepository $roleRepo, JoueursRepository $joueursRepo): Response
     {
