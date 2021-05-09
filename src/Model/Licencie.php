@@ -32,31 +32,6 @@ class Licencie
     private $role;
 
     
-   /* public function __construct(string $id, string $nom, string $prenom, string $mail, string $telephone, string $adresse, string $cp, string $ville, bool $certificat, bool $cotisation, string $divers, bool $bureau, string $num_licence, \DateTimeInterface $date_naissance, string $nom_photo, \DateTimeInterface $date_certificat, bool $indiv, string $contact_nom, string $contact_prenom, string $contact_tel, string $classement, int $role ) {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->mail = $mail;
-        $this->telephone = $telephone;
-        $this->adresse = $adresse;
-        $this->cp = $cp;
-        $this->ville = $ville;
-        $this->certificat = $certificat;
-        $this->cotisation = $cotisation;
-        $this->divers = $divers;
-        $this->bureau = $bureau;
-        $this->num_licence = $num_licence;
-        $this->date_naissance = $date_naissance;
-        $this->nom_photo = $nom_photo;
-        $this->date_certificat = $date_certificat;
-        $this->indiv = $indiv;
-        $this->contact_nom = $contact_nom;
-        $this->contact_prenom = $contact_prenom;
-        $this->contact_tel = $contact_tel;
-        $this->classement = $classement;
-        $this->role = $role;
-    }*/
-    
 
     public function getId(): ?int
     {
