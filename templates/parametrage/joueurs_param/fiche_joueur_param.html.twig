@@ -92,7 +92,11 @@ jQuery(document).ready(function() {
 			{{ form_row(formJoueur.nom_photo) }}
 		</div>
 		<div class="col-sm-2">
-			{{ form_row(formJoueur.role) }}
+		 {% if libCategorie is defined %}
+		 	{{ libCategorie }}
+		  {{ form_row (formJoueur.categories) }}	 
+		 {% endif %}
+		
 		</div>	
 	</div>	
 	<div class="row">

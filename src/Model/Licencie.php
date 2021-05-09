@@ -4,7 +4,7 @@ namespace App\Model;
 
 
 use App\Entity\Classement;
-use App\Entity\Role;
+use App\Entity\Categories;
 
 class Licencie
 {
@@ -29,7 +29,7 @@ class Licencie
     private $contact_prenom;
     private $contact_tel;
     private $classement;
-    private $role;
+    private $categories;
 
     
 
@@ -304,17 +304,17 @@ class Licencie
     /**
      * @return mixed
      */
-    public function getRole()
+    public function getCategories()
     {
-        return $this->role;
+        return $this->categories;
     }
 
     /**
-     * @param mixed $role
+     * @param mixed $categories
      */
-    public function setRole($role)
+    public function setCategories($categories)
     {
-        $this->role = $role;
+        $this->categories = $categories;
     }
     /**
      * @param mixed $id

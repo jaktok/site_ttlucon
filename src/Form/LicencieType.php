@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Categories;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\CategoriesRepository;
 
 class LicencieType extends AbstractType
 {
@@ -57,16 +59,13 @@ class LicencieType extends AbstractType
         ->add('contact_prenom')
         ->add('contact_tel')
         ->add('classement')
-        ->add('role',ChoiceType::class, [
-            'choices' => [
-                'Administrateur' => 1,
-                'Dirigeant'  => 2,
-                'Capitaine'  => 3,
-                'Redacteur'  => 4,
-                'Joueur'  => 5,
-            ],
-
-            ]);
+        ->add('categories',EntityType::class, array(
+            'class' => 'App\Entity\Categories',
+            'label' => 'Categorie : ',
+            'choice_label' => function ($user) {
+            return $user->getLibelle();
+            },
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

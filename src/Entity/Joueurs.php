@@ -6,6 +6,7 @@ use App\Repository\JoueursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Categories;
 
 /**
  * @ORM\Entity(repositoryClass=JoueursRepository::class)
@@ -135,7 +136,7 @@ class Joueurs
     private $equipeRencontres;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Categories::class, mappedBy="joueur")
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="joueur", cascade={"persist", "remove"})
      */
     private $categories;
 
@@ -154,17 +155,12 @@ class Joueurs
      */
     private $articles;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="joueur")
-     */
-    private $role;
 
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
         $this->equipeTypes = new ArrayCollection();
         $this->equipeRencontres = new ArrayCollection();
-        $this->categories = new ArrayCollection();
         $this->classements = new ArrayCollection();
         $this->matchs = new ArrayCollection();
         $this->articles = new ArrayCollection();
@@ -507,33 +503,6 @@ class Joueurs
     }
 
     /**
-     * @return Collection|Categories[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categories $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addJoueur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categories $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeJoueur($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Classement[]
      */
     public function getClassements(): Collection
@@ -623,15 +592,15 @@ class Joueurs
         return $this;
     }
 
-    public function getRole(): ?Role
+    public function getCategories(): Categories
     {
-        return $this->role;
+        return $this->categories;
+    }
+    
+    
+    public function setCategories(Categories $categories)
+    {
+        $this->categories = $categories;
     }
 
-    public function setRole(?Role $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
 }

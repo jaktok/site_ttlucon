@@ -10,11 +10,11 @@ use App\Repository\JoueursRepository;
 use App\Entity\Joueurs;
 use App\Form\LicencieType;
 use App\Model\Licencie;
-use App\Entity\Role;
-use App\Repository\RoleRepository;
 use App\Repository\ClassementRepository;
 use App\Entity\Classement;
 use Symfony\Component\Validator\Constraints\IsNull;
+use App\Repository\CategoriesRepository;
+use App\Entity\Categories;
 
 class JoueursParamController extends AbstractController
 {
@@ -25,14 +25,14 @@ class JoueursParamController extends AbstractController
     /**
      * @Route("/joueurs/param", name="joueurs_param")
      */
-    public function index(Request $request,ClassementRepository $classementRepo, RoleRepository $roleRepo, JoueursRepository $joueursRepo): Response
+    public function index(Request $request,ClassementRepository $classementRepo, CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo): Response
     {
         $joueurs = new Joueurs();
         
         
-        $role = new Role();
-        // recuperation de la liste des roles
-        $listeRoles = $roleRepo->findAll();
+        $categorie = new Categories();
+        // recuperation de la liste des categories
+        $listeCategories = $categoriesRepo->findAll();
         
         // recuperation de tous les joueurs
         $listeJoueurs = $joueursRepo->findAll();
@@ -42,15 +42,14 @@ class JoueursParamController extends AbstractController
             $licencie = new Licencie();
             $joueur = new Joueurs();
             $joueur = $player;
-            
-            foreach ($listeRoles as $role){
-                if ($joueur->getRole() == $role){
-                    $joueur->setRole($role);
+            foreach ($listeCategories as $categ){
+                if ($joueur->getCategories() == $categ){
+                    $joueur->setCategories($categ);
                 }
                 
             }
             // mappage de l entite joueur vers objet licencier
-            $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo, $roleRepo);
+            $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
             
             $this->licencies[]=$licencie;
         }
@@ -70,32 +69,32 @@ class JoueursParamController extends AbstractController
      * @Route("/joueur/param/modifier/{id}", name="joueur_param_modif")
      *
      */
-    public function gerer(Request $request,ClassementRepository $classementRepo, RoleRepository $roleRepo, JoueursRepository $joueursRepo, int $id = null): Response
+    public function gerer(Request $request,ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
     {
         
-        $role = new Role();
-        // recuperation de la liste des roles
-        $listeRoles = $roleRepo->findAll();
+        // recuperation de la liste des categories
+        $listeCategories = $categoriesRepo->findAll();
         // mise a 0 du dernier classement pour eviter enregistrement si classement non modifie
         $this->dernierClassement = 0;
         $classement = new Classement();
         
         if ($id){
             
-            $licencie = new Licencie();
+            $this->licencie = new Licencie();
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
             
-            foreach ($listeRoles as $role){
-                if ($joueur->getRole() == $role){
-                    $joueur->setRole($role);
+            foreach ($listeCategories as $categ){
+                if ($joueur->getCategories() == $categ){
+                    if ($joueur->getCategories() == $categ){
+                        $joueur->setCategories($categ);
+                        $this->licencie->setCategories($categ);
+                        $libCategorie = $categ->getLibelle();
+                    }
                 }
-                
             }
-            
-            $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo, $roleRepo);
-;
-            $form = $this->createForm(LicencieType::class,$licencie);
+            $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
+            $form = $this->createForm(LicencieType::class,$this->licencie);
           // dd($form);
            $form->handleRequest($request);
         }
@@ -106,43 +105,39 @@ class JoueursParamController extends AbstractController
         }
        
         if($form->isSubmitted() && $form->isValid()){
-           // dd($licencie->getRole());
-            $joueur->setAdresse($licencie->getAdresse());
-            $joueur->setBureau($licencie->getBureau());
-            $joueur->setCertificat($licencie->getCertificat());
-            $joueur->setContactNom($licencie->getContactNom());
-            $joueur->setContactPrenom($licencie->getContactPrenom());
-            $joueur->setContactTel($licencie->getContactTel());
-            $joueur->setCotisation($licencie->getCotisation());
-            $joueur->setCp($licencie->getCp());
-            $dateCertif = $licencie->getDateCertificat()->format('d/m/Y');
-            $joueur->setDateCertificat($licencie->getDateCertificat());
-            $dateNaissance = $licencie->getDateNaissance()->format('d/m/Y');
-            $joueur->setDateNaissance($licencie->getDateNaissance());
-            $joueur->setDivers($licencie->getDivers());
-            $joueur->setIndiv($licencie->getIndiv());
-            $joueur->setMail($licencie->getMail());
-            $joueur->setNom($licencie->getNom());
-            $joueur->setNomPhoto($licencie->getNomPhoto());
-            $joueur->setNumLicence($licencie->getNumLicence());
-            $joueur->setPrenom($licencie->getPrenom());
+            $joueur->setAdresse($this->licencie->getAdresse());
+            $joueur->setBureau($this->licencie->getBureau());
+            $joueur->setCertificat($this->licencie->getCertificat());
+            $joueur->setContactNom($this->licencie->getContactNom());
+            $joueur->setContactPrenom($this->licencie->getContactPrenom());
+            $joueur->setContactTel($this->licencie->getContactTel());
+            $joueur->setCotisation($this->licencie->getCotisation());
+            $joueur->setCp($this->licencie->getCp());
+            $joueur->setDateCertificat($this->licencie->getDateCertificat());
+            $joueur->setDateNaissance($this->licencie->getDateNaissance());
+            $joueur->setDivers($this->licencie->getDivers());
+            $joueur->setIndiv($this->licencie->getIndiv());
+            $joueur->setMail($this->licencie->getMail());
+            $joueur->setNom($this->licencie->getNom());
+            $joueur->setNomPhoto($this->licencie->getNomPhoto());
+            $joueur->setNumLicence($this->licencie->getNumLicence());
+            $joueur->setPrenom($this->licencie->getPrenom());
             
-            foreach ($listeRoles as $role){
-                if ($licencie->getRole() == $role->getId()){
-                    $joueur->setRole($role);
+            foreach ($listeCategories as $categ){
+                if ($this->licencie->getCategories() == $categ){
+                    $joueur->setCategories($categ);
                 }
             }
             
-            //$joueur->setRole($licencie->getRole());
-            $joueur->setTelephone($licencie->getTelephone());
-            $joueur->setVille($licencie->getVille());
+            $joueur->setTelephone($this->licencie->getTelephone());
+            $joueur->setVille($this->licencie->getVille());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($joueur);
             $entityManager->flush();
             
-            if ($this->dernierClassement == 0 || $this->dernierClassement != $licencie->getClassement() ){
+            if ($this->dernierClassement == 0 || $this->dernierClassement != $this->licencie->getClassement() ){
                 $classement->setJoueur($joueur);
-                $classement->setPoints($licencie->getClassement());
+                $classement->setPoints($this->licencie->getClassement());
                 $classement->setDate(new \DateTime());
                 $entityManager->persist($classement);
                 $entityManager->flush();
@@ -155,12 +150,14 @@ class JoueursParamController extends AbstractController
         
         return $this->render('parametrage/joueurs_param/fiche_joueur_param.html.twig', [
             'formJoueur' => $form->createView(),
-            'joueur' => $licencie,
-            'jouer' => $joueur
+            'joueur' => $this->licencie,
+            'jouer' => $joueur,
+            'libCategorie' => $libCategorie,
+            'categorie' => $this->licencie->getCategories()
         ]);
     }
     
-    public function mapperJoueurLicencie(Joueurs $joueur,ClassementRepository $classementRepo, RoleRepository $roleRepo):Licencie {
+    public function mapperJoueurLicencie(Joueurs $joueur,ClassementRepository $classementRepo):Licencie {
        $licencier = new Licencie();
        
        // recuperation de la liste des classements pour le joueur
