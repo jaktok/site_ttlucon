@@ -42,15 +42,17 @@ class JoueursParamController extends AbstractController
             $licencie = new Licencie();
             $joueur = new Joueurs();
             $joueur = $player;
+            $libCat;
             foreach ($listeCategories as $categ){
                 if ($joueur->getCategories() == $categ){
                     $joueur->setCategories($categ);
+                    $libCat = $categ->getLibelle();
                 }
                 
             }
             // mappage de l entite joueur vers objet licencier
             $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
-            
+            $licencie->setLibelleCat($libCat);
             $this->licencies[]=$licencie;
         }
         
@@ -84,6 +86,8 @@ class JoueursParamController extends AbstractController
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
             
+            $libCategorie;
+            
             foreach ($listeCategories as $categ){
                 if ($joueur->getCategories() == $categ){
                     if ($joueur->getCategories() == $categ){
@@ -94,6 +98,7 @@ class JoueursParamController extends AbstractController
                 }
             }
             $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
+            $this->licencie->setLibelleCat($libCategorie);
             $form = $this->createForm(LicencieType::class,$this->licencie);
           // dd($form);
            $form->handleRequest($request);

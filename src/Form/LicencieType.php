@@ -13,9 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Categories;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Repository\CategoriesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class LicencieType extends AbstractType
 {
+    
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -68,6 +71,8 @@ class LicencieType extends AbstractType
             ));
     }
 
+    
+    
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

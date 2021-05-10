@@ -30,6 +30,8 @@ class Licencie
     private $contact_tel;
     private $classement;
     private $categories;
+    private $libelleCat;
+    
 
     
 
@@ -323,6 +325,22 @@ class Licencie
     {
         $this->id = $id;
     }
+    /**
+     * @return mixed
+     */
+    public function getLibelleCat()
+    {
+        return $this->libelleCat;
+    }
+
+    /**
+     * @param mixed $libelleCat
+     */
+    public function setLibelleCat($libelleCat)
+    {
+        $this->libelleCat = $libelleCat;
+    }
+
 
 
     

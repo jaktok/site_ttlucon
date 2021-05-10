@@ -92,9 +92,12 @@ jQuery(document).ready(function() {
 			{{ form_row(formJoueur.nom_photo) }}
 		</div>
 		<div class="col-sm-2">
-		 {% if libCategorie is defined %}
-		 	{{ libCategorie }}
-		  {{ form_row (formJoueur.categories) }}	 
+	 {% if libCategorie is defined %}
+	
+		 {{ form_label (formJoueur.categories) }}
+		 ( {{ libCategorie }} )
+		  {% set catplaceholder = libCategorie|trans %}
+		{{ form_widget(formJoueur.categories, {'attr': {'placeholder': 'libCategorie'|trans}}) }}
 		 {% endif %}
 		
 		</div>	
