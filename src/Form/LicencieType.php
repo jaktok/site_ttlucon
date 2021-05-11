@@ -14,6 +14,7 @@ use App\Entity\Categories;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class LicencieType extends AbstractType
 {
@@ -47,7 +48,12 @@ class LicencieType extends AbstractType
             'format' => 'dd/MM/yyyy',
             'html5'  => false
           ])
-        ->add('nom_photo')
+        ->add('nom_photo',FileType::class,[
+            'label' => 'Photo',
+            'multiple' => false,
+            'mapped' => false,
+            'required' => false
+        ])
         ->add('date_certificat',DateTimeType::class,[
             'widget' => 'single_text',
             'attr' => ['class' => 'js-datepicker'],

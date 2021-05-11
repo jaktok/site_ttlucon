@@ -36,15 +36,15 @@ class FichiersRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Fichiers
-    {
+    
+    public function findOneByJoueur($value): ?Fichiers
+    {//dd($value);
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
+            ->andWhere('f.joueur= :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
 }

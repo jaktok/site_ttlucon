@@ -33,7 +33,7 @@ class Fichiers
     private $format;
 
     /**
-     * @ORM\OneToOne(targetEntity=Joueurs::class, inversedBy="photo", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Joueurs::class, inversedBy="photo")
      */
     private $joueur;
 

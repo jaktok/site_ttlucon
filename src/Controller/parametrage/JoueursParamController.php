@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Constraints\IsNull;
 use App\Repository\CategoriesRepository;
 use App\Entity\Categories;
 use phpDocumentor\Reflection\Types\String_;
+use App\Entity\Fichiers;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Repository\FichiersRepository;
 
 class JoueursParamController extends AbstractController
 {
@@ -28,10 +31,7 @@ class JoueursParamController extends AbstractController
      */
     public function index(Request $request,ClassementRepository $classementRepo, CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo): Response
     {
-        $joueurs = new Joueurs();
         
-        
-        $categorie = new Categories();
         // recuperation de la liste des categories
         $listeCategories = $categoriesRepo->findAll();
         
@@ -60,7 +60,6 @@ class JoueursParamController extends AbstractController
         $form = $this->createFormBuilder($this->licencies)
         ->getForm();
         
-        //dd( $this->licencies);
         return $this->render('parametrage/joueurs_param/joueurs_param.html.twig', [
             'formJoueurs' => $form->createView(),
             'joueurs' => $this->licencies,
@@ -72,7 +71,7 @@ class JoueursParamController extends AbstractController
      * @Route("/joueur/param/modifier/{id}", name="joueur_param_modif")
      *
      */
-    public function gerer(Request $request,ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
+    public function gerer(Request $request,FichiersRepository $fichierRepo,  ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
     {
         
         // recuperation de la liste des categories
@@ -84,7 +83,6 @@ class JoueursParamController extends AbstractController
         $libCategorie = new String_();
         
         if ($id){
-            
             
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
@@ -100,7 +98,6 @@ class JoueursParamController extends AbstractController
             $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
             $this->licencie->setLibelleCat($libCategorie);
             $form = $this->createForm(LicencieType::class,$this->licencie);
-          // dd($form);
            $form->handleRequest($request);
         }
         else{
@@ -110,7 +107,28 @@ class JoueursParamController extends AbstractController
         }
        
         if($form->isSubmitted() && $form->isValid()){
-           // dd($joueur);
+           $images = $form->get('nom_photo')->getData();
+           if ($images){
+               $fichier = $this->licencie->getNom().$this->licencie->getPrenom().'.'.$images->guessExtension();
+               // On copie le fichier dans le dossier uploads
+               $images->move(
+                        $this->getParameter('images_destination'),
+                        $fichier
+                        );
+           }
+           $img = new Fichiers();
+           $entityManager = $this->getDoctrine()->getManager();
+           if ($joueur->getId()!=null){
+            $img = $fichierRepo->findOneByJoueur($joueur->getId());
+           }
+
+           if ($images && $img!=null) {
+               $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+               $image->setNom($fichier);
+               $image->setUrl($this->getParameter('images_destination'));
+               $entityManager->flush();
+           }
+           
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
             $joueur->setCertificat($this->licencie->getCertificat());
@@ -141,6 +159,17 @@ class JoueursParamController extends AbstractController
             $entityManager->persist($joueur);
             $entityManager->flush();
             
+            if ($img==null && isset($fichier)) {
+                // On crée l'image dans la base de données
+                $img = new Fichiers();
+                $img->setNom($fichier);
+                $img->setJoueur($joueur);
+                $img->setUrl($this->getParameter('images_destination'));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($img);
+                $entityManager->flush();
+            }
+            
             if ($this->dernierClassement == 0 || $this->dernierClassement != $this->licencie->getClassement() ){
                 $classement->setJoueur($joueur);
                 $classement->setPoints($this->licencie->getClassement());
@@ -153,13 +182,18 @@ class JoueursParamController extends AbstractController
             return $this->redirectToRoute('joueurs_param');
         }
 
+        $nmPhoto = new String_();
+        if($joueur->getPhoto()!=null){
+            $nmPhoto = $joueur->getPhoto()->getNom();
+        }
         
         return $this->render('parametrage/joueurs_param/fiche_joueur_param.html.twig', [
             'formJoueur' => $form->createView(),
             'joueur' => $this->licencie,
             'jouer' => $joueur,
             'libCategorie' => $libCategorie,
-            'categorie' => $this->licencie->getCategories()
+            'categorie' => $this->licencie->getCategories(),
+            'nomPhoto' => $nmPhoto
         ]);
     }
     
@@ -195,9 +229,55 @@ class JoueursParamController extends AbstractController
        $licencier->setPrenom($joueur->getPrenom());
        $licencier->setTelephone($joueur->getTelephone());
        $licencier->setVille($joueur->getVille());
+       if($joueur->getPhoto()!=null){
+            $licencier->setNomPhoto($joueur->getPhoto()->getNom());
+            $licencier->setPhoto($joueur->getPhoto()->getNom());
+       }
+       //dd($joueur->getPhoto()->getNom());
        
        return $licencier;
     }
-
+    
+    /**
+     * @Route("/supprime/image/{id}", name="supprime_image")
+     */
+    public function supprimeImage(Request $request,FichiersRepository $fichierRepo, int $id = null): Response{
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $img = $fichierRepo->findOneByJoueur($id);
+        
+        $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+        
+        if ($image) {
+            // On supprimer l image
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($image);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('joueurs_param');
+        
+    }
+    
+    
+    /**
+     * @Route("/supprime/joueur/{id}", name="supprime_joueur")
+     */
+    public function supprimeJoueur(Request $request,FichiersRepository $fichierRepo,  ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $img = $fichierRepo->findOneByJoueur($id);
+        
+        $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+        
+        if ($image) {
+            // On supprimer l image
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($image);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('joueurs_param');
+        
+    }
     
 }
