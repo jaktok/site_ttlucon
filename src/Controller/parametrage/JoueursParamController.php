@@ -15,6 +15,7 @@ use App\Entity\Classement;
 use Symfony\Component\Validator\Constraints\IsNull;
 use App\Repository\CategoriesRepository;
 use App\Entity\Categories;
+use phpDocumentor\Reflection\Types\String_;
 
 class JoueursParamController extends AbstractController
 {
@@ -79,15 +80,14 @@ class JoueursParamController extends AbstractController
         // mise a 0 du dernier classement pour eviter enregistrement si classement non modifie
         $this->dernierClassement = 0;
         $classement = new Classement();
+        $this->licencie = new Licencie();
+        $libCategorie = new String_();
         
         if ($id){
             
-            $this->licencie = new Licencie();
+            
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
-            
-            $libCategorie;
-            
             foreach ($listeCategories as $categ){
                 if ($joueur->getCategories() == $categ){
                     if ($joueur->getCategories() == $categ){
@@ -105,11 +105,12 @@ class JoueursParamController extends AbstractController
         }
         else{
             $joueur = new Joueurs();
-            $form = $this->createForm(LicencieType::class,($licencie = new Licencie()));
+            $form = $this->createForm(LicencieType::class,($this->licencie = new Licencie()));
             $form->handleRequest($request);
         }
        
         if($form->isSubmitted() && $form->isValid()){
+           // dd($joueur);
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
             $joueur->setCertificat($this->licencie->getCertificat());
