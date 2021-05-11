@@ -21,13 +21,13 @@ endblock %}
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
-            <th>Nom</th>
+            <th data-sortable="true">Nom</th>
             <th>Prénom</th>
             <th>telephone</th>
             <th>Licence</th>
-            <th>Catégorie</th>
-            <th>Certif</th>
-            <th>Cotis.</th>
+            <th data-sortable="true">Catégorie</th>
+            <th data-sortable="true">Certif</th>
+            <th data-sortable="true">Cotis.</th>
             <th>Classement</th>
             <th>Modification</th>
           </tr>
@@ -41,8 +41,16 @@ endblock %}
            	<td>{{ joueur.telephone }}</td>
            	<td>{{ joueur.numLicence }}</td>
            	<td>{{ joueur.libelleCat }}</td>
-           	<td>{{ joueur.certificat }}</td>
-           	<td>{{ joueur.cotisation }}</td>
+           	{% if joueur.certificat == 1  %}
+           		<td>oui</td>
+           	{% else %}
+           			<td>non</td>
+           	{% endif %}
+           	{% if joueur.cotisation == 1  %}
+           		<td>oui</td>
+           	{% else %}
+           			<td>non</td>
+           	{% endif %}
            	<td>{{ joueur.classement }}</td>
              <td><a href="/joueur/param/modifier/{{ joueur.id}}" class="btn btn-primary">Modifier</a></td>
           </tr>
