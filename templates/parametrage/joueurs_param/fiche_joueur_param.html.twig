@@ -136,30 +136,27 @@ jQuery(document).ready(function() {
 		</div>
 	</div>
 <br>	
-	<div class="row">
+	<div class="row border border-primary"  >
 		<div class="col-sm-4">
-			{{ form_row(formJoueur.nom_photo) }}
+			<div class="row">
+				<div class="col-sm-4">
+					{{ form_row(formJoueur.nom_photo) }}
+				</div>
+			</div>
+			<br><br><br>
+			<div class="row">
+				<div class="col-sm-4">
+					<a href="{{ path('supprime_image', { 'id': joueur.id})}}"  class="btn btn-primary" aria-current="page" >Effacer</a>
+				</div>
+			</div>
 		</div>
 		<div class="col-sm-4">
-			<img src="{{ asset('/images/'~nomPhoto) }}" alt="" width="150">
-		</div>
-		<div class="col-sm-2">
-		
+			<div class="col-sm-4">
+				<img src="{{ asset('/images/'~nomPhoto) }}" alt="" width="150">
+			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-4">
 		
-		</div>
-		<div class="col-sm-4">
-				<a href="/supprime/image/{{ joueur.id}}"  class="btn btn-primary" aria-current="page" >Effacer</a>
-		</div>
-		<div class="col-sm-2">
-	
- 		</div>
-	</div>
-	
-	
 	
 			<br><br><br>
 	<div class="row">	
@@ -167,7 +164,7 @@ jQuery(document).ready(function() {
 		<button type="submit" class="btn btn-success">Enregistrer</button>
  		</div>
  	<div class="col-sm-2">
- 		<a href="/joueurs/param/"  class="btn btn-primary" aria-current="page" >Retour</a>
+ 		<a href="{{ path('joueurs_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
  	</div>
  	</div>
 </div>

@@ -14,8 +14,13 @@ endblock %}
 {{ form_start(formJoueurs) }}
 
    <div class="container">
-   	<div align="left">
- 		<a href="/joueur/param/nouveau/" class="btn btn-primary mb-2" aria-current="page">Créer un joueur</a>
+ <div class="row">	
+   	<div class="col-sm-2">
+ 		<a href="{{ path('joueur_param_nouveau') }}" class="btn btn-primary mb-2" aria-current="page">Créer un joueur</a>
+ 	</div>
+ 	<div class="col-sm-2">
+ 		<a href="{{ path('maj_classements') }}" class="btn btn-success" aria-current="page">Maj classements</a>
+ 	</div>
  	</div>
       <h1>Liste des Joueurs</h1>
       <table class="table table-striped" data-toggle="table" data-pagination="false">
@@ -29,7 +34,8 @@ endblock %}
             <th data-sortable="true">Certif</th>
             <th data-sortable="true">Cotis.</th>
             <th>Classement</th>
-            <th>Modification</th>
+            <th>Modif.</th>
+            <th>Supp.</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +58,8 @@ endblock %}
            			<td>non</td>
            	{% endif %}
            	<td>{{ joueur.classement }}</td>
-             <td><a href="/joueur/param/modifier/{{ joueur.id}}" class="btn btn-primary">Modifier</a></td>
+             <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modifier</a></td>
+             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-primary">Supprimer</a></td>
           </tr>
         {% endfor %}
 		{% endif %}

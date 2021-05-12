@@ -12,20 +12,27 @@ use App\Form\LicencieType;
 use App\Model\Licencie;
 use App\Repository\ClassementRepository;
 use App\Entity\Classement;
-use Symfony\Component\Validator\Constraints\IsNull;
 use App\Repository\CategoriesRepository;
-use App\Entity\Categories;
 use phpDocumentor\Reflection\Types\String_;
 use App\Entity\Fichiers;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\FichiersRepository;
+use FFTTApi\FFTTApi;
 
 class JoueursParamController extends AbstractController
 {
     
     private $dernierClassement; 
     private $licencies; 
+    private $ini_array;
+    private $api;
     
+    
+    public function __construct()
+    {
+        // Recuperation infos config.ini
+        $this->ini_array = parse_ini_file("../config/config.ini");
+        $this->api = new FFTTApi();
+    }
     /**
      * @Route("/joueurs/param", name="joueurs_param")
      */
@@ -179,7 +186,7 @@ class JoueursParamController extends AbstractController
             }
             
             
-            return $this->redirectToRoute('joueurs_param');
+           // return $this->redirectToRoute('joueurs_param');
         }
 
         $nmPhoto = new String_();
@@ -243,18 +250,21 @@ class JoueursParamController extends AbstractController
      */
     public function supprimeImage(Request $request,FichiersRepository $fichierRepo, int $id = null): Response{
         
+        $img = new Fichiers();
         $entityManager = $this->getDoctrine()->getManager();
         $img = $fichierRepo->findOneByJoueur($id);
         
-        $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
-        
-        if ($image) {
-            // On supprimer l image
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($image);
-            $entityManager->flush();
+        if ($img != null){
+            $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+            
+            if ($image) {
+                // On supprimer l image
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($image);
+                $entityManager->flush();
+            }
         }
-        return $this->redirectToRoute('joueurs_param');
+        return $this->redirectToRoute('joueur_param_modif',array('id' => $id));
         
     }
     
@@ -262,22 +272,65 @@ class JoueursParamController extends AbstractController
     /**
      * @Route("/supprime/joueur/{id}", name="supprime_joueur")
      */
-    public function supprimeJoueur(Request $request,FichiersRepository $fichierRepo,  ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
+    public function supprimeJoueur(Request $request, JoueursRepository $joueursRepo,ClassementRepository $classementRepo, int $id = null): Response
     {
         
         $entityManager = $this->getDoctrine()->getManager();
-        $img = $fichierRepo->findOneByJoueur($id);
         
-        $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+        // recuperation de l enregistrements selectionne
+        $joueur = $joueursRepo->find($id);
         
-        if ($image) {
-            // On supprimer l image
+        if ($joueur) {
+            // recuperation de la liste des classements pour le joueur
+            $listeClassements = $classementRepo->findByIdJoueur($joueur->getId());
+           // On supprimer tous les classements
+            If ($listeClassements){
+                foreach ($listeClassements as $classement)
+                    $entityManager->remove($classement);
+                    $entityManager->flush();
+            }
+            // On supprimer le joueur
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($image);
+            $entityManager->remove($joueur);
             $entityManager->flush();
         }
+        
         return $this->redirectToRoute('joueurs_param');
         
     }
+    
+    /**
+     * @Route("/classement/joueur/", name="maj_classements")
+     */
+    public function majClassements(Request $request, JoueursRepository $joueursRepo): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // recup liste joueurs FFTT
+        $joueurByLicence = $this->api->getJoueursByClub($this->ini_array['id_club_lucon']);
+        
+        // recuperation de tous les joueurs
+        $listeJoueurs = $joueursRepo->findAll();
+  
+        $i = 0;
+        foreach($listeJoueurs as $joueur)
+        {
+            foreach($joueurByLicence as $joueurFFTT){
+                if ($joueurFFTT->getLicence()==$joueur->getNumLicence()){
+                    $classement = new Classement();
+                    $classement->setPoints($joueurFFTT->getPoints());
+                    $classement->setDate(new \DateTime());
+                    $classement->setJoueur($joueur);
+                    $entityManager->persist($classement);
+                    $entityManager->flush();
+                    $i++;
+                    break;
+                }
+            }
+        }
+        return $this->redirectToRoute('joueurs_param');
+    }
+    
     
 }

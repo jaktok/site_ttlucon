@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Categories;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=JoueursRepository::class)
@@ -22,11 +23,13 @@ class Joueurs
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull
      */
     private $prenom;
 
@@ -136,7 +139,7 @@ class Joueurs
     private $equipeRencontres;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="joueur", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="joueur")
      */
     private $categories;
 
