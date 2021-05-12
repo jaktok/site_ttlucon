@@ -115,6 +115,7 @@ class JoueursParamController extends AbstractController
        
         if($form->isSubmitted() && $form->isValid()){
            $images = $form->get('nom_photo')->getData();
+          
            if ($images){
                $fichier = $this->licencie->getNom().$this->licencie->getPrenom().'.'.$images->guessExtension();
                // On copie le fichier dans le dossier uploads
@@ -129,7 +130,7 @@ class JoueursParamController extends AbstractController
             $img = $fichierRepo->findOneByJoueur($joueur->getId());
            }
 
-           if ($images && $img!=null) {
+           if ($images && $img!=null&&$img->getId()!=null) {
                $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
                $image->setNom($fichier);
                $image->setUrl($this->getParameter('images_destination'));
@@ -165,8 +166,8 @@ class JoueursParamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($joueur);
             $entityManager->flush();
-            
-            if ($img==null && isset($fichier)) {
+            //dd($img);
+            if (($img==null || $img->getId()==null) && isset($fichier)) {
                 // On crée l'image dans la base de données
                 $img = new Fichiers();
                 $img->setNom($fichier);
@@ -186,7 +187,7 @@ class JoueursParamController extends AbstractController
             }
             
             
-           // return $this->redirectToRoute('joueurs_param');
+           return $this->redirectToRoute('joueurs_param');
         }
 
         $nmPhoto = new String_();
