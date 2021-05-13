@@ -41,7 +41,7 @@ class JoueurController extends AbstractController
             $listeCategories = $categoriesRepo->findAll();
             
             // recuperation de tous les joueurs
-            $listeJoueurs = $joueursRepo->findAll();
+            $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
             // recuperation du resultat dans un tableau licencies a passer a la vue
             foreach($listeJoueurs as $player)
             {
