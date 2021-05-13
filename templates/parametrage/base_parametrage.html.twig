@@ -34,7 +34,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 			<!-- <ul class="navbar-nav mr-auto"> -->
 			<ul class="nav justify-content-center">
 				{% if is_granted('ROLE_USER') %}
-				<li class="nav-item"><a class="nav-link" href="/param/index">Accueil</a></li>
+				<li class="nav-item"><a class="nav-link" href="/all/index">Accueil</a></li>
 				{% endif %}
 				{% if is_granted('ROLE_DIRIGEANT') %}
 				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></li>

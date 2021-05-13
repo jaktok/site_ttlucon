@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\authentification;
 
 use App\Entity\Users;
 use App\Form\RegistrationFormType;
