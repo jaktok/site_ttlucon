@@ -1,0 +1,23 @@
+{% extends 'parametrage/base_parametrage.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+<div style="text-align:center;">
+    <h1 class="h3 mb-3 font-weight-normal">Bienvenue dans la partie reservé à l'Administrateur</h1>
+</div>
+<div class="row">
+    <div class="col-sm-3" >
+        <p><a class="btn btn-info" href="{{ path('app_utilisateurs')}}" style="display:block; margin:auto;">Liste des users</a></p>
+    </div>
+</div>
+<br>
+<br>
+<div class="row">
+    <div class="col-sm-3    " >
+        <p><a class="btn btn-info" href="{{ path('app_register')}}" style="display:block; margin:auto;">Créer users</a></p>
+    </div>
+</div>
+    
+{% endblock %}
+ 

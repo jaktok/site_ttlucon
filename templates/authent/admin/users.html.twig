@@ -1,0 +1,44 @@
+{% extends 'parametrage/base_parametrage.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+    <table  class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+            <th>ID</th>
+            <th>Login</th>
+            <th>Rôles</th>
+        </thead>
+        <tbody>
+            {# On boucle sur les utilisateurs #}
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.login }}</td>
+                    <td>
+                        {# On boucle sur les rôles #}
+                        {% for role in user.roles %}
+                            {% if role == "ROLE_USER" %}
+                                Utilisateur
+                            {% elseif role == "ROLE_ADMIN" %}
+                                Administrateur
+                            {% elseif role == "ROLE_REDACTEUR" %}
+                                Redacteur
+                            {% elseif role == "ROLE_CAPITAINE" %}
+                                Capitaine
+                            {% elseif role == "ROLE_DIRIGEANT" %}
+                                Dirigeant
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td><a href="{{ path('modifier_utilisateur', {'id': user.id}) }}" class="btn btn-primary">Modifier</a></td>
+                </tr>
+                
+            {% else %}
+                <p>Aucun utilisateur inscrit</p>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{{ path('admin')}}" class="btn btn-danger">Retour</a></p>
+{% endblock %}

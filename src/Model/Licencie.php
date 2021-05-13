@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Licencie
 {
     private $id;
-    
-    
     /**
      * @Assert\NotNull
      */
@@ -19,6 +17,7 @@ class Licencie
     /**
      * @Assert\NotNull
     */
+
     private $prenom;
     private $mail;
     private $telephone;
@@ -354,6 +353,7 @@ class Licencie
     {
         $this->libelleCat = $libelleCat;
     }
+
     /**
      * @return mixed
      */
@@ -369,11 +369,5 @@ class Licencie
     {
         $this->photo = $photo;
     }
-
-
-
-
-    
-
 
 }

@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompetitionParamController extends AbstractController
 {
     /**
-     * @Route("/competition/param", name="competition_param")
+     * @Route("/dirigeant/param/competition", name="competition_param")
      */
     public function index(): Response
     {

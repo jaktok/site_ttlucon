@@ -34,11 +34,11 @@ class JoueursParamController extends AbstractController
         $this->api = new FFTTApi();
     }
     /**
-     * @Route("/joueurs/param", name="joueurs_param")
+     * @Route("/dirigeant/param/joueurs", name="joueurs_param")
      */
     public function index(Request $request,ClassementRepository $classementRepo, CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo): Response
     {
-        
+
         // recuperation de la liste des categories
         $listeCategories = $categoriesRepo->findAll();
         
@@ -67,6 +67,7 @@ class JoueursParamController extends AbstractController
         $form = $this->createFormBuilder($this->licencies)
         ->getForm();
         
+
         return $this->render('parametrage/joueurs_param/joueurs_param.html.twig', [
             'formJoueurs' => $form->createView(),
             'joueurs' => $this->licencies,
@@ -79,6 +80,7 @@ class JoueursParamController extends AbstractController
      *
      */
     public function gerer(Request $request,FichiersRepository $fichierRepo,  ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
+
     {
         
         // recuperation de la liste des categories
@@ -86,6 +88,7 @@ class JoueursParamController extends AbstractController
         // mise a 0 du dernier classement pour eviter enregistrement si classement non modifie
         $this->dernierClassement = 0;
         $classement = new Classement();
+
         $this->licencie = new Licencie();
         $libCategorie = new String_();
         
@@ -93,6 +96,7 @@ class JoueursParamController extends AbstractController
             
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
+
             foreach ($listeCategories as $categ){
                 if ($joueur->getCategories() == $categ){
                     if ($joueur->getCategories() == $categ){
@@ -105,11 +109,14 @@ class JoueursParamController extends AbstractController
             $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
             $this->licencie->setLibelleCat($libCategorie);
             $form = $this->createForm(LicencieType::class,$this->licencie);
+
            $form->handleRequest($request);
         }
         else{
             $joueur = new Joueurs();
+
             $form = $this->createForm(LicencieType::class,($this->licencie = new Licencie()));
+
             $form->handleRequest($request);
         }
        
@@ -137,6 +144,7 @@ class JoueursParamController extends AbstractController
                $entityManager->flush();
            }
            
+
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
             $joueur->setCertificat($this->licencie->getCertificat());
@@ -166,9 +174,10 @@ class JoueursParamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($joueur);
             $entityManager->flush();
+
             //dd($img);
             if (($img==null || $img->getId()==null) && isset($fichier)) {
-                // On crée l'image dans la base de données
+                // On crÃ©e l'image dans la base de donnÃ©es
                 $img = new Fichiers();
                 $img->setNom($fichier);
                 $img->setJoueur($joueur);

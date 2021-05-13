@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ClassementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Joueurs;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
