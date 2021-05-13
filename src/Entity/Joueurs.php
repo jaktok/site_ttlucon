@@ -645,7 +645,8 @@ class Joueurs
         return $this->users;
     }
 
-    public function setUsers(?Users $users): self
+
+    public function setUsers(?Users $users) : self
     {
         // unset the owning side of the relation if necessary
         if ($users === null && $this->users !== null) {

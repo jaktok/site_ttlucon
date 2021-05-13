@@ -22,19 +22,18 @@ class ClassementRepository extends ServiceEntityRepository
     // /**
     //  * @return Classement[] Returns an array of Classement objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByIdJoueur($value)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+            ->andWhere('c.joueur = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('c.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Classement

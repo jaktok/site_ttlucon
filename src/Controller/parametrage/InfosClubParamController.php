@@ -34,7 +34,7 @@ class InfosClubParamController extends AbstractController
         return $this->render('parametrage/infos_club_param/infos_club_param.html.twig', [
             'formInfos' => $form->createView(),
             'infosclub' => $listeInfosClub
-        ]);
+        ]);  
     }
     
     /**

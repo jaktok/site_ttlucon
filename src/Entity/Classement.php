@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ClassementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Joueurs;
 
 /**
  * @ORM\Entity(repositoryClass=ClassementRepository::class)

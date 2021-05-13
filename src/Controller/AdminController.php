@@ -18,7 +18,7 @@ class AdminController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('admin/admin.html.twig', [
+        return $this->render('authent/admin/admin.html.twig', [
             'controller_name' => 'AdminController',
         ]);
     }
@@ -28,7 +28,7 @@ class AdminController extends AbstractController
      */
     public function usersList(UsersRepository $users)
     {
-        return $this->render('admin/users.html.twig', [
+        return $this->render('authent/admin/users.html.twig', [
             'users' => $users->findAll(),
         ]);
     }
@@ -50,7 +50,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_utilisateurs');
         }
         
-        return $this->render('admin/edituser.html.twig', [
+        return $this->render('authent/admin/edituser.html.twig', [
             'userForme' => $form->createView(),
         ]);
     }

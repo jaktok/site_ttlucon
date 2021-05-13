@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Users;
+use App\Entity\Joueurs;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class EditUserType extends AbstractType
@@ -30,10 +33,13 @@ class EditUserType extends AbstractType
                 'multiple' => true,
                 'label' => 'Roles'
             ])
-            ->add('valider', SubmitType::class)
             ->add('password')
-            ->add('joueur')
-        ;
+            ->add('joueur', EntityType::class, [
+                'class' => Joueurs::class,
+                'choice_label' => 'nom',
+            ])
+            ->add('valider', SubmitType::class)
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

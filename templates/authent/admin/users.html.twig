@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Liste des utilisateurs</h1>
-    <table>
+    <table  class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
             <th>ID</th>
             <th>Login</th>
@@ -32,7 +32,7 @@
                             {% endif %}
                         {% endfor %}
                     </td>
-                    <td><a href="{{ path('modifier_utilisateur', {'id': user.id}) }}">Modifier</a></td>
+                    <td><a href="{{ path('modifier_utilisateur', {'id': user.id}) }}" class="btn btn-primary">Modifier</a></td>
                 </tr>
                 
             {% else %}
@@ -40,4 +40,5 @@
             {% endfor %}
         </tbody>
     </table>
+    <p><a href="{{ path('admin')}}" class="btn btn-danger">Retour</a></p>
 {% endblock %}
