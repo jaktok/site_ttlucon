@@ -6,6 +6,8 @@ use App\Repository\JoueursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Categories;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=JoueursRepository::class)
@@ -21,11 +23,13 @@ class Joueurs
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull
      */
     private $prenom;
 
@@ -135,7 +139,7 @@ class Joueurs
     private $equipeRencontres;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Categories::class, mappedBy="joueur")
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="joueur")
      */
     private $categories;
 
@@ -154,10 +158,6 @@ class Joueurs
      */
     private $articles;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="joueur")
-     */
-    private $role;
 
     /**
      * @ORM\OneToOne(targetEntity=Users::class, mappedBy="joueur", cascade={"persist", "remove"})
@@ -169,7 +169,6 @@ class Joueurs
         $this->competition_joueur = new ArrayCollection();
         $this->equipeTypes = new ArrayCollection();
         $this->equipeRencontres = new ArrayCollection();
-        $this->categories = new ArrayCollection();
         $this->classements = new ArrayCollection();
         $this->matchs = new ArrayCollection();
         $this->articles = new ArrayCollection();
@@ -512,33 +511,6 @@ class Joueurs
     }
 
     /**
-     * @return Collection|Categories[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categories $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addJoueur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categories $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeJoueur($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Classement[]
      */
     public function getClassements(): Collection
@@ -628,16 +600,15 @@ class Joueurs
         return $this;
     }
 
-    public function getRole(): ?Role
+    public function getCategories(): Categories
     {
-        return $this->role;
+        return $this->categories;
     }
-
-    public function setRole(?Role $role): self
+    
+    
+    public function setCategories(Categories $categories)
     {
-        $this->role = $role;
-
-        return $this;
+        $this->categories = $categories;
     }
 
     public function getUsers(): ?Users

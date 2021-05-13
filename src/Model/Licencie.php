@@ -5,11 +5,19 @@ namespace App\Model;
 
 use App\Entity\Classement;
 use App\Entity\Categories;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Licencie
 {
     private $id;
+    /**
+     * @Assert\NotNull
+     */
     private $nom;
+    /**
+     * @Assert\NotNull
+    */
+
     private $prenom;
     private $mail;
     private $telephone;
@@ -28,9 +36,14 @@ class Licencie
     private $contact_nom;
     private $contact_prenom;
     private $contact_tel;
+    /**
+    * @Assert\Type(type="integer")
+    * @Assert\NotNull
+    */
     private $classement;
     private $categories;
     private $libelleCat;
+    private $photo;
     
 
     
@@ -341,9 +354,20 @@ class Licencie
         $this->libelleCat = $libelleCat;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
 
-
-    
-
+    /**
+     * @param mixed $photo
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+    }
 
 }

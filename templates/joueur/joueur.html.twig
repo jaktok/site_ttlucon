@@ -13,6 +13,7 @@ endblock %} {% block body %}
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
+          	<th>Photo</th>
             <th data-sortable="true" data-field="nom">Nom</th>
             <th>Prénom</th>
             <th data-sortable="true">Classement</th>
@@ -21,11 +22,21 @@ endblock %} {% block body %}
         <tbody>
         {% if joueurs is defined %}
         {% for joueur in joueurs %}
+        {% if categorie == 'tous' %}
           <tr>
+          <td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="70"></td>
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
-            <td>{{ joueur.points }}</td>
+            <td>{{ joueur.classement }}</td>
           </tr>
+         {% elseif categorie == joueur.libelleCat %} 
+          <tr>
+          <td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="70"></td>
+            <td>{{ joueur.nom }}</td>
+            <td>{{ joueur.prenom }}</td>
+            <td>{{ joueur.classement }}</td>
+          </tr>
+        {% endif %}
         {% endfor %}
 		{% endif %}
         </tbody>

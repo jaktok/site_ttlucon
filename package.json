@@ -1,11 +1,11 @@
 {
     "devDependencies": {
         "@symfony/stimulus-bridge": "^2.0.0",
-        "@symfony/webpack-encore": "^1.0.0",
-        "core-js": "^3.0.0",
+        "@symfony/webpack-encore": "^1.2.0",
+        "core-js": "^3.12.1",
         "regenerator-runtime": "^0.13.2",
-        "sass": "^1.32.11",
-        "sass-loader": "^11.0.0",
+        "sass": "^1.32.12",
+        "sass-loader": "^11.0.1",
         "stimulus": "^2.0.0",
         "webpack-notifier": "^1.6.0"
     },
@@ -20,8 +20,13 @@
     "dependencies": {
         "@popperjs/core": "^2.9.2",
         "autoprefixer": "^10.2.5",
-        "bootstrap": "^5.0.0-beta3",
+        "bootstrap": "^5.0.0",
+        "bootstrap-datepicker": "^1.9.0",
+        "bootstrap-datepicker-webpack": "^1.7.0-dev",
         "postcss-loader": "^5.2.0"
+    },
+    "resolutions": {
+        "bootstrap-datepicker/jquery": "2.2.4"
     },
     "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
 }

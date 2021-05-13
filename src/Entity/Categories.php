@@ -25,7 +25,7 @@ class Categories
     private $libelle;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Joueurs::class, inversedBy="categories")
+     * @ORM\OneToMany(targetEntity=Joueurs::class, mappedBy="categories")
      */
     private $joueur;
 
@@ -89,6 +89,10 @@ class Categories
     public function removeJoueur(Joueurs $joueur): self
     {
         $this->joueur->removeElement($joueur);
+        // set the owning side to null (unless already changed)
+        if ($joueur->getCategories() === $this) {
+            $joueur->setCategories(null);
+        }
 
         return $this;
     }
@@ -182,4 +186,12 @@ class Categories
 
         return $this;
     }
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
 }
