@@ -1,5 +1,6 @@
-{% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
-endblock %} {% block body %}
+{% extends 'base.html.twig' %} 
+{% block body %}
+
 <meta charset="UTF-8" />
 
 <!-- Insérer cette balise "link" après celle de Bootstrap -->
@@ -9,12 +10,11 @@ endblock %} {% block body %}
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
    <div class="container">
-      <h1>Liste des joueurs</h1>
-      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <table class="table table-dark table-sm table-borderless " data-toggle="table" >
         <thead>
-          <tr>
+          <tr >
           	<th>Photo</th>
-            <th data-sortable="true" data-field="nom">Nom</th>
+            <th data-sortable="true">Nom</th>
             <th>Prénom</th>
             <th data-sortable="true">Classement</th>
           </tr>
@@ -23,15 +23,15 @@ endblock %} {% block body %}
         {% if joueurs is defined %}
         {% for joueur in joueurs %}
         {% if categorie == 'tous' %}
-          <tr>
-          <td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="70"></td>
+          <tr style="vertical-align: middle;">
+          	<td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></td>
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
             <td>{{ joueur.classement }}</td>
           </tr>
          {% elseif categorie == joueur.libelleCat %} 
-          <tr>
-          <td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="70"></td>
+          <tr style="vertical-align: middle;">
+          <td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></td>
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
             <td>{{ joueur.classement }}</td>
