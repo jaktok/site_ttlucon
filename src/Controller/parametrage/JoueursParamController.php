@@ -75,8 +75,8 @@ class JoueursParamController extends AbstractController
     }
     
     /**
-     * @Route("/joueur/param/nouveau/", name="joueur_param_nouveau")
-     * @Route("/joueur/param/modifier/{id}", name="joueur_param_modif")
+     * @Route("/dirigeant/param/joueur/nouveau/", name="joueur_param_nouveau")
+     * @Route("/dirigeant/param/joueur/modifier/{id}", name="joueur_param_modif")
      *
      */
     public function gerer(Request $request,FichiersRepository $fichierRepo,  ClassementRepository $classementRepo,  CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo, int $id = null): Response
