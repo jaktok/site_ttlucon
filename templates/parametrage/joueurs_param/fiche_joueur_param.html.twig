@@ -89,13 +89,9 @@ jQuery(document).ready(function() {
 			{{ form_row(formJoueur.classement) }}
 		</div>
 	<div class="col-sm-3">
-	 {% if libCategorie is defined %}
-	
-		 {{ form_label (formJoueur.categories) }}
-		 ( {{ libCategorie }} )
-		  {% set catplaceholder = libCategorie|trans %}
-		{{ form_widget(formJoueur.categories, {'attr': {'placeholder': 'libCategorie'|trans}}) }}
-		 {% endif %}
+	 	{% if libCategorie is defined %}
+			{{ form_row(formJoueur.categories) }}
+		{% endif %}
 		
 		</div>	
 	</div>	

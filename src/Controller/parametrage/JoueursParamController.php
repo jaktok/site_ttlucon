@@ -93,23 +93,29 @@ class JoueursParamController extends AbstractController
             
             // recuperation de l enregistrements selectionne
             $joueur = $joueursRepo->find($id);
+            
+            $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
+            
             foreach ($listeCategories as $categ){
                 if ($joueur->getCategories() == $categ){
                     if ($joueur->getCategories() == $categ){
                         $joueur->setCategories($categ);
                         $this->licencie->setCategories($categ);
                         $libCategorie = $categ->getLibelle();
+                        break;
                     }
                 }
+                $this->licencie->setCategories($categ);
             }
-            $this->licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
             $this->licencie->setLibelleCat($libCategorie);
             $form = $this->createForm(LicencieType::class,$this->licencie);
            $form->handleRequest($request);
         }
         else{
             $joueur = new Joueurs();
-            $form = $this->createForm(LicencieType::class,($this->licencie = new Licencie()));
+            $this->licencie = new Licencie();
+            $this->licencie->setCategories($listeCategories[0]);
+            $form = $this->createForm(LicencieType::class,($this->licencie));
             $form->handleRequest($request);
         }
        

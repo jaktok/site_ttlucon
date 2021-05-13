@@ -17,7 +17,6 @@ class Licencie
     /**
      * @Assert\NotNull
     */
-
     private $prenom;
     private $mail;
     private $telephone;
@@ -209,18 +208,6 @@ class Licencie
         return $this;
     }
     
-    /*public function getDateNaissance(): ?string
-    {
-        return $this->date_naissance;
-    }
-    
-    public function setDateNaissance(?string $date_naissance): self
-    {
-        $this->date_naissance = $date_naissance;
-        
-        return $this;
-    }*/
-
     public function getNomPhoto(): ?string
     {
         return $this->nom_photo;
@@ -245,18 +232,6 @@ class Licencie
         return $this;
     }
     
-    /* public function getDateCertificat(): ?string
-    {
-        return $this->date_certificat;
-    }
-    
-    public function setDateCertificat(string $date_certificat): self
-    {
-        $this->date_certificat = $date_certificat;
-        
-        return $this;
-    }*/
-
     public function getIndiv(): ?bool
     {
         return $this->indiv;
@@ -319,7 +294,7 @@ class Licencie
     /**
      * @return mixed
      */
-    public function getCategories()
+    public function getCategories(): Categories
     {
         return $this->categories;
     }
@@ -327,7 +302,7 @@ class Licencie
     /**
      * @param mixed $categories
      */
-    public function setCategories($categories)
+    public function setCategories(Categories $categories)
     {
         $this->categories = $categories;
     }
