@@ -54,9 +54,15 @@ class EquipeType
      */
     private $categories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Rencontres::class, mappedBy="equipeType")
+     */
+    private $rencontre;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
+        $this->rencontre = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +172,36 @@ class EquipeType
     public function setCategories(?Categories $categories): self
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rencontres[]
+     */
+    public function getRencontre(): Collection
+    {
+        return $this->rencontre;
+    }
+
+    public function addRencontre(Rencontres $rencontre): self
+    {
+        if (!$this->rencontre->contains($rencontre)) {
+            $this->rencontre[] = $rencontre;
+            $rencontre->setEquipeType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRencontre(Rencontres $rencontre): self
+    {
+        if ($this->rencontre->removeElement($rencontre)) {
+            // set the owning side to null (unless already changed)
+            if ($rencontre->getEquipeType() === $this) {
+                $rencontre->setEquipeType(null);
+            }
+        }
 
         return $this;
     }

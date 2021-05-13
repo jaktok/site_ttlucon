@@ -59,6 +59,11 @@ class Rencontres
      */
     private $phase;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=EquipeType::class, inversedBy="rencontre")
+     */
+    private $equipeType;
+
     public function __construct()
     {
         $this->matchs = new ArrayCollection();
@@ -179,6 +184,18 @@ class Rencontres
     public function setPhase(?int $phase): self
     {
         $this->phase = $phase;
+
+        return $this;
+    }
+
+    public function getEquipeType(): ?EquipeType
+    {
+        return $this->equipeType;
+    }
+
+    public function setEquipeType(?EquipeType $equipeType): self
+    {
+        $this->equipeType = $equipeType;
 
         return $this;
     }
