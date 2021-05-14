@@ -244,11 +244,24 @@ class FFTTApi
     public function getJoueurDetailsByLicence(string $licenceId): JoueurDetails
     {
         try {
-            $data = $this->apiRequest->get('xml_licence_b', [
+            
+            $data = $this->apiRequest->getJoueurDetail('xml_licence_b', [
+                'licence' => $licenceId,
+            ]
+                );
+            
+            if ($data==null){
+                return new JoueurDetails($licenceId, "", "", "", "", "", "", "500", "500", "500", "500");
+            }
+            
+            $data = $this->apiRequest->getJoueurDetail('xml_licence_b', [
                     'licence' => $licenceId,
                 ]
             )['licence'];
+           
+            
         } catch (NoFFTTResponseException $e) {
+           
             throw new JoueurNotFound($licenceId);
         }
 

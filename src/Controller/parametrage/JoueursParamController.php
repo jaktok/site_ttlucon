@@ -293,16 +293,17 @@ class JoueursParamController extends AbstractController
         
         // recuperation de l enregistrements selectionne
         $joueur = $joueursRepo->find($id);
-        
+       // dd($joueur);
         if ($joueur) {
             // recuperation de la liste des classements pour le joueur
             $listeClassements = $classementRepo->findByIdJoueur($joueur->getId());
            // On supprimer tous les classements
-            If ($listeClassements){
+            if ($listeClassements){
                 foreach ($listeClassements as $classement)
                     $entityManager->remove($classement);
                     $entityManager->flush();
             }
+           
             // On supprimer le joueur
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($joueur);
@@ -321,26 +322,20 @@ class JoueursParamController extends AbstractController
         
         $entityManager = $this->getDoctrine()->getManager();
         
-        // recup liste joueurs FFTT
-        $joueurByLicence = $this->api->getJoueursByClub($this->ini_array['id_club_lucon']);
-        
         // recuperation de tous les joueurs
         $listeJoueurs = $joueursRepo->findAll();
-  
-        $i = 0;
+
         foreach($listeJoueurs as $joueur)
         {
-            foreach($joueurByLicence as $joueurFFTT){
-                if ($joueurFFTT->getLicence()==$joueur->getNumLicence()){
-                    $classement = new Classement();
-                    $classement->setPoints($joueurFFTT->getPoints());
-                    $classement->setDate(new \DateTime());
-                    $classement->setJoueur($joueur);
-                    $entityManager->persist($classement);
-                    $entityManager->flush();
-                    $i++;
-                    break;
-                }
+            if ($joueur->getNumLicence()){
+                // recup du joueur FFTT
+                $joueurByLicence = $this->api->getJoueurDetailsByLicence($joueur->getNumLicence());
+                $classement = new Classement();
+                $classement->setPoints($joueurByLicence->getPointsMensuel());
+                $classement->setDate(new \DateTime());
+                $classement->setJoueur($joueur);
+                $entityManager->persist($classement);
+                $entityManager->flush();
             }
         }
         return $this->redirectToRoute('joueurs_param');
