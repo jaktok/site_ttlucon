@@ -24,8 +24,8 @@
         {% for joueur in joueurs %}
         {% if categorie == 'tous' %}
           <tr style="vertical-align: middle;">
-          	<td><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></td>
-            <td><a href="https://www.pongiste.fr/include/pages/joueur.php?id_licence={{ joueur.numLicence }}&num_club=12850097&color=DA4453&taille=&tri=mois" target="_blank">{{ joueur.nom }}</a>  </td>
+          	<td><a href="https://www.pongiste.fr/include/pages/joueur.php?id_licence={{ joueur.numLicence }}&num_club=12850097&color=DA4453&taille=&tri=mois" target="_blank"><img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></a></td>
+            <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
             <td>{{ joueur.classement }}</td>
           </tr>
