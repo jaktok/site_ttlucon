@@ -1,0 +1,66 @@
+{% extends 'parametrage/base_parametrage.html.twig' %} {% block title
+%}Liste joueurs compet{% endblock %} 
+
+{% block body %}
+<meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+<meta charset="UTF-8" />
+
+
+{{ form_start(formJoueurMatch) }}
+
+<div class="container">
+	<h1>Liste des joueurs de la compétition {{ competition.nom }} &nbsp; {{ competition.numJournee }}</h1>
+	
+	  <div class="row">
+	   	<div class="col-sm-2">
+ 			<a href="{{ path('ajoute_joueurmatch', { 'idCompet': competition.id})}}" class="btn btn-primary mb-2" aria-current="page">Ajouter joueur</a>
+ 		</div>
+ 		<div class="col-sm-2">
+ 			<a href="{{ path('competition_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+ 		</div>
+	  </div>
+	  <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Victoires</th>
+            <th>Défaites</th>
+            <th>Position</th>
+            <th>Modifier</th>
+ 			<th>Supprimer</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if tabMatchs is defined %}
+        {% for matchs in tabMatchs %}
+          <tr>
+           	<td>{{ matchs.nom }}</td>
+           	<td>{{ matchs.prenom }}</td>
+           	<td>{{ matchs.victoires }}</td>
+           	<td>{{ matchs.defaites }}</td>
+           	<td>{{ matchs.position }}</td>
+           	{% set params= { 'idJoueur': matchs.idJoueur, 'idCompet': idCompet } %}
+            <td><a href="{{ path('modifie_joueurmatch', params) }}" class="btn btn-primary">Modifier</a></td>
+            <td><a href="{{ path('supprime_joueurmatch',params)}}" class="btn btn-primary" onclick="return confirm('Suppression des matchs du joueur {{ matchs.nom }} {{ matchs.prenom }} ?');" >Supprimer</a></td>
+          </tr>
+        {% endfor %}
+		{% endif %}
+        </tbody>
+      </table>
+
+</div>
+
+
+{{ form_end(formJoueurMatch) }} {% endblock %}
+
+

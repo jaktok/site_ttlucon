@@ -1,4 +1,56 @@
 {% extends 'parametrage/base_parametrage.html.twig' %} {% block title %}Autres compétitions{%
 endblock %} {% block body %}
 <meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+
+{{ form_start(formCompets) }}
+
+   <div class="container">
+ <div class="row">	
+   	<div class="col-sm-2">
+ 		<a href="{{ path('compet_param_nouveau') }}" class="btn btn-primary mb-2" aria-current="page">Créer une compétition</a>
+ 	</div>
+
+ 	</div>
+      <h1>Liste des Compétitions</h1>
+      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th data-sortable="true">Nom</th>
+            <th>Numéro de journée</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Modif.</th>
+            <th>Supp.</th>
+ 			<th>Gérer</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if compets is defined %}
+        {% for compet in compets %}
+          <tr>
+           	<td>{{ compet.nom }}</td>
+           	<td>{{ compet.numJournee }}</td>
+           	<td>{{ compet.date|date('d-m-Y')  }}</td>
+           	<td>{{ compet.typeCompetition.libelle }}</td>
+             <td><a href="{{ path('compet_param_modif', { 'id': compet.id})}}" class="btn btn-primary">Modifier</a></td>
+             <td><a href="{{ path('supprime_compet', { 'id': compet.id})}}" class="btn btn-primary" onclick="return confirm('Suppression de {{ compet.nom }} et des matchs des joueurs liés ?');" >Supprimer</a></td>
+             <td><a href="{{ path('renseigne_compet', { 'id': compet.id})}}" class="btn btn-primary" >Gérer</a></td>
+          </tr>
+        {% endfor %}
+		{% endif %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+{{ form_end(formCompets) }}
+
 {% endblock %}

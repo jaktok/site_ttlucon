@@ -22,19 +22,30 @@ class MatchsRepository extends ServiceEntityRepository
     // /**
     //  * @return Matchs[] Returns an array of Matchs objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByIdCompet($value)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
+            ->andWhere('m.competition = :val')
             ->setParameter('val', $value)
             ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
+    public function findByIdCompetJoueur($idCompet,$idJoueur)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.competition = :val')
+        ->andWhere('m.joueur = :val2')
+        ->setParameter('val', $idCompet)
+        ->setParameter('val2', $idJoueur)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
 
     /*
     public function findOneBySomeField($value): ?Matchs

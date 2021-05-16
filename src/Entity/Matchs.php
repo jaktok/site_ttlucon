@@ -47,6 +47,11 @@ class Matchs
      */
     private $rencontre;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $position;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class Matchs
     public function setRencontre(?Rencontres $rencontre): self
     {
         $this->rencontre = $rencontre;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }

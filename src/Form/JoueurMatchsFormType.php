@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Joueurs;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+class JoueurMatchType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+        ->add('joueur_compet',EntityType::class, array(
+            'class' => 'App\Entity\Joueurs',
+            'label' => 'Joueurs',
+            'choice_label' => function ($user) {
+            return $user->getNom()." ".$user->getPrenom();
+            },
+            ))
+            ->add('victoires',TextType::class)
+            ->add('defaites',TextType::class)
+            ->add('position',TextType::class)
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([]);
+    }
+}

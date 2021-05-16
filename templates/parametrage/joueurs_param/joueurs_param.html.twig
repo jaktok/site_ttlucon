@@ -59,16 +59,9 @@
            	{% endif %}
            	<td>{{ joueur.classement }}</td>
              <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modifier</a></td>
-             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-primary" >Supprimer</a></td>
+             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-primary" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supprimer</a></td>
           </tr>
         {% endfor %}
-		{% endif %}
-		{% if infoclub is defined %}
-          <tr>
-            <td>{{ form_row(formInfos.libelle,{'attr':{'placeholder': "" }}) }}</td>
-            <td>{{ form_row(formInfos.contenu,{'attr':{'placeholder': "" }}) }}</td>
-            <td><button type="submit" class="btn-succes">Enregistrer </button></td>
-          </tr>
 		{% endif %}
         </tbody>
       </table>
