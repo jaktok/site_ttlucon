@@ -1,5 +1,6 @@
-{% extends 'base.html.twig' %} {% block title %}Entrainements{%
-endblock %} {% block body %}
+{% extends 'parametrage/base_parametrage.html.twig' %} 
+{% block title %}Entrainement{%endblock %} 
+{% block body %}
 <meta charset="UTF-8" />
 
 <!-- Insérer cette balise "link" après celle de Bootstrap -->
@@ -9,11 +10,10 @@ endblock %} {% block body %}
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
 
-<div class="fluide">
-   <div class="container" align="center">
-   <br>
-   <h3>Tableau des entrainement du tennis de table Luçonnais</h3>
-   <br>
+ {{ form_start(formEntrainements) }}
+<div class="container">
+	<h1>Entrainement</h1>
+
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
@@ -38,8 +38,40 @@ endblock %} {% block body %}
         {% endif %} 
         </tbody>
       </table>
-    </div>
+
+	<div class="row mt-4">
+		<div class="col-sm-9" >
+			{{ form_row(formEntrainements.libelle) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(formEntrainements.categorie) }}
+		</div>
+	</div>
+
+	<div class="row mt-4">
+		<div class="col-sm-3" >
+			{{ form_row(formEntrainements.jour) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(formEntrainements.heure_debut) }}
+		</div>
+		<div class="col-sm-3">
+			{{ form_row(formEntrainements.heure_fin) }}
+		</div>
+		<div class="col-sm-3">
+			
+		</div>
+	</div>
+
+	<div class="row mt-4">	
+		<div class="col-sm-2">
+		<button type="submit" class="btn btn-success">Enregistrer</button>
+ 		</div>
+	 	<div class="col-sm-2">
+	 		<a href="{{ path('entrainement_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+	 	</div>
+ 	</div>
+ 	
 </div>
-
+{{ form_end(formEntrainements) }}
 {% endblock %}
-

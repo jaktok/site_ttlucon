@@ -29,9 +29,11 @@ endblock %} {% block body %}
         {% for fonction in fonctions %}
           <tr>
           	<td >
+          	{% if fonction.joueurs.photo is not null %}
           	<div align="center">
           		<img src="{{ asset('/images/'~fonction.joueurs.photo.nom) }}" alt="" width="50"></td>
             </div>
+            {% endif %}
             <td>{{ fonction.libelle }}</td>
             <td>{{ fonction.joueurs.nom }}</td>
             <td>{{ fonction.joueurs.prenom }}</td>

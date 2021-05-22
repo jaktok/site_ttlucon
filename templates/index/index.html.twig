@@ -20,16 +20,19 @@ endblock %} {% block body %}
 			
 		<div class="row overflow-auto " align="center">
 			<div class="col-sm-12">
-			<p>--------------------------</p>
-				<h4 >Espace partenaires<h4 >
-			<p>--------------------------</p>
+		
+			<p>--------------------------
+	<br><br><br>				
+				Espace partenaires
+				<br><br><br>
+			--------------------------</p>
 			</div>
 		</div>
 		<div class="row overflow-auto" align="center">
 			<div class="col-sm-12">
 				<h4> icone excel vers calendrier<h4 >
 								<br>
-				--------------------------
+				-------------------
 			</div>
 		</div>
 		<div class="row overflow-auto" align="center">
@@ -92,6 +95,7 @@ endblock %} {% block body %}
 		{% endapply %}
 		<!-- Fin pagination -->
 		{% if tabTabArticles is defined %}
+        {% if tabTabArticles is not empty %}
         {% for article in tabTabArticles[pg] %}
         <div class="row mt-3 align-items-center" align="center" style="background-color: #F0FFFF">
         	<div class="col-sm-1">
@@ -120,6 +124,7 @@ endblock %} {% block body %}
    </div>
        {% endfor %}
        {% endif %} 
+       {% endif %}
 
 		<!-- Pagination -->
 		{% apply spaceless %}

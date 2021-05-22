@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\FonctionRepository;
+use App\Repository\JoueursRepository;
 
 class BureauController extends AbstractController
 {
@@ -22,11 +23,14 @@ class BureauController extends AbstractController
     /**
      * @Route("/bureau", name="bureau")
      */
-    public function index(Request $request,FonctionRepository $fonctionsRepo): Response
+    public function index(Request $request , JoueursRepository $joueursRepo, FonctionRepository $fonctionsRepo): Response
     {
         
         // recuperation de la liste des categories
         $listeFonctions = $fonctionsRepo->findBy(array(),array('position' => 'ASC'));
+        
+        // recuperation de tous les joueurs
+        $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
         
         $i=0;
         // recuperation du resultat dans un tableau 
@@ -38,7 +42,7 @@ class BureauController extends AbstractController
         
         $form = $this->createFormBuilder($this->fonctions)
         ->getForm();
-        
+        //dd($this->fonctions);
         return $this->render('bureau/bureau.html.twig', [
             'fonctions' => $this->fonctions,
         ]);
