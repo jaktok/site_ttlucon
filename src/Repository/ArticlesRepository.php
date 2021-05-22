@@ -22,19 +22,19 @@ class ArticlesRepository extends ServiceEntityRepository
     // /**
     //  * @return Articles[] Returns an array of Articles objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByEnLigne($value)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
+            ->andWhere('a.en_ligne = :val')
             ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('a.date', 'DESC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Articles

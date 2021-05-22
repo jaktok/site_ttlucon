@@ -43,6 +43,11 @@ class Categories
      * @ORM\OneToMany(targetEntity=Entrainement::class, mappedBy="categorie")
      */
     private $entrainements;
+    
+    /**
+     * @ORM\OneToMany(targetEntity=Competition::class, mappedBy="categorie")
+     */
+    private $competition;
 
     public function __construct()
     {
@@ -50,6 +55,7 @@ class Categories
         $this->equipeRencontre = new ArrayCollection();
         $this->equipeType = new ArrayCollection();
         $this->entrainements = new ArrayCollection();
+        $this->competition = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +198,36 @@ class Categories
     public function setId($id)
     {
         $this->id = $id;
+    }
+    
+    /**
+     * @return Collection|Competition[]
+     */
+    public function getCompetition(): Collection
+    {
+        return $this->competition;
+    }
+    
+    public function addCompetition(Competition $competition): self
+    {
+        if (!$this->competition->contains($competition)) {
+            $this->competition[] = $competition;
+            $competition->setTypeCompetition($this);
+        }
+        
+        return $this;
+    }
+    
+    public function removeCompetition(Competition $competition): self
+    {
+        if ($this->competition->removeElement($competition)) {
+            // set the owning side to null (unless already changed)
+            if ($competition->getTypeCompetition() === $this) {
+                $competition->setTypeCompetition(null);
+            }
+        }
+        
+        return $this;
     }
 
 }

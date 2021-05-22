@@ -22,19 +22,19 @@ class FichiersRepository extends ServiceEntityRepository
     // /**
     //  * @return Fichiers[] Returns an array of Fichiers objects
     //  */
-    /*
-    public function findByExampleField($value)
-    {
+    
+    public function findByArticle($value)
+    {//dd($value);
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
+            ->andWhere('f.articles = :val')
             ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
+            ->orderBy('f.articles', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     
     public function findOneByJoueur($value): ?Fichiers
@@ -47,4 +47,14 @@ class FichiersRepository extends ServiceEntityRepository
         ;
     }
     
+    
+    public function findOneByArticle($value): ?Fichiers
+    {
+        return $this->createQueryBuilder('f')
+        ->andWhere('f.articles= :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getOneOrNullResult()
+        ;
+    }
 }

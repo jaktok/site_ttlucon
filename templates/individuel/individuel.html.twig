@@ -24,7 +24,7 @@ endblock %} {% block body %}
     
         {% if compets is defined %}
         {% for compet in compets %}
-        {% if compet.typeCompetition.libelle == categorie %}
+        {% if compet.categories.libelle == categorie %}
           <table class="table table-striped" data-toggle="table" data-pagination="false">
 
         <tbody>
@@ -32,7 +32,7 @@ endblock %} {% block body %}
            	<td>{{ compet.nom }}</td>
            	<td>{{ compet.numJournee }}</td>
            	<td>{{ compet.date|date('d-m-Y')  }}</td>
-           	<td>{{ compet.typeCompetition.libelle }}</td>
+           	<td>{{ compet.categories.libelle }}</td>
         </tr>
         {% if tabMatchs is defined %}
      <table class="table table-striped" data-toggle="table" data-pagination="false">

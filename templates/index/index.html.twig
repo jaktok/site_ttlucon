@@ -5,68 +5,168 @@ endblock %} {% block body %}
 
 </style>
 	
+	
 <div class="container">
 
 <div class="row">
-
-			<div class="col-sm-12" align="center">
-				<br>
-				<h1> Partie réservée pour une bannière ?</h1>
-				<br><br>
-			</div>
-
-</div>
-
-<div class="row">
 	<!-- Colonne 1 --> 
-	<div class="col-sm-2">
+	<div class="col-sm-2 bg-light" >
 		<div class="row">
 			<div class="col-sm-12">
 				<img alt="" src="{{ asset('images/logo2.gif') }}" class="img-thumbnail" alt="Responsive image" align="top">
 			</div>
 		</div>
 					<br>
-				--------------------------
-		<div class="row" align="center">
+			
+		<div class="row overflow-auto " align="center">
 			<div class="col-sm-12">
+			<p>--------------------------</p>
 				<h4 >Espace partenaires<h4 >
-				<br>
-				--------------------------
+			<p>--------------------------</p>
 			</div>
 		</div>
-		<div class="row" align="center">
+		<div class="row overflow-auto" align="center">
 			<div class="col-sm-12">
 				<h4> icone excel vers calendrier<h4 >
 								<br>
 				--------------------------
 			</div>
 		</div>
-		<div class="row" align="center">
+		<div class="row overflow-auto" align="center">
 			<div class="col-sm-12">
-				<h4 >Divers<h4 >
+				<h4 >Diverssssssssssssssssssss<h4 >
 				<br>
 				--------------------------
 			</div>
 		</div>
 	</div>
-	<!-- Colonne 2 -->
-	<div class="col-sm-8">
-		<div class="row" align="center">
-			<div class="col-sm-12">
-				<h1> Partie centrale pour les articles</h1>
+	
+	
+	{% set pg = page %}
+		<!-- Colonne 2 -->
+		
+	<div class="col-sm-8" >
+	    <div class="row" align="center">
+       		<div class="col-sm-12">
+				<img alt="" src="{{ asset('images/bandeau.png') }}" class="img-thumbnail" alt="Responsive image" align="top">
+			</div>
+		</div>   			
+	
+		<!-- Pagination -->
+		{% apply spaceless %}
+		{% if nbPages > 1 %}
+		
+		    {# Number of page around current page+1 #}
+		    {% set nearbyPagesLimit = 4 %}
+		
+		    <nav class="bg-light">
+		        <ul class="pagination">
+		            {% if currentPage != 1 %}
+		            <li>
+		                <a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp; </a>
+		            </li>
+		            {% endif %}
+		            {% for i in 1..nbPages %}
+		                {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
+		                {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
+		                {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+		                {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+		                {% else %}
+		                    <li {% if currentPage == loop.index  %} class="page-item" {% endif %}>
+		                        <a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{ loop.index }}</a>
+		                    </li>
+		                {% endif %}
+		            {% endfor %}
+		            {% if currentPage != nbPages %}
+		            <li>
+		                <a class="page-link" href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a>
+		            </li>
+		            {% endif %}
+		        </ul>
+		    </nav>
+				<!-- Fin pagination -->
+				  
+		{% endif %}
+		{% endapply %}
+		<!-- Fin pagination -->
+		{% if tabTabArticles is defined %}
+        {% for article in tabTabArticles[pg] %}
+        <div class="row mt-3 align-items-center" align="center" style="background-color: #F0FFFF">
+        	<div class="col-sm-1">
+				{{ article.date|date('d-m-Y') }}
+			</div>
+			<div class="col-sm-11">
+				<h2>{{ article.titre }}</h2>
 			</div>
 		</div>
-		<div class="row" align="center">
+		{% if article.fichier is defined %}
+    	{% for nomPhoto in article.fichier %}
+			<div class="row mt-3" align="center" >
+				<div class="col-sm-12">
+						<img src="{{ asset('/articles/'~nomPhoto.nom) }}" alt="" class="img-fluid" width="{{article.auteur}}%">
+				</div>
+			</div>
+		{% endfor %}
+		{% endif %}
+		<div class="row mt-3" align="center">
 			<div class="col-sm-12">
-				<img alt="" src="{{ asset('images/circulaire_2020_21.jpg') }}" class="img-thumbnail" alt="Responsive image" align="top">
+				{{ article.text|raw }}
 			</div>
 		</div>
+			<div class="row" >
+    <div class="col" ><hr color="black"></div>
+   </div>
+       {% endfor %}
+       {% endif %} 
+
+		<!-- Pagination -->
+		{% apply spaceless %}
+		{% if nbPages > 1 %}
+		
+		    {# Number of page around current page+1 #}
+		    {% set nearbyPagesLimit = 4 %}
+		
+		    <nav>
+		        <ul class="pagination">
+		            {% if currentPage != 1 %}
+		            <li>
+		                <a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp; </a>
+		            </li>
+		            {% endif %}
+		            {% for i in 1..nbPages %}
+		                {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
+		                {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
+		                {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+		                {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+		                {% else %}
+		                    <li {% if currentPage == loop.index  %} class="page-item" {% endif %}>
+		                        <a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{ loop.index }}</a>
+		                    </li>
+		                {% endif %}
+		            {% endfor %}
+		            {% if currentPage != nbPages %}
+		            <li>
+		                <a class="page-link" href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a>
+		            </li>
+		            {% endif %}
+		        </ul>
+		        </nav>
+		  
+		{% endif %}
+		{% endapply %}
+		<!-- Fin pagination -->
 	</div>
+	
+	
 	<!-- Colonne 3 -->
-	<div class="col-sm-2" align="left">
+	<div class="col-sm-2 bg-light" align="left">
 		<div class="row">
 			<div class="col-sm-12">
-				<img alt="" src="{{ asset('images/logo2.gif') }}" class="img-thumbnail" alt="Responsive image" align="top">
+				<img alt="" src="{{ asset('images/logo1.gif') }}" class="img-thumbnail" alt="Responsive image" align="top">
 			</div>
 		</div>
 		<br>

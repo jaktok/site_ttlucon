@@ -40,10 +40,9 @@ class Competition
     private $joueur_compet;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypeCompetition::class, inversedBy="competition")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="competition")
      */
-    private $type_competition;
+    private $categories;
 
     /**
      * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="competition")
@@ -121,14 +120,14 @@ class Competition
         return $this;
     }
 
-    public function getTypeCompetition(): ?TypeCompetition
+    public function getCategories(): ?Categories
     {
-        return $this->type_competition;
+        return $this->categories;
     }
 
-    public function setTypeCompetition(?TypeCompetition $type_competition): self
+    public function setCategories(?Categories $categories): self
     {
-        $this->type_competition = $type_competition;
+        $this->categories = $categories;
 
         return $this;
     }

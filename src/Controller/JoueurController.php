@@ -57,6 +57,7 @@ class JoueurController extends AbstractController
                     
                 }
                 // mappage de l entite joueur vers objet licencier
+               
                 $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
                 $licencie->setLibelleCat($libCat);
                 $this->licencies[]=$licencie;

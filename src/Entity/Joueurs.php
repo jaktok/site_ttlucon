@@ -164,6 +164,11 @@ class Joueurs
      */
     private $users;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Fonction::class, mappedBy="joueurs", cascade={"persist", "remove"})
+     */
+    private $fonction;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -630,6 +635,28 @@ class Joueurs
         }
 
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getFonction(): ?Fonction
+    {
+        return $this->fonction;
+    }
+
+    public function setFonction(?Fonction $fonction): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($fonction === null && $this->fonction !== null) {
+            $this->fonction->setJoueurs(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($fonction !== null && $fonction->getJoueurs() !== $this) {
+            $fonction->setJoueurs($this);
+        }
+
+        $this->fonction = $fonction;
 
         return $this;
     }

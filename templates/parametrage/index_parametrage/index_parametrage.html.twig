@@ -10,8 +10,18 @@
 		data-pagination="false">
 		<tbody>
 			<tr>
+			{% if is_granted('ROLE_CAPITAINE') %}
+				<td class="text-center"><a class="nav-link" href="/capitaine/param/articles">Articles</a></td>
+			{% endif %}
+			</tr>
+			<tr>
 			{% if is_granted('ROLE_DIRIGEANT') %}
 				<td class="text-center"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></td>
+			{% endif %}
+			</tr>
+			<tr>
+			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/fonctions">Fonctions</a></td>
 			{% endif %}
 			</tr>
 			<tr>

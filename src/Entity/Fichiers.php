@@ -47,6 +47,11 @@ class Fichiers
      */
     private $equipeRencontre;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Articles::class, inversedBy="fichier",cascade={"persist"})
+     */
+    private $articles;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -130,6 +135,18 @@ class Fichiers
         }
 
         $this->equipeRencontre = $equipeRencontre;
+
+        return $this;
+    }
+
+    public function getArticles(): ?Articles
+    {
+        return $this->articles;
+    }
+
+    public function setArticles(?Articles $articles): self
+    {
+        $this->articles = $articles;
 
         return $this;
     }

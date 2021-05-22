@@ -142,7 +142,7 @@ class JoueursParamController extends AbstractController
                $image->setUrl($this->getParameter('images_destination'));
                $entityManager->flush();
            }
-           
+           //dd($this->licencie->getNomPhoto());
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
             $joueur->setCertificat($this->licencie->getCertificat());

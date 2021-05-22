@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
 			{{ form_row(formCompet.date) }}
 		</div>
 		<div class="col-sm-3" >
-			{{ form_row(formCompet.type_competition) }}
+			{{ form_row(formCompet.categories) }}
 		</div>
 	</div>
 
@@ -78,6 +78,7 @@ jQuery(document).ready(function() {
 </div>
 
 
-{{ form_end(formCompet) }} {% endblock %}
+{{ form_end(formCompet) }}
+{% endblock %}
 
 

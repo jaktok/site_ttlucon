@@ -1,0 +1,83 @@
+{% extends 'parametrage/base_parametrage.html.twig' %} {% block title %}Articles{%
+endblock %} 
+{% form_theme formArticles 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+<meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"
+	type="text/javascript"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"
+	type="text/javascript"></script>
+<link
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+	rel="Stylesheet" type="text/css" />
+<link href="{{ asset('css/bootstrap.css') }}">
+
+<script type="text/javascript">
+
+
+
+jQuery(document).ready(function() {
+			
+            $('.js-datepicker').datepicker({
+            dateFormat: "dd/mm/yy"
+            });
+        });
+
+</script>
+
+
+   <div class="container">
+
+{{ form_start(formArticles) }}
+
+   <div class="container">
+      <h1>Liste des articles</h1>
+    <div class="col-sm-2">
+ 		<a href="{{ path('article_param_nouveau') }}" class="btn btn-primary mb-2" aria-current="page">Créer un Article</a>
+ 	</div>
+      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Autheur</th>
+            <th>Date</th>
+            <th>En Ligne</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if articles is defined %}
+        {% for article in articles %}
+          <tr>
+           	<td>{{ article.titre }}</td>
+           	<td>{{ article.joueur.nom }} {{ article.joueur.prenom }}</td>
+            <td>{{ article.date|date("d/m/Y") }}</td>
+			{% if article.enLigne == 1  %}
+           		<td>oui</td>
+           	{% else %}
+           		<td>non</td>
+           	{% endif %}           
+             <td><a href="{{ path('article_param_modif', {'id': article.id})}}" class="btn btn-primary">Modifier</a></td>
+     		<td><a href="{{ path('supprime_article', {'id': article.id})}}" class="btn btn-primary">Supprimer</a></td>
+     
+          </tr>
+        {% endfor %}
+       {% endif %} 
+        </tbody>
+      </table>
+    </div>
+
+{{ form_end(formArticles) }}
+
+</div>
+{% endblock %}

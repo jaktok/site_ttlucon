@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticlesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +20,7 @@ class Articles
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $auteur;
 
@@ -41,6 +43,21 @@ class Articles
      * @ORM\ManyToOne(targetEntity=Joueurs::class, inversedBy="articles")
      */
     private $joueur;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Fichiers::class, mappedBy="articles")
+     */
+    private $fichier;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $titre;
+
+    public function __construct()
+    {
+        $this->fichier = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +120,48 @@ class Articles
     public function setJoueur(?Joueurs $joueur): self
     {
         $this->joueur = $joueur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fichiers[]
+     */
+    public function getFichier(): Collection
+    {
+        return $this->fichier;
+    }
+
+    public function addFichier(Fichiers $fichier): self
+    {
+        if (!$this->fichier->contains($fichier)) {
+            $this->fichier[] = $fichier;
+            $fichier->setArticles($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFichier(Fichiers $fichier): self
+    {
+        if ($this->fichier->removeElement($fichier)) {
+            // set the owning side to null (unless already changed)
+            if ($fichier->getArticles() === $this) {
+                $fichier->setArticles(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
 
         return $this;
     }

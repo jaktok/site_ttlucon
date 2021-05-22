@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Competition;
+use App\Entity\Categories;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,9 +25,9 @@ class CompetitionType extends AbstractType
                 'format' => 'dd/MM/yyyy',
                 'html5'  => false
             ])
-            ->add('type_competition',EntityType::class, array(
-                'class' => 'App\Entity\TypeCompetition',
-                'label' => 'Competition',
+            ->add('categories',EntityType::class, array(
+                'class' => 'App\Entity\Categories',
+                'label' => 'Categories',
                 'choice_label' => function ($user) {
                 return $user->getLibelle();
                 },

@@ -9,34 +9,34 @@ use App\Repository\CompetitionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Competition;
 use App\Form\CompetitionType;
-use App\Repository\TypeCompetitionRepository;
 use App\Entity\Joueurs;
 use App\Repository\JoueursRepository;
 use App\Form\JoueurMatchType;
 use App\Repository\MatchsRepository;
 use App\Entity\Matchs;
 use App\Form\MatchsType;
+use App\Repository\CategoriesRepository;
 
 class CompetitionParamController extends AbstractController
 {
     /**
      * @Route("/dirigeant/param/competition", name="competition_param")
      */
-    public function index(Request $request,CompetitionRepository $competRepo, TypeCompetitionRepository $typeCompetRepo): Response
+    public function index(Request $request,CompetitionRepository $competRepo, CategoriesRepository $categoriesRepo): Response
     {
         
         // recuperation de la liste des competition
         $listeCompet = $competRepo->findAll();
         
         // recuperation de la liste des Types competition
-        $listeTypeCompet = $typeCompetRepo->findAll();
+        $listeCategories = $categoriesRepo->findAll();
         
         foreach ($listeCompet as $compet){
             $competition = new Competition();
             $competition = $compet;
-            foreach ($listeTypeCompet as $typeCompet){
-                if ($competition->getTypeCompetition() == $typeCompet){
-                    $competition->setTypeCompetition($typeCompet);
+            foreach ($listeCategories as $categorie){
+                if ($competition->getCategories() == $categorie){
+                    $competition->setCategories($categorie);
                 }
             }
         }
@@ -54,10 +54,10 @@ class CompetitionParamController extends AbstractController
      * @Route("/dirigeant/param/competition/modifier/{id}", name="compet_param_modif")
      *
      */
-    public function gerer(Request $request, CompetitionRepository $competRepo, JoueursRepository $joueursRepo, TypeCompetitionRepository $typeCompetRepo, int $id = null): Response
+    public function gerer(Request $request, CompetitionRepository $competRepo, JoueursRepository $joueursRepo, CategoriesRepository $categoriesRepo, int $id = null): Response
     {
         // recuperation de la liste des Types competition
-        $listeTypeCompet = $typeCompetRepo->findAll();
+        $listeCategories = $categoriesRepo->findAll();
         
         // recuperation de tous les joueurs tries sur le nom
         $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
@@ -66,9 +66,9 @@ class CompetitionParamController extends AbstractController
             // recuperation de l enregistrements selectionne
             $competition = $competRepo->find($id);
             if ($competition) {
-                foreach ($listeTypeCompet as $typeCompet){
-                    if ($competition->getTypeCompetition() == $typeCompet){
-                        $competition->setTypeCompetition($typeCompet);
+                foreach ($listeCategories as $categories){
+                    if ($competition->getCategories() == $categories){
+                        $competition->setCategories($categories);
                     }
                 }
                 $form = $this->createForm(CompetitionType::class,$competition);
