@@ -24,13 +24,16 @@
         	<h4 style="color: white">Liste des licenciés Luçonnais</h4>
 		{% endif %}
 		<br>
-        <table class="table table-dark table-sm table-borderless w-auto mw-100" data-toggle="table" >
+        <table class="table table-dark table-sm table-borderless  mw-100" data-toggle="table" >
         <thead>
           <tr >
           	<th align="center" style="align-content: middle;">Photo</th>
             <th data-sortable="true">Nom</th>
             <th>Prénom</th>
             <th data-sortable="true">Classement</th>
+            {% if categorie == 'tous'  %}
+            	<th data-sortable="true">Catégorie</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -45,6 +48,7 @@
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
             <td>{{ joueur.classement }}</td>
+            <td>{{ joueur.libelleCat }}</td>
           </tr>
          {% elseif categorie == joueur.libelleCat %} 
           <tr>
