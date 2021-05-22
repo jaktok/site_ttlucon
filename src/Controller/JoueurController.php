@@ -43,6 +43,7 @@ class JoueurController extends AbstractController
             // recuperation de tous les joueurs
             $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
             // recuperation du resultat dans un tableau licencies a passer a la vue
+            $this->licencies = array();
             foreach($listeJoueurs as $player)
             {
                 $licencie = new Licencie();

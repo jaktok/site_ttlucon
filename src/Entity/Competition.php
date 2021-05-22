@@ -41,6 +41,7 @@ class Competition
 
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="competition")
+     * @ORM\JoinColumn(name="categories_id", referencedColumnName="id", nullable=true)
      */
     private $categories;
 
