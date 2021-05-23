@@ -50,7 +50,7 @@
            		<td>non</td>
            	{% endif %}           
              <td><a href="{{ path('partenaire_param_modif', {'id': partenaire.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_partenaire', {'id': partenaire.id})}}" class="btn btn-primary">Supprimer</a></td>
+     		<td><a href="{{ path('supprime_partenaire', {'id': partenaire.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ partenaire.nom }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}

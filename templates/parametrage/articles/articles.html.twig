@@ -68,7 +68,7 @@ jQuery(document).ready(function() {
            		<td>non</td>
            	{% endif %}           
              <td><a href="{{ path('article_param_modif', {'id': article.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_article', {'id': article.id})}}" class="btn btn-primary">Supprimer</a></td>
+     		<td><a href="{{ path('supprime_article', {'id': article.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ article.titre }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}

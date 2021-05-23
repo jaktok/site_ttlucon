@@ -40,7 +40,7 @@ endblock %} {% block body %}
            	<td>{{ compet.date|date('d-m-Y')  }}</td>
            	<td>{{ compet.categories.libelle }}</td>
              <td><a href="{{ path('compet_param_modif', { 'id': compet.id})}}" class="btn btn-primary">Modifier</a></td>
-             <td><a href="{{ path('supprime_compet', { 'id': compet.id})}}" class="btn btn-primary" onclick="return confirm('Suppression de {{ compet.nom }} et des matchs des joueurs liés ?');" >Supprimer</a></td>
+             <td><a href="{{ path('supprime_compet', { 'id': compet.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ compet.nom }} et des matchs des joueurs liés ?');" >Supprimer</a></td>
              <td><a href="{{ path('renseigne_compet', { 'id': compet.id})}}" class="btn btn-primary" >Gérer</a></td>
           </tr>
         {% endfor %}

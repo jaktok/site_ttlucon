@@ -59,7 +59,7 @@
            	{% endif %}
            	<td>{{ joueur.classement }}</td>
              <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modifier</a></td>
-             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-primary" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supprimer</a></td>
+             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supprimer</a></td>
           </tr>
         {% endfor %}
 		{% endif %}

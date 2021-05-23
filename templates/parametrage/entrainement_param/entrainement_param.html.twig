@@ -39,7 +39,7 @@ endblock %} {% block body %}
            	<td>{{ entrainement.heureFin|date('H:i') }}</td>
            	<td>{{ entrainement.categorie.libelle }}</td>
              <td><a href="{{ path('entrainement_param_modif', {'id': entrainement.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_entrainement', {'id': entrainement.id})}}" class="btn btn-primary">Supprimer</a></td>
+     		<td><a href="{{ path('supprime_entrainement', {'id': entrainement.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ entrainement.libelle }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}

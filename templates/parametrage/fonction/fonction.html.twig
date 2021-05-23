@@ -34,7 +34,7 @@ endblock %} {% block body %}
            	<td>{{ fonction.position }}</td>
            	<td>{{ fonction.joueurs.nom }} {{ fonction.joueurs.prenom }}</td>
              <td><a href="{{ path('fonction_param_modif', {'id': fonction.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_fonction', {'id': fonction.id})}}" class="btn btn-primary">Supprimer</a></td>
+     		<td><a href="{{ path('supprime_fonction', {'id': fonction.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ fonction.libelle }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}

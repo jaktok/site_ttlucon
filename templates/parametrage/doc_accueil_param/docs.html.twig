@@ -54,7 +54,7 @@
            	{% endif %}     
            	<td>{{ doc.position }}</td>      
              <td><a href="{{ path('doc_param_modif', {'id': doc.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_doc', {'id': doc.id})}}" class="btn btn-primary">Supprimer</a></td>
+     		<td><a href="{{ path('supprime_doc', {'id': doc.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ doc.libelle }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}
