@@ -51,6 +51,11 @@
 			</tr>
 			<tr>
 			{% if is_granted('ROLE_DIRIGEANT') %}
+				<td class="text-center"><a class="nav-link" href="/dirigeant/param/doc">Docs Accueil</a></td>
+			{% endif %}
+			</tr>
+			<tr>
+			{% if is_granted('ROLE_DIRIGEANT') %}
 				<td class="text-center"><a class="nav-link" href="/dirigeant/param/partenaire">Partenaires</a></td>
 			{% endif %}
 			</tr>

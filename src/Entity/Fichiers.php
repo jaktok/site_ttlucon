@@ -52,6 +52,11 @@ class Fichiers
      */
     private $articles;
 
+    /**
+     * @ORM\OneToOne(targetEntity=DocAccueil::class, mappedBy="fichier", cascade={"persist", "remove"})
+     */
+    private $docAccueil;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -147,6 +152,28 @@ class Fichiers
     public function setArticles(?Articles $articles): self
     {
         $this->articles = $articles;
+
+        return $this;
+    }
+
+    public function getDocAccueil(): ?DocAccueil
+    {
+        return $this->docAccueil;
+    }
+
+    public function setDocAccueil(?DocAccueil $docAccueil): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($docAccueil === null && $this->docAccueil !== null) {
+            $this->docAccueil->setFichier(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($docAccueil !== null && $docAccueil->getFichier() !== $this) {
+            $docAccueil->setFichier($this);
+        }
+
+        $this->docAccueil = $docAccueil;
 
         return $this;
     }

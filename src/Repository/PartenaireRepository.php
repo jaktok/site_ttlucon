@@ -22,19 +22,18 @@ class PartenaireRepository extends ServiceEntityRepository
     // /**
     //  * @return Partenaire[] Returns an array of Partenaire objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByActif()
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('p.actif = true')
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Partenaire

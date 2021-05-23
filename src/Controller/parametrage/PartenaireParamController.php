@@ -129,18 +129,22 @@ class PartenaireParamController extends AbstractController
         // recuperation de l enregistrements selectionne
         $partenaire = $partenaireRepo->find($id);
         if ($partenaire) {
+            $idPart = $partenaire->getFichier()->getId();
+            // On supprimer le partenaire
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($partenaire);
+            $entityManager->flush();
+            
             // On supprime le fichiers lié au partenaire
-            $fichier = $partenaireRepo->findByArticle($id);
+            $fichier = $fichierRepo->find($idPart);
+           // dd($fichier,$partenaire->getFichier()->getId());
             if ($fichier){
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->remove($fichier);
                     $entityManager->flush();
             }
             
-            // On supprimer le partenaire
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($partenaire);
-            $entityManager->flush();
+
         }
         
         return $this->redirectToRoute('partenaire_param');
