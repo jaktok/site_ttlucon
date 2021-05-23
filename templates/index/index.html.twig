@@ -1,209 +1,224 @@
-{% extends 'base.html.twig' %} {% block title %}TT Luçonnais{%
-endblock %} {% block body %}
+{% extends 'base.html.twig' %} {% block title %}TT Luçonnais{% endblock
+%} {% block body %}
 <meta charset="UTF-8" />
 <style>
-
 </style>
-	
-	
+
+
 <div class="container">
 
-<div class="row">
-	<!-- Colonne 1 --> 
-	<div class="col-sm-2 bg-light" >
-		<div class="row">
-			<div class="col-sm-12">
-				<img alt="" src="{{ asset('images/logo2.gif') }}" class="img-thumbnail" alt="Responsive image" align="top">
-			</div>
-		</div>
-					<br>
-			
-		<div class="row overflow-auto " align="center">
-			<div class="col-sm-12">
-		
-			<p>--------------------------
-	<br><br><br>				
-				Espace partenaires
-				<br><br><br>
-			--------------------------</p>
-			</div>
-		</div>
-		<div class="row overflow-auto" align="center">
-			<div class="col-sm-12">
-				<h4> icone excel vers calendrier<h4 >
-								<br>
-				-------------------
-			</div>
-		</div>
-		<div class="row overflow-auto" align="center">
-			<div class="col-sm-12">
-				<h4 >Diverssssssssssssssssssss<h4 >
-				<br>
-				--------------------------
-			</div>
-		</div>
-	</div>
-	
-	
-	{% set pg = page %}
-		<!-- Colonne 2 -->
-		
-	<div class="col-sm-8" >
-	    <div class="row" align="center">
-       		<div class="col-sm-12">
-				<img alt="" src="{{ asset('images/bandeau.png') }}" class="img-thumbnail" alt="Responsive image" align="top">
-			</div>
-		</div>   			
-	
-		<!-- Pagination -->
-		{% apply spaceless %}
-		{% if nbPages > 1 %}
-		
-		    {# Number of page around current page+1 #}
-		    {% set nearbyPagesLimit = 4 %}
-		
-		    <nav class="bg-light">
-		        <ul class="pagination">
-		            {% if currentPage != 1 %}
-		            <li>
-		                <a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp; </a>
-		            </li>
-		            {% endif %}
-		            {% for i in 1..nbPages %}
-		                {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
-		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
-		                {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
-		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
-		                {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
-		                {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
-		                {% else %}
-		                    <li {% if currentPage == loop.index  %} class="page-item" {% endif %}>
-		                        <a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{ loop.index }}</a>
-		                    </li>
-		                {% endif %}
-		            {% endfor %}
-		            {% if currentPage != nbPages %}
-		            <li>
-		                <a class="page-link" href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a>
-		            </li>
-		            {% endif %}
-		        </ul>
-		    </nav>
-				<!-- Fin pagination -->
-				  
-		{% endif %}
-		{% endapply %}
-		<!-- Fin pagination -->
-		{% if tabTabArticles is defined %}
-        {% if tabTabArticles is not empty %}
-        {% for article in tabTabArticles[pg] %}
-        <div class="row mt-3 align-items-center" align="center" style="background-color: #F0FFFF">
-        	<div class="col-sm-1">
-				{{ article.date|date('d-m-Y') }}
-			</div>
-			<div class="col-sm-11">
-				<h2>{{ article.titre }}</h2>
-			</div>
-		</div>
-		{% if article.fichier is defined %}
-    	{% for nomPhoto in article.fichier %}
-			<div class="row mt-3" align="center" >
+	<div class="row">
+		<!-- Colonne 1 -->
+		<div class="col-sm-2 bg-light">
+			<div class="row">
 				<div class="col-sm-12">
-						<img src="{{ asset('/articles/'~nomPhoto.nom) }}" alt="" class="img-fluid" width="{{article.auteur}}%">
+					<img alt="" src="{{ asset('images/logo2.gif') }}"
+						class="img-thumbnail" alt="Responsive image" align="top">
 				</div>
 			</div>
-		{% endfor %}
-		{% endif %}
-		<div class="row mt-3" align="center">
-			<div class="col-sm-12">
-				{{ article.text|raw }}
+			<br>
+			<div class="row mt-4">
+				<div class="col">
+					<hr color="black">
+				</div>
 			</div>
-		</div>
-			<div class="row" >
-    <div class="col" ><hr color="black"></div>
-   </div>
-       {% endfor %}
-       {% endif %} 
-       {% endif %}
+			<div class="row overflow-auto align-items-center" align="center">
+				<div class="col-sm-12">
+				<p>Nos partenaires</p>
+					<div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade"
+						data-ride="carousel" data-interval="7000">
+						<div class="carousel-inner">
+							{% if listePartenaires is defined %}
+							{% set cpt = 0 %}
+							{% for partenaire in listePartenaires %}
+							{% set nmPhoto = partenaire.fichier.nom %} 
+							{% if cpt == 0 %}
+							<div class="carousel-item active">
+									<img
+									src="{{ asset('images/'~nmPhoto) }}"
+									alt="" class="img-fluid">
 
-		<!-- Pagination -->
-		{% apply spaceless %}
-		{% if nbPages > 1 %}
-		
-		    {# Number of page around current page+1 #}
-		    {% set nearbyPagesLimit = 4 %}
-		
-		    <nav>
-		        <ul class="pagination">
-		            {% if currentPage != 1 %}
-		            <li>
-		                <a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp; </a>
-		            </li>
-		            {% endif %}
-		            {% for i in 1..nbPages %}
-		                {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
-		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
-		                {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
-		                    <li class="disabled"><a class="page-link" href="#">...</a></li>
-		                {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
-		                {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
-		                {% else %}
-		                    <li {% if currentPage == loop.index  %} class="page-item" {% endif %}>
-		                        <a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{ loop.index }}</a>
-		                    </li>
-		                {% endif %}
-		            {% endfor %}
-		            {% if currentPage != nbPages %}
-		            <li>
-		                <a class="page-link" href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a>
-		            </li>
-		            {% endif %}
-		        </ul>
-		        </nav>
-		  
-		{% endif %}
-		{% endapply %}
-		<!-- Fin pagination -->
-	</div>
-	
-	
-	<!-- Colonne 3 -->
-	<div class="col-sm-2 bg-light" align="left">
-		<div class="row">
-			<div class="col-sm-12">
-				<img alt="" src="{{ asset('images/logo1.gif') }}" class="img-thumbnail" alt="Responsive image" align="top">
-			</div>
-		</div>
-		<br>
-		<div class="row" align="center">
-			<div class="col-sm-12">
-				<h4>Actualités FFTT</h4>
-			</div>
-		</div>
-		{% for actu in actus_club %}
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="row">
-					<div class="col-sm-12" align="center">
-						{{ actu.titre }}
+							</div>
+							{% set cpt = 1 %}
+							{% else %}
+							<div class="carousel-item">
+									<img
+									src="{{ asset('images/'~nmPhoto) }}"
+									alt="" class="img-fluid">
+
+							</div>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-12" align="center">
-						<a
-						href="{{ actu.url }}" target="_blank"> <img
-						src="{{ actu.photo }}" class="img-thumbnail" alt="Responsive image"
-						width="50%" height="50%">
-						</a>
-					</div>	
+			</div>
+			<div class="row mt-3">
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			<div class="row overflow-auto mt-5" align="center">
+				<div class="col-sm-12">
+					<h4>
+						icone excel vers calendrier
+						<h4>
+							<br> -------------------
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			<div class="row overflow-auto" align="center">
+				<div class="col-sm-12">
+					<h4>
+						Diverssssssssssssssssssss
+						<h4>
+							<br> --------------------------
 				</div>
 			</div>
 		</div>
-		{% endfor %}
+
+
+		{% set pg = page %}
+		<!-- Colonne 2 -->
+
+		<div class="col-sm-8">
+			<div class="row" align="center">
+				<div class="col-sm-12">
+					<img alt="" src="{{ asset('images/bandeau.png') }}"
+						class="img-thumbnail" alt="Responsive image" align="top">
+				</div>
+			</div>
+
+			<!-- Pagination -->
+			{% apply spaceless %} {% if nbPages > 1 %} {# Number of page around
+			current page+1 #} {% set nearbyPagesLimit = 4 %}
+
+			<nav class="bg-light">
+				<ul class="pagination">
+					{% if currentPage != 1 %}
+					<li><a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp;
+					</a></li> {% endif %} {% for i in 1..nbPages %} {% if 0 == (currentPage -
+					nearbyPagesLimit) - loop.index %} {# dot before #}
+					<li class="disabled"><a class="page-link" href="#">...</a></li> {%
+					elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot
+					after #}
+					<li class="disabled"><a class="page-link" href="#">...</a></li> {%
+					elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide
+					all before #} {% elseif 0 > (currentPage + nearbyPagesLimit) -
+					loop.index %} {# hide all after #} {% else %}
+					<li {% if currentPage== loop.index  %} class="page-item"{% endif %}>
+						<a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{
+							loop.index }}</a>
+					</li> {% endif %} {% endfor %} {% if currentPage != nbPages %}
+					<li><a class="page-link"
+						href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a></li> {% endif
+					%}
+				</ul>
+			</nav>
+			<!-- Fin pagination -->
+
+			{% endif %} {% endapply %}
+			<!-- Fin pagination -->
+			{% if tabTabArticles is defined %} {% if tabTabArticles is not empty
+			%} {% for article in tabTabArticles[pg] %}
+			<div class="row mt-3 align-items-center" align="center"
+				style="background-color: #F0FFFF">
+				<div class="col-sm-1">{{ article.date|date('d-m-Y') }}</div>
+				<div class="col-sm-11">
+					<h2>{{ article.titre }}</h2>
+				</div>
+			</div>
+			{% if article.fichier is defined %} {% for nomPhoto in
+			article.fichier %}
+			<div class="row mt-3" align="center">
+				<div class="col-sm-12">
+					<img src="{{ asset('/articles/'~nomPhoto.nom) }}" alt=""
+						class="img-fluid" width="{{article.auteur}}%">
+				</div>
+			</div>
+			{% endfor %} {% endif %}
+			<div class="row mt-3" align="center">
+				<div class="col-sm-12">{{ article.text|raw }}</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			{% endfor %} {% endif %} {% endif %}
+
+			<!-- Pagination -->
+			{% apply spaceless %} {% if nbPages > 1 %} {# Number of page around
+			current page+1 #} {% set nearbyPagesLimit = 4 %}
+
+			<nav>
+				<ul class="pagination">
+					{% if currentPage != 1 %}
+					<li><a class="page-link" href="{{ path(url, { 'page': 1}) }}">Début&nbsp;
+					</a></li> {% endif %} {% for i in 1..nbPages %} {% if 0 == (currentPage -
+					nearbyPagesLimit) - loop.index %} {# dot before #}
+					<li class="disabled"><a class="page-link" href="#">...</a></li> {%
+					elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot
+					after #}
+					<li class="disabled"><a class="page-link" href="#">...</a></li> {%
+					elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide
+					all before #} {% elseif 0 > (currentPage + nearbyPagesLimit) -
+					loop.index %} {# hide all after #} {% else %}
+					<li {% if currentPage== loop.index  %} class="page-item"{% endif %}>
+						<a class="page-link" href="{{ path(url, { 'page': loop.index}) }}">{{
+							loop.index }}</a>
+					</li> {% endif %} {% endfor %} {% if currentPage != nbPages %}
+					<li><a class="page-link"
+						href="{{ path(url, { 'page': nbPages}) }}">&nbsp; Fin</a></li> {% endif
+					%}
+				</ul>
+			</nav>
+
+			{% endif %} {% endapply %}
+			<!-- Fin pagination -->
+		</div>
+
+
+		<!-- Colonne 3 -->
+		<div class="col-sm-2 bg-light" align="left">
+			<div class="row">
+				<div class="col-sm-12">
+					<img alt="" src="{{ asset('images/logo1.gif') }}"
+						class="img-thumbnail" alt="Responsive image" align="top">
+				</div>
+			</div>
+			<br>
+			<div class="row" align="center">
+				<div class="col-sm-12">
+					<h4>Actualités FFTT</h4>
+				</div>
+			</div>
+			{% for actu in actus_club %}
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-12" align="center">{{ actu.titre }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12" align="center">
+							<a href="{{ actu.url }}" target="_blank"> <img
+								src="{{ actu.photo }}" class="img-thumbnail"
+								alt="Responsive image" width="50%" height="50%">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
 	</div>
-</div>
 
 
-	
 
-{% endblock %}
+
+	{% endblock %}

@@ -9,6 +9,7 @@ use FFTTApi\Model\Equipe;
 use FFTTApi\Model\Rencontre\RencontreDetails;
 use App\Repository\ArticlesRepository;
 use phpDocumentor\Reflection\Types\Array_;
+use App\Repository\PartenaireRepository;
 
 class IndexController extends AbstractController
 {
@@ -30,8 +31,11 @@ class IndexController extends AbstractController
      *
      * @Route("/index/{page}", name="index")
      */
-    public function index(ArticlesRepository $articleRepo,int $page=1): Response
+    public function index(ArticlesRepository $articleRepo,PartenaireRepository $partenaireRepo, int $page=1): Response
     {
+        
+        // recuperation de tous les parenaire
+        $listePartenaires = $partenaireRepo->findBy(array(),array('nom' => 'DESC'));
         
         $nbArticlesPage = $this->ini_array['nb_articles_page'];
         $url = 'index';
@@ -75,6 +79,7 @@ class IndexController extends AbstractController
             'current'  => $page,
             'nbPages' => $j,
             'url' => $url,
+            'listePartenaires' => $listePartenaires,
         ]);
     }
 }

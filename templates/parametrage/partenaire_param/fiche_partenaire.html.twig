@@ -1,6 +1,6 @@
-{% extends 'parametrage/base_parametrage.html.twig' %} {% block title %}Fiche Article{%
+{% extends 'parametrage/base_parametrage.html.twig' %} {% block title %}Fiche Partenaire{%
 endblock %} 
-{% form_theme formArticles 'bootstrap_4_layout.html.twig' %}
+{% form_theme formPartenaires 'bootstrap_4_layout.html.twig' %}
 {% block body %}
 <meta charset="UTF-8" />
 
@@ -26,69 +26,50 @@ endblock %}
 	rel="Stylesheet" type="text/css" />
 <!-- <link href="{{ asset('css/bootstrap.css') }}">-->
 
-<script type="text/javascript">
-
-
-
-jQuery(document).ready(function() {
-			
-            $('.js-datepicker').datepicker({
-            dateFormat: "dd/mm/yy"
-            });
-        });
-        
-</script>
 
    <div class="container">
 
-{{ form_start(formArticles) }}
+{{ form_start(formPartenaires) }}
 <div class="container">
-	<h1>Article</h1>
+	<h1>Partenaire</h1>
 
 
 
 	<div class="row">
-		<div class="col-sm-3" >
-			{{ form_row(formArticles.joueur) }}
+		<div class="col-sm-6" >
+			{{ form_row(formPartenaires.nom) }}
 		</div>
-		<div class="col-sm-3">
-			{{ form_row(formArticles.titre) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(formArticles.date) }}
-		</div>
+
 		<div class="col-sm-3 mt-4" >
-			{{ form_row(formArticles.en_ligne) }}
+			{{ form_row(formPartenaires.actif) }}
 		</div>
 	</div>
 	
-	{% if nomPhotos is defined and nomPhotos is not empty %}
-    {% for nomPhoto in nomPhotos %}
+	{% if nomFichier is defined and nomFichier is not empty %}
 	<div class="row"  >
 		<div class="col-sm-12">
 			<div class="row border border-primary mt-3"  >
 				<div class="col-sm-4">
 					<div class="row">
 						<div class="col-sm-4">
-							{{ form_row(formArticles.fichier) }}
+							{{ form_row(formPartenaires.fichier) }}
 						</div>
 					</div>
 					<br><br><br>
 					<div class="row">
 						<div class="col-sm-4">
-							<a href="{{ path('supprime_image_article', { 'id': idArticle})}}"  class="btn btn-primary" aria-current="page" >Effacer</a>
+							
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="col-sm-8 h-auto">
-						<img src="{{ asset('/articles/'~nomPhoto) }}" alt="" class="img-fluid" >
+						<img src="{{ asset('/images/'~nomFichier) }}" alt="" class="img-fluid" >
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	{% endfor %}
 	{% else %}
 	<div class="row"  >
 		<div class="col-sm-12">
@@ -96,7 +77,7 @@ jQuery(document).ready(function() {
 				<div class="col-sm-4">
 					<div class="row">
 						<div class="col-sm-4">
-							{{ form_row(formArticles.fichier) }}
+							{{ form_row(formPartenaires.fichier) }}
 						</div>
 					</div>
 					<br><br><br>
@@ -114,16 +95,6 @@ jQuery(document).ready(function() {
 		</div>
 	</div>
 	{% endif %}
-		<div class="row mt-3">
-		<div class="col-sm-3 " >
-			{{ form_row(formArticles.auteur) }}
-		</div>
-	</div>
-	<div class="row mt-3">
-		<div class="col-sm-12 ">
-			{{ form_row(formArticles.text) }}
-		</div>
-	</div>
  
 </div>
 	
@@ -132,9 +103,9 @@ jQuery(document).ready(function() {
 		<button type="submit" class="btn btn-success">Enregistrer</button>
  		</div>
  	<div class="col-sm-2">
- 		<a href="{{ path('articles') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+ 		<a href="{{ path('partenaire_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
  	</div>
  	</div>
 </div>
-{{ form_end(formArticles) }}
+{{ form_end(formPartenaires) }}
 {% endblock %}

@@ -55,10 +55,13 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 				<li class="nav-item"><a class="nav-link" href="/capitaine/param/resultat">Résultats</a>	</li>
 				{% endif %}
 				{% if is_granted('ROLE_DIRIGEANT') %}
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></li>
+				{% endif %}
+				{% if is_granted('ROLE_DIRIGEANT') %}
 				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/infos/club">Infos club</a></li>
 				{% endif %}
 				{% if is_granted('ROLE_DIRIGEANT') %}
-				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></li>
+				<li class="nav-item"><a class="nav-link" href="/dirigeant/param/partenaire">Partenaires</a></li>
 				{% endif %}
 				{% if is_granted('ROLE_USER') %}
 				<li class="nav-item"><a class="nav-link" href="/logout">Deconnexion</a></li>
