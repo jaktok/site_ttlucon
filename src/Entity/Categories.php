@@ -45,7 +45,7 @@ class Categories
     private $entrainements;
     
     /**
-     * @ORM\OneToMany(targetEntity=Competition::class, mappedBy="categorie")
+     * @ORM\OneToMany(targetEntity=Competition::class, mappedBy="categories")
      */
     private $competition;
 

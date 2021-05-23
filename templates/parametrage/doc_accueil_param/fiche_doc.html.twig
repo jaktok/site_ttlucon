@@ -34,9 +34,32 @@
 <div class="container">
 	<h1>Document accueil</h1>
 
+     <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Actif</th>
+            <th>Position</th>
+             </tr>
+        </thead>
+        <tbody>
+        {% if docs is defined %}
+        {% for doc in docs %}
+          <tr>
+           	<td>{{ doc.libelle }}</td>
+            {% if doc.actif == 1  %}
+           		<td>oui</td>
+           	{% else %}
+           		<td>non</td>
+           	{% endif %}     
+           	<td>{{ doc.position }}</td>      
+          </tr>
+        {% endfor %}
+       {% endif %} 
+        </tbody>
+      </table>
 
-
-	<div class="row">
+	<div class="row mt-5" >
 		<div class="col-sm-6" >
 			{{ form_row(formDocs.libelle) }}
 		</div>
