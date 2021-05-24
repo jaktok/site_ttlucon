@@ -32,6 +32,11 @@ class Partenaire
      */
     private $fichier;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $texte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Partenaire
     public function setFichier(?Fichiers $fichier): self
     {
         $this->fichier = $fichier;
+
+        return $this;
+    }
+
+    public function getTexte(): ?string
+    {
+        return $this->texte;
+    }
+
+    public function setTexte(?string $texte): self
+    {
+        $this->texte = $texte;
 
         return $this;
     }

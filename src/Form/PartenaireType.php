@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class PartenaireType extends AbstractType
 {
@@ -15,6 +16,10 @@ class PartenaireType extends AbstractType
         $builder
             ->add('nom')
             ->add('actif')
+            ->add('texte',CKEditorType::class,[
+                'label' => 'Description partenaire',
+                'attr' => array('cols' => '5', 'rows' => '10'),
+            ])
             ->add('fichier',FileType::class,[
                 'label' => 'Image',
                 'multiple' => false,

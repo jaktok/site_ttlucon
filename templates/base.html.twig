@@ -45,6 +45,8 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="/bureau">Bureau</a>
 						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path ('partenaire') }}">Partenaires</a>
+						<div class="dropdown-divider"></div>
 						{% set cat = 'tous' %}
 						<a class="dropdown-item" href="{{ path ('joueur', {'cat': cat} ) }}">Liste des joueurs</a>
 					</div></li>
