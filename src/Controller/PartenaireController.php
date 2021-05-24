@@ -17,7 +17,7 @@ class PartenaireController extends AbstractController
     public function index(Request $request, PartenaireRepository $partenaireRepo, FichiersRepository $ficRepo): Response
     {
         // recuperation de tous les partenaire
-        $listePartenaires = $partenaireRepo->findBy(array(),array('nom' => 'DESC'));
+        $listePartenaires = $partenaireRepo->findByActif();
         $tabPartenaires = array();
         $i = 0;
         foreach ($listePartenaires as $partenaire){
