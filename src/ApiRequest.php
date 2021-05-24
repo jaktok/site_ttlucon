@@ -68,6 +68,47 @@ class ApiRequest
         return $result;
     }
     
+    // cree pour gerer les cas ou la licence n existe pas cote fftt
+    public function getPartiesParLicence(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            return null;
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    // cree pour gerer les cas ou la licence n existe pas cote fftt
+    public function getClassementDetail(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            return null;
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
     // creee pour gérer le cas de maj auto si on ne trouve pas avec le numéro de licence 
     // on renvoie null pour gerer le cas plutot qu une exception
     public function getJoueurDetail(string $request, array $params = [], string $queryParameter = null){

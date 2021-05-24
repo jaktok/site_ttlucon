@@ -29,6 +29,7 @@ use FFTTApi\Service\PointCalculator;
 use FFTTApi\Service\RencontreDetailsFactory;
 use FFTTApi\Model\UnvalidatedPartie;
 use FFTTApi\Service\Utils;
+use phpDocumentor\Reflection\Types\Array_;
 
 class FFTTApi
 {
@@ -291,9 +292,19 @@ class FFTTApi
     public function getClassementJoueurByLicence(string $licenceId): Classement
     {
         try {
-            $joueurDetails = $this->apiRequest->get('xml_joueur', [
+            $joueurDetails = $this->apiRequest->getClassementDetail('xml_joueur', [
+                'licence' => $licenceId,
+            ]);
+            
+            if ($joueurDetails==null){
+                return new Classement(new \DateTime(), "500", "500", "500", "0", "0", "0", "500", "500");
+            }
+            
+            
+            $joueurDetails = $this->apiRequest->getClassementDetail('xml_joueur', [
                 'licence' => $licenceId,
             ])['joueur'];
+            
         } catch (NoFFTTResponseException $e) {
             throw new JoueurNotFound($licenceId);
         }
@@ -351,7 +362,17 @@ class FFTTApi
     {
 
         try {
-            $parties = $this->apiRequest->get('xml_partie_mysql', [
+            
+            $parties = $this->apiRequest->getPartiesParLicence('xml_partie_mysql', [
+                'licence' => $joueurId,
+            ]);
+            
+            $tabVide = array();
+            if ($parties==null){
+                return $tabVide;
+            }
+            
+            $parties = $this->apiRequest->getPartiesParLicence('xml_partie_mysql', [
                 'licence' => $joueurId,
             ])['partie'];
             $parties = $this->wrappedArrayIfUnique($parties);

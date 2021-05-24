@@ -68,7 +68,10 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="/statistique">Statistiques</a>
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
+						<div class="dropdown-divider"></div>
+						{% set categ = 'tous' %}
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': categ} ) }}">Stats toutes catégories</a>
 					</div></li>
 
 				<li class="nav-item dropdown"><a
@@ -85,7 +88,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="/statistique">Statistiques</a>
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
 					</div></li>
 
 				<li class="nav-item dropdown"><a
@@ -98,6 +101,8 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 							class="dropdown-item" href="/calendrier">Calendrier</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('joueur',{'cat': cat} ) }}">Liste des joueurs</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
 					</div></li>
 
 				<li class="nav-item dropdown"><a

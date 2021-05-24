@@ -1,4 +1,94 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <meta charset="UTF-8" />
+
+<div class="container">
+			<div class="row" align="center">
+				<div class="col-sm-12">
+					<h1>Statistiques catégorie {{categorie}} </h1>
+				</div>
+			</div>
+			
+			{% if tabJoueursTTL is defined %} {% if tabJoueursTTL is not empty%}
+			 {% set place = 1 %}
+			 {% for joueur in tabJoueursTTL %}
+		<div class="container border">
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-1 align-items-center" style="background-color: #CC5500" align="center">
+					<h4>N° {{ place }}</h4>
+				</div>
+		</div>	
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-5">
+					<div class="row" align="center">
+						<div class="col-sm-3" style="background-color: #F5F5DC" >
+							<img src="{{ asset('/images/'~joueur.joueur.photo.nom) }}" alt="" width="50">
+						</div>
+						<div class="col-sm-9" align="left">
+							<h2>{{ joueur.joueur.prenom }} {{ joueur.joueur.nom }}</h2>
+						</div>
+					</div>	
+				</div>
+				<div class="col-sm-7" style="background-color: #FEFDF0">
+					<div class="row" align="center">
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Class. en cours :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueur.pointsActuel }} points</h4>
+						</div>
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Class. début :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueur.pointsDebutSaison }} points</h4>
+						</div>
+					</div>
+					<div class="row mt-2" align="center">
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Progr. pts annuel :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4> {{ joueur.pointsActuel - joueur.pointsDebutSaison}} points</h4>
+						</div>
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Progr. pts mensuel :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueur.pointsActuel - joueur.pointsMoisDernier}} points</h4>
+						</div>
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class="row mt-4" align="center"  style="background-color: #FFF0BC">
+				<div class="col-sm-1 align-items-center" align="left">
+					<p>Victoires : </p>
+				</div>
+				<div class="col-sm-4 align-items-center" align="left">
+					<h4>{{ joueur.pourcent }} % &nbsp;&nbsp; {{ joueur.victoires }} victoires - {{ joueur.defaites }} défaites </h4>
+				</div>
+				<div class="col-sm-3 align-items-center" align="left">
+					<p>N° {{ joueur.rangDep }} Départemental</p>
+				</div>
+				<div class="col-sm-2 align-items-center" align="left">
+					<p>N° {{ joueur.rangReg }} Régional</p>
+				</div>
+				<div class="col-sm-2 align-items-center" align="left">
+					<p>N° {{ joueur.rangNat }} National</p>
+				</div>
+			</div>
+		</div>
+		
+			<div class="row mt-2" >
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			{% set place = place + 1 %}
+			{% endfor %} {% endif %} {% endif %}
+
+</div>
+
 {% endblock %}
