@@ -1,4 +1,57 @@
 {% extends 'parametrage/base_parametrage.html.twig' %} {% block title %}Hello IndexController!{%
 endblock %} {% block body %}
 <meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+ 		    <h1>Calendrier</h1>
+ 	    </div>	
+   	    <div class="col-sm-3">
+ 		    <br><a href="{{ path('calendrier_param_new', { 'idTeam': idTeam }) }}" class="btn btn-primary mb-2" aria-current="page">Ajouter une rencontre</a>
+ 	    </div>
+         <div class="col-sm-3">
+ 		    <br><a href="{{ path('equipes_param') }}" class="btn btn-primary mb-2" aria-current="page">Retour</a>
+ 	    </div>
+    </div>
+</div>
+
+<table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th data-sortable="true">Date Rencontre</th>
+            <th>Adversaire</th>
+            <th>Domicile</th>
+            <th data-sortable="true">Phase</th>
+            <th>Modif.</th>
+            <th>Supp.</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if rencontres is defined %}
+        {% for rencontre in rencontres %}
+        <tr>
+            <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
+           	<td>{{ rencontre.adversaire }}</td>
+            {% if rencontre.domicile == 1  %}
+           		<td>Domicile</td>
+           	{% else %}
+           			<td>Exterieur</td>
+           	{% endif %}
+            <td>{{ rencontre.phase }}</td> 
+            <td><a href="{{ path('calendrier_param_modif', { 'id': rencontre.id}) }}" class="btn btn-primary">Modifier</a></td>
+            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre.id}) }}" class="btn btn-primary">Supprimer</a></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
 {% endblock %}

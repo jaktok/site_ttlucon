@@ -1,4 +1,44 @@
 {% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
 endblock %} {% block body %}
 <meta charset="UTF-8" />
+
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+   <div class="container">
+        {% if categorie == 'Adulte'  %}
+        	<h1 style="color: black">Liste des calendriers des Equipes Adultes</h1>
+		{% elseif categorie == 'Jeune'  %}
+			<h1 style="color: black">Liste des calendriers des Equipes jeunes</h1>
+		{% endif %}
+
+      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th>Adversaire</th>
+            <th>Domicile</th>
+            <th data-sortable="true">Phase</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if rencontres is defined %}
+            {% for rencontre in rencontres %}
+                {% if rencontre.equipeType.categories.libelle == categorie %}
+        
+                    <tr>
+                    <td>{{ rencontre.adversaire }}</td>
+                    <td>{{ rencontre.domicile }}</td>
+                    <td>{{ rencontre.phase }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+		{% endif %}
+        </tbody>
+      </table>
+    </div>
+
 {% endblock %}

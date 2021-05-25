@@ -22,19 +22,19 @@ class RencontresRepository extends ServiceEntityRepository
     // /**
     //  * @return Rencontres[] Returns an array of Rencontres objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByEquipe($value)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+            ->andWhere('r.equipeType = :val')
             ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
+            ->orderBy('r.date_rencontre', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Rencontres
