@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use App\Repository\EquipeTypeRepository;
-use App\Repository\CategoriesRepository;
+
 use App\Entity\EquipeType;
 
 use App\Form\PrevisionEquipeType;
@@ -19,28 +19,10 @@ class EquipesParamController extends AbstractController
     /**
      * @Route("/dirigeant/param/equipes", name="equipes_param")
      */
-    public function equipesList(EquipeTypeRepository $equipes, CategoriesRepository $categoriesRepo): Response
+    public function equipesList(EquipeTypeRepository $equipes): Response
     {
-
-        // recuperation de la liste des categories
-        $listeCategories = $categoriesRepo->findAll();
-
-        $listeEquipes = $equipes->findAll();
-
-        $EquipeNew = new EquipeType();
-
-        $libCat;
-            foreach ($listeCategories as $categ){
-                if ($EquipeNew->getCategories() == $categ){
-                    $EquipeNew->setCategories($categ);
-                    $libCat = $categ->getLibelle();
-                }
-                
-            }
-
         return $this->render('parametrage/equipes_param/equipes_param.html.twig', [
             'equipes' => $equipes->findAll(),
-            'libCategorie' => $libCat,
         ]);
     }
 
@@ -49,7 +31,7 @@ class EquipesParamController extends AbstractController
      * @Route("/dirigeant/param/equipes/modifier/{id}", name="equipes_param_modif")
      * 
      */
-    public function createEquipe(Request $request, EquipeType $equipeTypes)
+    public function createEquipe(Request $request, EquipeType $equipeTypes = null)
     {
 
         if(!$equipeTypes)

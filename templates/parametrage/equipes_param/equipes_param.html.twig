@@ -28,10 +28,9 @@ Hello IndexController!
         <thead>
           <tr>
             <th data-sortable="true">Nom</th>
-            <th>Division</th>
+            <th data-sortable="true">Division</th>
             <th>Joueurs</th>
-            <th>Categorie</th>
-            <th>Saison</th>
+            <th data-sortable="true">Saison</th>
             <th>Calendrier</th>
             <th>Modif.</th>
             <th>Supp.</th>
@@ -49,9 +48,8 @@ Hello IndexController!
               {{ joueurs.getPrenom() }}<br>
             {% endfor %}
             </td>
-            <td>{{ equipe.libCat }}</td>
            	<td>{{ equipe.saison }}</td>
-            <td><a href="{{ path('equipes_param_modif', { 'id': equipe.id})}}" class="btn btn-primary">Consulter</a></td>
+            <td><a href="{{ path('calendrier_param', { 'id': equipe.id}) }}" class="btn btn-primary">Consulter</a></td>
             <td><a href="{{ path('equipes_param_modif', { 'id': equipe.id})}}" class="btn btn-primary">Modifier</a></td>
             <td><a href="{{ path('supprime_equipe', { 'id': equipe.id})}}" class="btn btn-primary">Supprimer</a></td>
         </tr>

@@ -1,4 +1,48 @@
 {% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
-endblock %} {% block body %}
+endblock %} 
+{% block body %}
 <meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+   <div class="container">
+        {% if categorie == 'Adulte'  %}
+        	<h1 style="color: black">Liste des Equipes Adultes</h1>
+		{% elseif categorie == 'Jeune'  %}
+			<h1 style="color: black">Liste des Equipes jeunes</h1>
+		{% endif %}
+
+      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th data-sortable="true" data-field="nom">Nom</th>
+            <th>Division</th>
+            <th>Membre</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if equipes is defined %}
+            {% for equipe in equipes %}
+                {% if equipe.categories.libelle == categorie %}
+                    <tr>
+                        <td>{{ equipe.nom }}</td>
+                        <td>{{ equipe.division }}</td>
+                        <td>
+                            {% for joueurs in equipe.joueur %}
+                            {{ joueurs.getNom() }}
+                            {{ joueurs.getPrenom() }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+		{% endif %}
+        </tbody>
+      </table>
+    </div>
+
 {% endblock %}

@@ -57,9 +57,11 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Sportif adultes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="/equipe">Equipes</a> <a
-							class="dropdown-item" href="/calendrier">Calendrier</a> <a
-							class="dropdown-item" href="/resultat">Resultats</a>
+						{% set cat = 'Adulte' %}
+						<a class="dropdown-item" href="{{ path ('equipe', {'cat': cat} ) }}">Equipes</a>
+						{% set cat = 'Adulte' %} 
+						<a class="dropdown-item" href="{{ path ('calendrier', {'cat': cat} ) }}">Calendrier</a> 
+						<a class="dropdown-item" href="/resultat">Resultats</a>
 						<div class="dropdown-divider"></div>
 						{% set cat = 'Adulte' %}
 						<a class="dropdown-item" href="{{ path ('joueur', {'cat': cat} ) }}">Liste des joueurs</a>
@@ -74,9 +76,11 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Sportif jeunes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="/equipe">Equipes</a> <a
-							class="dropdown-item" href="/calendrier">Calendrier</a> <a
-							class="dropdown-item" href="/resultat">Resultats</a>
+						{% set cat = 'Jeune' %}
+						<a class="dropdown-item" href="{{ path ('equipe', {'cat': cat} ) }}">Equipes</a>
+						{% set cat = 'Jeune' %}
+						<a class="dropdown-item" href="{{ path ('calendrier', {'cat': cat} ) }}">Calendrier</a> 
+						<a class="dropdown-item" href="/resultat">Resultats</a>
 						<div class="dropdown-divider"></div>
 						{% set cat = 'Jeune' %}
 						<a class="dropdown-item" href="{{ path ('joueur',{'cat': cat} ) }}">Liste des joueurs</a>

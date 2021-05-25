@@ -28,6 +28,7 @@ class PrevisionEquipeType extends AbstractType
                 'class' => Joueurs::class,
                 'choice_label' => 'nom',
                 'multiple' => true,
+                'expanded' => false,
             ])
             ->add('photo')
             ->add('categories',EntityType::class, array(
