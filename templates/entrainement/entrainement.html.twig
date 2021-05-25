@@ -46,6 +46,14 @@ endblock %} {% block body %}
         {% endif %} 
         </tbody>
       </table>
+   	    <div class="row mt-5" align="center">
+       		<div class="col-sm-12" >
+				{% if dateVacances is defined %}
+					<h2 style="color: red">{{ dateVacances }}</h2> 
+				{% endif %}
+			</div>
+		</div> 
+      
     </div>
 </div>
 
