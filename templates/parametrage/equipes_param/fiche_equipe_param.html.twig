@@ -1,49 +1,126 @@
 {% extends 'parametrage/base_parametrage.html.twig' %} 
 {% block title %} Hello IndexController! {% endblock %} 
 {% form_theme formEquipe 'bootstrap_4_layout.html.twig' %} 
-
 {% block body %}
+<meta charset="UTF-8" />
+
 
 {{ form_start(formEquipe) }}
 
 <div class="container">
-	<h1>Fiche Equipe</h1>
-
-	<div class="row">
+	
+	<div class="row mt-2" >
+		<div class="col-sm-12" align="center">
+			<h1>Fiche Equipe</h1>
+		</div>
+	</div>	
+	<div class="row mt-3">
 		<div class="col-sm-3" >
 			{{ form_row(formEquipe.nom) }}
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-2">
 			{{ form_row(formEquipe.num_equipe) }}
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-2">
 			{{ form_row(formEquipe.division) }}
 		</div>
+		<div class="col-sm-2">
+		    {{ form_row(formEquipe.categories) }}
+ 		</div>
 		<div class="col-sm-3">
 			{{ form_row(formEquipe.saison) }}
 		</div>
 	</div>
-	<div class="row">	
-		<div class="col-sm-2">
-		    {{ form_row(formEquipe.photo) }}
- 		</div>
-		<div class="col-sm-2">
-			{{ form_row(formEquipe.joueur) }}
- 		</div>
-		<div class="col-sm-2">
-		    {{ form_row(formEquipe.categories) }}
- 		</div>
+
+	{% if formEquipe.photo is defined and formEquipe.photo is not empty %}
+	<div class="row mt-4"  >
+		<div class="col-sm-12">
+			<div class="row border border-primary mt-3"  >
+				<div class="col-sm-4">
+					<div class="row">
+						<div class="col-sm-4">
+							{{ form_row(formEquipe.photo) }}
+						</div>
+					</div>
+					<br><br><br>
+					<div class="row">
+						<div class="col-sm-4">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="col-sm-8 h-auto">
+						<img src="{{ asset('/images/'~formEquipe.photo) }}" alt="" class="img-fluid" >
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<br>
-	<div class="row">	
+	{% else %}
+	<div class="row mt-4"  >
+		<div class="col-sm-12">
+			<div class="row border border-primary mt-3"  >
+				<div class="col-sm-4">
+					<div class="row">
+						<div class="col-sm-4">
+							{{ form_row(formEquipe.photo) }}
+						</div>
+					</div>
+					<br><br><br>
+					<div class="row">
+						<div class="col-sm-4">
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="col-sm-8 h-auto">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="row mt-3">
 		<div class="col-sm-2">
-		    <button type="submit" class="btn btn-success">Enregistrer</button>
- 		</div>
- 	    <div class="col-sm-2">
- 		    <a href="{{ path('equipes_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
- 	    </div>
- 	</div>
+			<div class="row mt-3">	
+				<div class="col-sm-12" align="center">
+				    	{{ form_label(formEquipe.joueur) }}
+		 		</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-sm-12 overflow-auto" style="height: 20vh">
+				    	{{ form_widget(formEquipe.joueur) }}
+		 		</div>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<div class="row mt-5" >
+			</div>
+			<div class="row mt-5" >
+			</div>
+			<div class="row mt-5" >
+			</div>
+			<div class="row mt-5" >
+			</div>
+			<div class="row mt-5" >
+				<div class="col-sm-6">
+				    
+		 		</div>
+				<div class="col-sm-2">
+				    <button type="submit" class="btn btn-success">Enregistrer</button>
+		 		</div>
+		 	    <div class="col-sm-2">
+		 		    <a href="{{ path('equipes_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+		 	    </div>
+ 			</div>
+		</div>
+	</div>
+
+
 </div>
+
 
 
 {{ form_end(formEquipe) }} {% endblock %}
