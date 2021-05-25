@@ -44,11 +44,15 @@ class EntrainementController extends AbstractController
             if ($infosClub->getLibelle() == 'entraineurs'){
                 $entraineurs = $infosClub->getContenu();
             }
+            if($infosClub->getLibelle() =='date_arret_entrainement' ){
+                $dateVacances  = $infosClub->getContenu();
+            }
         }
         
         return $this->render('entrainement/entrainement.html.twig', [
             'entrainements' => $tabEntrainements,
             'entraineurs' => $entraineurs,
+            'dateVacances' => $dateVacances,
         ]);
     }
 }
