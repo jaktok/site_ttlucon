@@ -67,7 +67,7 @@ class PartenaireParamController extends AbstractController
         if ($images){
                 // On copie le fichier dans le dossier uploads
                 $fichier = $partenaire->getNom().'partenaire'.'.'.$images->guessExtension();
-              //  dd($this->getParameter('images_destination'),$images,$form);
+                //dd($this->getParameter('images_destination'),$images,$fichier,$form);
                 $images->move($this->getParameter('images_destination'),
                     $fichier
                     );
@@ -79,7 +79,7 @@ class PartenaireParamController extends AbstractController
             }
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
-                $image->setNom($img->getNom());
+                $image->setNom($fichier);//dd($image,$images);
                 $image->setUrl($this->getParameter('images_destination'));
                 $entityManager->flush();
             }

@@ -78,7 +78,7 @@ class DocAccueilController extends AbstractController
             }
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
-                $image->setNom($img->getNom());
+                $image->setNom($fichier);
                 $image->setUrl($this->getParameter('images_destination'));
                 $entityManager->flush();
             }

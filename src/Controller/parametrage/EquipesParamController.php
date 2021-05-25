@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Common\Persistence\ObjectManager;
+//use Doctrine\Common\Persistence\ObjectManager;
 
 use App\Repository\EquipeTypeRepository;
 
@@ -38,11 +38,11 @@ class EquipesParamController extends AbstractController
         {
             $equipeTypes = new EquipeType();
         }
-        
+       
         $form = $this->createForm(PrevisionEquipeType::class, $equipeTypes);
-
+       
         $form->handleRequest($request);
-
+        
         if($form->isSubmitted() && $form->isValid())
         {
             $entityManager = $this->getDoctrine()->getManager();
@@ -51,7 +51,7 @@ class EquipesParamController extends AbstractController
 
             return $this->redirectToRoute('equipes_param');
         }
-
+        //dd ($equipeTypes);
         return $this->render('parametrage/equipes_param/fiche_equipe_param.html.twig', [
             'formEquipe' => $form->createView(),
         ]);
