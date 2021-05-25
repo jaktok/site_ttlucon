@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
 class PrevisionEquipeType extends AbstractType
@@ -30,7 +31,12 @@ class PrevisionEquipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
             ])
-            ->add('photo')
+            ->add('photo',FileType::class,[
+                'label' => 'Image',
+                'multiple' => false,
+                'mapped' => false,
+                'required' => false
+            ])
             ->add('categories',EntityType::class, array(
             'class' => 'App\Entity\Categories',
             'label' => 'Categorie : ',
