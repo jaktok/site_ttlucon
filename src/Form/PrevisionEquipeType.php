@@ -37,6 +37,8 @@ class PrevisionEquipeType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
+            ->add('capitaine')
+            ->add('salle')
             ->add('categories',EntityType::class, array(
             'class' => 'App\Entity\Categories',
             'label' => 'Categorie : ',
