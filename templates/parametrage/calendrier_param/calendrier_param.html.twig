@@ -39,7 +39,7 @@ endblock %} {% block body %}
         {% for rencontre in rencontres %}
         <tr>
             <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
-           	<td>{{ rencontre.adversaire }}</td>
+           	<td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
             {% if rencontre.domicile == 1  %}
            		<td>Domicile</td>
            	{% else %}
@@ -47,7 +47,7 @@ endblock %} {% block body %}
            	{% endif %}
             <td>{{ rencontre.phase }}</td> 
             <td><a href="{{ path('calendrier_param_modif', { 'id': rencontre.id}) }}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre.id}) }}" class="btn btn-primary">Supprimer</a></td>
+            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre.id}) }}" class="btn btn-danger" onclick="return confirm('Suppression de {{ rencontre.dateRencontre|date('d/m/Y') }} ?');">Supprimer</a></td>
         </tr>
         {% endfor %}
         {% endif %}

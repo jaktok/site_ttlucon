@@ -23,7 +23,7 @@ class Rencontres
      * @ORM\Column(type="datetime")
      */
     private $date_rencontre;
-
+    
     /**
      * @ORM\Column(type="boolean")
      */

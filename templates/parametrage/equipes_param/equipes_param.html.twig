@@ -16,7 +16,7 @@ Hello IndexController!
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
- 		    <h1>Liste des Joueurs</h1>
+ 		    <h1>Liste des Equipes</h1>
  	    </div>	
    	    <div class="col-sm-2">
  		    <br><a href="{{ path('equipes_param_new') }}" class="btn btn-primary mb-2" aria-current="page">Créer une equipe</a>
@@ -49,9 +49,9 @@ Hello IndexController!
             {% endfor %}
             </td>
            	<td>{{ equipe.saison }}</td>
-            <td><a href="{{ path('calendrier_param', { 'id': equipe.id}) }}" class="btn btn-primary">Consulter</a></td>
+            <td><a href="{{ path('calendrier_param', { 'id': equipe.id}) }}" class="btn btn-primary">Gerer</a></td>
             <td><a href="{{ path('equipes_param_modif', { 'id': equipe.id})}}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('supprime_equipe', { 'id': equipe.id})}}" class="btn btn-primary">Supprimer</a></td>
+            <td><a href="{{ path('supprime_equipe', { 'id': equipe.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ equipe.nom }} ?');">Supprimer</a></td>
         </tr>
         {% endfor %}
         {% endif %}

@@ -16,9 +16,22 @@ endblock %} {% block body %}
 			<h1 style="color: black">Liste des calendriers des Equipes jeunes</h1>
 		{% endif %}
 
+        {% if equipes is defined %}
+            {% for equipe in equipes %}
+                {% if equipe.categories.libelle == categorie %}
+                    <table class="table table-striped" data-toggle="table" data-pagination="false">
+
+                    <tbody>
+                    <tr bordercolor="red" bgcolor= '#DAF7A6' >
+                        <td>{{ equipe.nom }}</td>
+                        <td>{{ equipe.capitaine }}</td>
+                        <td>{{ equipe.division }}</td>
+                    </tr>
+
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
+            <th>Date</th>
             <th>Adversaire</th>
             <th>Domicile</th>
             <th data-sortable="true">Phase</th>
@@ -28,14 +41,23 @@ endblock %} {% block body %}
         {% if rencontres is defined %}
             {% for rencontre in rencontres %}
                 {% if rencontre.equipeType.categories.libelle == categorie %}
-        
-                    <tr>
-                    <td>{{ rencontre.adversaire }}</td>
-                    <td>{{ rencontre.domicile }}</td>
-                    <td>{{ rencontre.phase }}</td>
-                    </tr>
+                    {% if rencontre.equipeType.id == equipe.id %}
+                        <tr>
+                            <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
+                            <td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
+                            {% if rencontre.domicile == 1  %}
+                                <td>Domicile</td>
+                            {% else %}
+                                    <td>Exterieur</td>
+                            {% endif %}
+                            <td>{{ rencontre.phase }}</td>
+                        </tr>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
+		{% endif %}
+        {% endif %} 
+        {% endfor %}
 		{% endif %}
         </tbody>
       </table>

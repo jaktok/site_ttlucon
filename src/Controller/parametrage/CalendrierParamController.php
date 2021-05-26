@@ -61,9 +61,15 @@ class CalendrierParamController extends AbstractController
     /**
      * @Route("/supprime/calendrier/{id}", name="supprime_calendrier")
      */
-    public function supprimeCalendrier(Request $request, RencontresRepository  $rencontreRepo, int $id = null): Response
+    public function supprimeCalendrier(Request $request, RencontresRepository  $rencontreRepo, int $id = null, int $idTeam=null): Response
     {
-        
+        $idEquipe= $idTeam ;
+        if($id)
+        {
+            $rencontre = $rencontreRepo->find($id);
+            $idEquipe = $rencontre->getEquipeType()->getId();
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         
         // recuperation de l enregistrements selectionne
@@ -75,7 +81,7 @@ class CalendrierParamController extends AbstractController
             $entityManager->flush();
         }
         
-        return $this->redirectToRoute('calendrier_param');
+        return $this->redirectToRoute('calendrier_param',array('id' => $idEquipe));
         
     }
 

@@ -45,11 +45,6 @@ class EquipeRencontre
     private $fichier;
 
     /**
-     * @ORM\OneToOne(targetEntity=Rencontres::class, mappedBy="equipeRencontre", cascade={"persist", "remove"})
-     */
-    private $rencontre;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="equipeRencontre")
      */
     private $categories;

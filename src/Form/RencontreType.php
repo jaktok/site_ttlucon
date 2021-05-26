@@ -28,7 +28,8 @@ class RencontreType extends AbstractType
                 'format' => 'dd/MM/yyyy',
                 'html5'  => false
               ])
-            ->add('adversaire')
+            ->add('equipeA')
+            ->add('equipeB')
             ->add('domicile', ChoiceType::class,[
                 'choices' => [
                     'oui' => true,
@@ -45,6 +46,7 @@ class RencontreType extends AbstractType
             //->add('equipeRencontre')
             ->add('equipeType', EntityType::class, [
                 'class' => EquipeType::class,
+                'label' => 'Equipe',
                 'choice_label' => 'nom',
             ])
         ;

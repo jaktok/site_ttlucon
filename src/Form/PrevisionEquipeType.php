@@ -21,7 +21,19 @@ class PrevisionEquipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
+            ->add('nom', ChoiceType::class, [
+                'choices' => [
+                    'LUCON 1' => 'LUCON 1',
+                    'LUCON 2' => 'LUCON 2',
+                    'LUCON 3' => 'LUCON 3',
+                    'LUCON 4' => 'LUCON 4',
+                    'LUCON 5' => 'LUCON 5',
+                    'LUCON 6' => 'LUCON 6',
+                    'LUCON 7' => 'LUCON 7',
+                    'LUCON 8' => 'LUCON 8',
+                    'LUCON 9' => 'LUCON 9',
+                ]
+            ])
             ->add('num_equipe')
             ->add('division')
             ->add('saison')
