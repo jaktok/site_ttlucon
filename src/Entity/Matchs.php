@@ -23,16 +23,6 @@ class Matchs
     private $victoire;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $set_gagne;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $set_perdu;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Joueurs::class, inversedBy="matchs")
      */
     private $joueur;
@@ -52,6 +42,26 @@ class Matchs
      */
     private $position;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $matchDouble;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $score;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $double1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $double2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,30 +75,6 @@ class Matchs
     public function setVictoire(?bool $victoire): self
     {
         $this->victoire = $victoire;
-
-        return $this;
-    }
-
-    public function getSetGagne(): ?int
-    {
-        return $this->set_gagne;
-    }
-
-    public function setSetGagne(?int $set_gagne): self
-    {
-        $this->set_gagne = $set_gagne;
-
-        return $this;
-    }
-
-    public function getSetPerdu(): ?int
-    {
-        return $this->set_perdu;
-    }
-
-    public function setSetPerdu(?int $set_perdu): self
-    {
-        $this->set_perdu = $set_perdu;
 
         return $this;
     }
@@ -137,6 +123,54 @@ class Matchs
     public function setPosition(?int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getMatchDouble(): ?bool
+    {
+        return $this->matchDouble;
+    }
+
+    public function setMatchDouble(?bool $matchDouble): self
+    {
+        $this->matchDouble = $matchDouble;
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): self
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    public function getDouble1(): ?string
+    {
+        return $this->double1;
+    }
+
+    public function setDouble1(?string $double1): self
+    {
+        $this->double1 = $double1;
+
+        return $this;
+    }
+
+    public function getDouble2(): ?string
+    {
+        return $this->double2;
+    }
+
+    public function setDouble2(?string $double2): self
+    {
+        $this->double2 = $double2;
 
         return $this;
     }

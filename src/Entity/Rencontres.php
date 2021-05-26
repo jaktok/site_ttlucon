@@ -25,11 +25,6 @@ class Rencontres
     private $date_rencontre;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $adversaire;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $domicile;
@@ -45,11 +40,6 @@ class Rencontres
     private $victoire;
 
     /**
-     * @ORM\OneToOne(targetEntity=EquipeRencontre::class, inversedBy="rencontre", cascade={"persist", "remove"})
-     */
-    private $equipeRencontre;
-
-    /**
      * @ORM\OneToMany(targetEntity=Matchs::class, mappedBy="rencontre")
      */
     private $matchs;
@@ -63,6 +53,26 @@ class Rencontres
      * @ORM\ManyToOne(targetEntity=EquipeType::class, inversedBy="rencontre")
      */
     private $equipeType;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $equipeA;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $equipeB;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $scoreA;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $scoreB;
 
     public function __construct()
     {
@@ -82,18 +92,6 @@ class Rencontres
     public function setDateRencontre(\DateTimeInterface $date_rencontre): self
     {
         $this->date_rencontre = $date_rencontre;
-
-        return $this;
-    }
-
-    public function getAdversaire(): ?string
-    {
-        return $this->adversaire;
-    }
-
-    public function setAdversaire(string $adversaire): self
-    {
-        $this->adversaire = $adversaire;
 
         return $this;
     }
@@ -130,18 +128,6 @@ class Rencontres
     public function setVictoire(?bool $victoire): self
     {
         $this->victoire = $victoire;
-
-        return $this;
-    }
-
-    public function getEquipeRencontre(): ?EquipeRencontre
-    {
-        return $this->equipeRencontre;
-    }
-
-    public function setEquipeRencontre(?EquipeRencontre $equipeRencontre): self
-    {
-        $this->equipeRencontre = $equipeRencontre;
 
         return $this;
     }
@@ -196,6 +182,54 @@ class Rencontres
     public function setEquipeType(?EquipeType $equipeType): self
     {
         $this->equipeType = $equipeType;
+
+        return $this;
+    }
+
+    public function getEquipeA(): ?string
+    {
+        return $this->equipeA;
+    }
+
+    public function setEquipeA(?string $equipeA): self
+    {
+        $this->equipeA = $equipeA;
+
+        return $this;
+    }
+
+    public function getEquipeB(): ?string
+    {
+        return $this->equipeB;
+    }
+
+    public function setEquipeB(?string $equipeB): self
+    {
+        $this->equipeB = $equipeB;
+
+        return $this;
+    }
+
+    public function getScoreA(): ?int
+    {
+        return $this->scoreA;
+    }
+
+    public function setScoreA(?int $scoreA): self
+    {
+        $this->scoreA = $scoreA;
+
+        return $this;
+    }
+
+    public function getScoreB(): ?int
+    {
+        return $this->scoreB;
+    }
+
+    public function setScoreB(?int $scoreB): self
+    {
+        $this->scoreB = $scoreB;
 
         return $this;
     }

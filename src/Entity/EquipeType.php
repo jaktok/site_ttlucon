@@ -59,6 +59,16 @@ class EquipeType
      */
     private $rencontre;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $capitaine;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $salle;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
@@ -202,6 +212,30 @@ class EquipeType
                 $rencontre->setEquipeType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCapitaine(): ?string
+    {
+        return $this->capitaine;
+    }
+
+    public function setCapitaine(?string $capitaine): self
+    {
+        $this->capitaine = $capitaine;
+
+        return $this;
+    }
+
+    public function getSalle(): ?string
+    {
+        return $this->salle;
+    }
+
+    public function setSalle(?string $salle): self
+    {
+        $this->salle = $salle;
 
         return $this;
     }
