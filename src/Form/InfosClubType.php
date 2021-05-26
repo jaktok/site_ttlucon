@@ -15,7 +15,7 @@ class InfosClubType extends AbstractType
     {
         $builder
         ->add('libelle', TextType::class, array ('attr' => array ('readonly' => true)))
-        ->add('contenu', TextareaType::class)
+        ->add('contenu', TextareaType::class,array('required' => false))
         ;
     }
 

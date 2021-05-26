@@ -12,7 +12,7 @@
 	{% if partenaires is defined %} {% for partenaire in partenaires %} {%
 	set nomFichier = partenaire.nomPhoto %}
 	<div class="row mt-4">
-		<div class="col-sm-4 d-flex justify-content-center align-items-center" >
+		<div class="col-sm-4 d-flex justify-content-center align-items-center" style="font-family: 'Trebuchet MS', sans-serif;;font-style: italic;" >
 			<h2>{{ partenaire.titre }}</h2>
 		</div>
 		<div class="col-sm-8 d-flex justify-content-center align-items-center" >
@@ -22,15 +22,15 @@
 			</div>
 		</div>
 	</div>
-	<div class="row mt-1">
+	<div class="row mt-5">
 		<div class="col">
-			<hr color="black" >
+			<!-- <hr color="black" >-->
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-sm-8">{{ partenaire.texte|raw }}</div>
 	</div>
-	<div class="divider py-1 bg-dark"><hr></div>
+	<div class="divider bg-dark mt-4"><hr></div>
 	{% endfor %} {% endif %} 
 </div>
 	

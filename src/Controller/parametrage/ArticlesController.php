@@ -163,10 +163,9 @@ class ArticlesController extends AbstractController
     }
     
     /**
-     * @Route("/supprime/image/{id}", name="supprime_image_article")
+     * @Route("/capitaine/supprime/image/{id}", name="supprime_image_article")
      */
     public function supprimeImage(Request $request,FichiersRepository $fichierRepo, int $id = null): Response{
-        
         $img = new Fichiers();
         $entityManager = $this->getDoctrine()->getManager();
         $img = $fichierRepo->findOneByArticle($id);

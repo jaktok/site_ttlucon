@@ -17,6 +17,9 @@ use phpDocumentor\Reflection\Types\String_;
 use App\Entity\Fichiers;
 use App\Repository\FichiersRepository;
 use FFTTApi\FFTTApi;
+use FFTTApi\Model\Joueur;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use App\Entity\Categories;
 
 class JoueursParamController extends AbstractController
 {
@@ -25,6 +28,8 @@ class JoueursParamController extends AbstractController
     private $licencies; 
     private $ini_array;
     private $api;
+    private $idClub;
+    private $categorie;
     
     
     public function __construct()
@@ -32,6 +37,7 @@ class JoueursParamController extends AbstractController
         // Recuperation infos config.ini
         $this->ini_array = parse_ini_file("../config/config.ini");
         $this->api = new FFTTApi();
+        $this->idClub = $this->ini_array['id_club_lucon'];
     }
     /**
      * @Route("/dirigeant/param/joueurs", name="joueurs_param")
@@ -253,10 +259,9 @@ class JoueursParamController extends AbstractController
     }
     
     /**
-     * @Route("/supprime/image/{id}", name="supprime_image")
+     * @Route("/dirigeant/supprime/image/{id}", name="supprime_img")
      */
     public function supprimeImage(Request $request,FichiersRepository $fichierRepo, int $id = null): Response{
-        
         $img = new Fichiers();
         $entityManager = $this->getDoctrine()->getManager();
         $img = $fichierRepo->findOneByJoueur($id);
@@ -284,7 +289,7 @@ class JoueursParamController extends AbstractController
     
     
     /**
-     * @Route("/supprime/joueur/{id}", name="supprime_joueur")
+     * @Route("/dirigeant/supprime/joueur/{id}", name="supprime_joueur")
      */
     public function supprimeJoueur(Request $request, JoueursRepository $joueursRepo,ClassementRepository $classementRepo, int $id = null): Response
     {
@@ -315,7 +320,7 @@ class JoueursParamController extends AbstractController
     }
     
     /**
-     * @Route("/classement/joueur/", name="maj_classements")
+     * @Route("/dirigeant/classement/joueur/", name="maj_classements")
      */
     public function majClassements(Request $request, JoueursRepository $joueursRepo): Response
     {
@@ -338,6 +343,97 @@ class JoueursParamController extends AbstractController
                 $entityManager->flush();
             }
         }
+        return $this->redirectToRoute('joueurs_param');
+    }
+    
+    /**
+     * @Route("/dirigeant/ajoutauto/joueur/", name="maj_joueur_auto")
+     */
+    public function ajoutAuto(Request $request, CategoriesRepository $categoriesRepo, JoueursRepository $joueursRepo): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // recuperation de tous les joueurs
+        $listeJoueurs = $joueursRepo->findAll();
+        
+        $tabLicences = array();
+        $i= 0;
+        foreach($listeJoueurs as $joueur)
+        {
+            if ($joueur->getNumLicence()){
+                $tabLicences[$i]= $joueur->getNumLicence();
+                $i++;
+            }
+        }
+        // recup liste des joueurs du club
+        $tabJoueurByClub = $this->api->getJoueursByClub($this->idClub);
+        foreach ($tabJoueurByClub as $joueurs){
+            $noLicence = $joueurs->getLicence();
+            if (in_array($noLicence, $tabLicences)==false){
+                // recuperation de la liste des categories
+                $listeCategories = $categoriesRepo->findAll();
+                $categorie = new Categories();
+                $detailJoueur = $this->api->getJoueurDetailsByLicence($noLicence);
+                //dd($noLicence,$detailJoueur);
+                $cat = $detailJoueur->getCategorie();
+                switch ($cat) {
+                    case "B1":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "B2":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "M1":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "M2":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "C1":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "C2":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "J1":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "J2":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "J3":
+                        $this->categorie = "Jeune";
+                        break;
+                    case "S":
+                        $this->categorie = "Adulte";
+                     default: 
+                        $this->categorie = "Adulte";
+                        }
+                        
+                $joueur = new Joueurs();
+                $joueur->setNumLicence($noLicence);
+                $joueur->setNom($joueurs->getNom());
+                $joueur->setPrenom($joueurs->getPrenom());
+                $joueur->setBureau(false);
+                $joueur->setIndiv(false);
+                foreach ($listeCategories as $categ){
+                        if ($this->categorie == $categ->getLibelle()){
+                            $joueur->setCategories($categ);
+                            break;
+                        }
+                }
+                $entityManager->persist($joueur);
+                $entityManager->flush();
+                $classement = new Classement();
+                $classement->setDate(new \DateTime());
+                $classement->setPoints($joueurs->getPoints());
+                $classement->setJoueur($joueur);
+                $entityManager->persist($classement);
+                $entityManager->flush();
+            }
+        }
+        
         return $this->redirectToRoute('joueurs_param');
     }
     
