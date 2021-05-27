@@ -27,6 +27,7 @@ class Licencie
     private $cotisation;
     private $divers;
     private $bureau;
+    private $actif;
     private $num_licence;
     private $date_naissance;
     private $nom_photo;
@@ -344,5 +345,21 @@ class Licencie
     {
         $this->photo = $photo;
     }
+    /**
+     * @return mixed
+     */
+    public function getActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    /**
+     * @param mixed $actif
+     */
+    public function setActif(bool $actif)
+    {
+        $this->actif = $actif;
+    }
+
 
 }

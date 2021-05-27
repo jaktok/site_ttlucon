@@ -43,7 +43,12 @@
           <tr>
           	<td >
           	<div align="center">
-          		<img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></td>
+          	{% if joueur.nomPhoto is defined  and joueur.nomPhoto is not empty  %}
+				<img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50">
+			{% else %}
+				<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+				
+           	{% endif %}	
             </div>
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
@@ -54,8 +59,13 @@
           <tr>
           <td>
           <div align="center">
-          <img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50"></td>
-          </div>
+          {% if joueur.nomPhoto is defined  and joueur.nomPhoto is not empty  %}
+				<img src="{{ asset('/images/'~joueur.nomPhoto) }}" alt="" width="50">
+			{% else %}
+				<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+				
+           	{% endif %}	
+          	</div>
             <td>{{ joueur.nom }}</td>
             <td>{{ joueur.prenom }}</td>
             <td>{{ joueur.classement }}</td>

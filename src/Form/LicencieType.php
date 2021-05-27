@@ -40,12 +40,16 @@ class LicencieType extends AbstractType
         ->add('bureau', CheckboxType::class,[
             'required' => false
         ])
+        ->add('actif', CheckboxType::class,[
+            'required' => false
+        ])
         ->add('num_licence')
         ->add('date_naissance', DateTimeType::class,[
             'widget' => 'single_text',
             'attr' => ['class' => 'js-datepicker'],
             'label' => 'Date de  naissance',
             'format' => 'dd/MM/yyyy',
+            'required' => false,
             'html5'  => false
           ])
         ->add('nom_photo',FileType::class,[
@@ -59,6 +63,7 @@ class LicencieType extends AbstractType
             'attr' => ['class' => 'js-datepicker'],
             'label' => 'Date du  certificat',
             'format' => 'dd/MM/yyyy',
+            'required' => false,
             'html5'  => false
         ])
         ->add('indiv', CheckboxType::class,[

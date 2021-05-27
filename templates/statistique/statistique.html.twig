@@ -69,22 +69,33 @@
 			</div>
 			
 			<div class="row mt-4" align="center"  style="background-color: #FFF0BC">
-				<div class="col-sm-1 align-items-center" align="left">
-					<p>Victoires : </p>
+				<div class="col-sm-2 align-items-center" align="left">
+					<h4>Victoires : </h4>
 				</div>
 				<div class="col-sm-4 align-items-center" align="left">
 					<h4>{{ joueur.pourcent }} % &nbsp;&nbsp; {{ joueur.victoires }} victoires - {{ joueur.defaites }} défaites </h4>
 				</div>
-				<div class="col-sm-3 align-items-center" align="left">
-					<p>N° {{ joueur.rangDep }} Départemental</p>
-				</div>
 				<div class="col-sm-2 align-items-center" align="left">
-					<p>N° {{ joueur.rangReg }} Régional</p>
+					<h4>Doubles :</h4>
 				</div>
-				<div class="col-sm-2 align-items-center" align="left">
-					<p>N° {{ joueur.rangNat }} National</p>
+				<div class="col-sm-4 align-items-center" align="left">
+					<h4>{{ joueur.pourcentDouble }} % &nbsp;&nbsp; {{ joueur.victoiresDouble }} victoires - {{ joueur.defaitesDouble }} défaites </h4>
 				</div>
 			</div>
+			
+			<div class="row mt-4 align-items-center" align="center"  style="background-color: #F0FFFF">
+				<div class="col-sm-4 align-items-center" align="center">
+					N° {{ joueur.rangDep }} Départemental&nbsp;
+				</div>
+				<div class="col-sm-4 align-items-center" align="center">
+					N° {{ joueur.rangReg }} Régional
+				</div>
+				<div class="col-sm-4 align-items-center" align="center">
+					N° {{ joueur.rangNat }} National
+				</div>
+			</div>
+			
+			
 		</div>
 		
 			<div class="row mt-2" >

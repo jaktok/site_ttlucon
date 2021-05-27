@@ -39,6 +39,7 @@ class EntrainementController extends AbstractController
         // recuperation de tous les enregistrements infoclub
         $listeInfosClub = $infosClubRepo->findAll();
         // recuperation du resultat dans un tableau infclub a passer a la vue
+        $dateVacances = "";
         foreach($listeInfosClub as $infosClub)
         {
             if ($infosClub->getLibelle() == 'entraineurs'){
@@ -48,6 +49,7 @@ class EntrainementController extends AbstractController
                 $dateVacances  = $infosClub->getContenu();
             }
         }
+        
         
         return $this->render('entrainement/entrainement.html.twig', [
             'entrainements' => $tabEntrainements,

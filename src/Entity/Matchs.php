@@ -62,6 +62,16 @@ class Matchs
      */
     private $double2;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $id_joueur1;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $id_joueur2;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -171,6 +181,30 @@ class Matchs
     public function setDouble2(?string $double2): self
     {
         $this->double2 = $double2;
+
+        return $this;
+    }
+
+    public function getIdJoueur1(): ?int
+    {
+        return $this->id_joueur1;
+    }
+
+    public function setIdJoueur1(?int $id_joueur1): self
+    {
+        $this->id_joueur1 = $id_joueur1;
+
+        return $this;
+    }
+
+    public function getIdJoueur2(): ?int
+    {
+        return $this->id_joueur2;
+    }
+
+    public function setIdJoueur2(?int $id_joueur2): self
+    {
+        $this->id_joueur2 = $id_joueur2;
 
         return $this;
     }

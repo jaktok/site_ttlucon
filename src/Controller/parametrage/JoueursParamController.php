@@ -26,6 +26,7 @@ class JoueursParamController extends AbstractController
     
     private $dernierClassement; 
     private $licencies; 
+    private $licenciesInactifs; 
     private $ini_array;
     private $api;
     private $idClub;
@@ -49,7 +50,10 @@ class JoueursParamController extends AbstractController
         $listeCategories = $categoriesRepo->findAll();
         
         // recuperation de tous les joueurs tries sur le nom
-        $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
+       // $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
+        $listeJoueurs = $joueursRepo->findByActif();
+        
+        $listeJoueursInactifs = $joueursRepo->findByInactif();
         // recuperation du resultat dans un tableau licencies a passer a la vue
         foreach($listeJoueurs as $player)
         {
@@ -69,13 +73,33 @@ class JoueursParamController extends AbstractController
             $licencie->setLibelleCat($libCat);
             $this->licencies[]=$licencie;
         }
+       // dd($listeJoueursInactifs);
+        foreach($listeJoueursInactifs as $player)
+        {
+            $licencieInactif = new Licencie();
+            $joueurInactif = new Joueurs();
+            $joueurInactif = $player;
+            $libCat;
+            foreach ($listeCategories as $categ){
+                if ($joueurInactif->getCategories() == $categ){
+                    $joueurInactif->setCategories($categ);
+                    $libCat = $categ->getLibelle();
+                }
+                
+            }
+            // mappage de l entite joueur vers objet licencier
+            $licencieInactif = $this->mapperJoueurLicencie($joueurInactif, $classementRepo);
+            $licencieInactif->setLibelleCat($libCat);
+            $this->licenciesInactifs[]=$licencieInactif;
+        }
+        
         
         $form = $this->createFormBuilder($this->licencies)
         ->getForm();
-        
         return $this->render('parametrage/joueurs_param/joueurs_param.html.twig', [
             'formJoueurs' => $form->createView(),
             'joueurs' => $this->licencies,
+            'joueursInactifs' => $this->licenciesInactifs,
         ]);
     }
     
@@ -151,6 +175,7 @@ class JoueursParamController extends AbstractController
            //dd($this->licencie->getNomPhoto());
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
+            $joueur->setActif($this->licencie->getActif());
             $joueur->setCertificat($this->licencie->getCertificat());
             $joueur->setContactNom($this->licencie->getContactNom());
             $joueur->setContactPrenom($this->licencie->getContactPrenom());
@@ -233,6 +258,12 @@ class JoueursParamController extends AbstractController
        $licencier->setAdresse($joueur->getAdresse());
        $licencier->setBureau($joueur->getBureau());
        $licencier->setCertificat($joueur->getCertificat());
+       if($joueur->getActif()==null){
+           $licencier->setActif(false);
+       }
+       else{
+        $licencier->setActif($joueur->getActif());
+       }
        $licencier->setContactNom($joueur->getContactNom());
        $licencier->setContactPrenom($joueur->getContactPrenom());
        $licencier->setContactTel($joueur->getContactTel());
@@ -328,7 +359,7 @@ class JoueursParamController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         
         // recuperation de tous les joueurs
-        $listeJoueurs = $joueursRepo->findAll();
+        $listeJoueurs = $joueursRepo->findByActif();
 
         foreach($listeJoueurs as $joueur)
         {
@@ -417,6 +448,7 @@ class JoueursParamController extends AbstractController
                 $joueur->setPrenom($joueurs->getPrenom());
                 $joueur->setBureau(false);
                 $joueur->setIndiv(false);
+                $joueur->setActif(false);
                 foreach ($listeCategories as $categ){
                         if ($this->categorie == $categ->getLibelle()){
                             $joueur->setCategories($categ);

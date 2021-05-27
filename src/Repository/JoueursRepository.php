@@ -36,11 +36,30 @@ class JoueursRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByActif()
+    {
+        return $this->createQueryBuilder('p')
+        ->andWhere('p.actif = true')
+        ->orderBy('p.nom', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
     
-    public function findOneByLicence($value): ?Joueurs
+    public function findByInactif()
+    {
+        return $this->createQueryBuilder('p')
+        ->andWhere('p.actif = false or p.actif is null ')
+        ->orderBy('p.nom', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
+    public function findOneByLicenceActif($value): ?Joueurs
     {
         return $this->createQueryBuilder('j')
-            ->andWhere('j.num_licence = :val')
+            ->andWhere('j.num_licence = :val and j.actif=true')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

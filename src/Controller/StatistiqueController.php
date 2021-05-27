@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use FFTTApi\FFTTApi;
 use App\Repository\JoueursRepository;
+use App\Repository\MatchsRepository;
 
 class StatistiqueController extends AbstractController
 {
@@ -26,7 +27,7 @@ class StatistiqueController extends AbstractController
     /**
      * @Route("/statistique{cat}", name="statistique")
      */
-    public function index(JoueursRepository $joueursRepo, $cat=null): Response
+    public function index(JoueursRepository $joueursRepo,MatchsRepository $matchsRepo, $cat=null): Response
     {
         
         // recup liste des joueurs du club
@@ -41,11 +42,11 @@ class StatistiqueController extends AbstractController
         foreach ($tabJoueurByClub as $joueurs){
             $noLicence = $joueurs->getLicence();
             // on recupere le joueur chez nous
-            $joueurTTL = $joueursRepo->findOneByLicence($noLicence);
+            $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
             //dd($cat,$categorie);
             if ($joueurTTL!=null){
                 $categorie = $joueurTTL->getCategories()->getLibelle();
-            if ($cat==$categorie || $cat=="tous"){
+                if (($cat==$categorie || $cat=="tous") && $categorie!='Loisir'){
                 $tabJoueursLucon[ $i]['joueur'] = $joueurTTL;
                 // on va chercher le classement du joueur
                 $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
@@ -78,19 +79,43 @@ class StatistiqueController extends AbstractController
                     }
                     $tabJoueursLucon[ $i]['victoires'] = $vict;
                     $tabJoueursLucon[ $i]['defaites'] = $def;
-                    $tabJoueursLucon[ $i]['pourcent'] = round(($vict*100)/($vict+$def));
+                    if ($vict+$def != 0){
+                        $tabJoueursLucon[ $i]['pourcent'] = round(($vict*100)/($vict+$def));
+                    }
+                    else{
+                        $tabJoueursLucon[ $i]['pourcent'] = 0;
+                    }
                 }
                 else{
                     $tabJoueursLucon[ $i]['victoires'] = 0;
                     $tabJoueursLucon[ $i]['defaites'] = 0;
                     $tabJoueursLucon[ $i]['pourcent'] = 0;
-                    
-                    
                 }
-                $i++;
+                // on va chercher les doubles
+                $doubles = $matchsRepo->findDoublesByIdJoueur($joueurTTL->getId());
+                
+                $victDouble = 0;
+                $defDouble = 0;
+               foreach ($doubles as $double){
+                    if($double->getVictoire()){
+                        $victDouble++;
+                    }
+                    else{
+                        $defDouble++;
+                    }
+                }
+                $tabJoueursLucon[ $i]['victoiresDouble'] = $victDouble;
+                $tabJoueursLucon[ $i]['defaitesDouble'] = $defDouble;
+                if ($victDouble+$defDouble != 0){
+                    $tabJoueursLucon[ $i]['pourcentDouble'] = round(($victDouble*100)/($victDouble+$defDouble));
+                }
+                else{
+                    $tabJoueursLucon[ $i]['pourcentDouble'] = 0;
+                }
             }
             
-        }
+            }
+            $i++;
         }
      }
         // tri du tableau par progression

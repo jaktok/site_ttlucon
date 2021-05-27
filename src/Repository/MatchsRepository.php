@@ -34,6 +34,19 @@ class MatchsRepository extends ServiceEntityRepository
         ;
     }
     
+    
+    public function findDoublesByIdJoueur($value)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.id_joueur1 = :val or m.id_joueur2 = :val' )
+        ->setParameter('val', $value)
+        ->orderBy('m.id', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
+    
     public function findByIdCompetJoueur($idCompet,$idJoueur)
     {
         return $this->createQueryBuilder('m')

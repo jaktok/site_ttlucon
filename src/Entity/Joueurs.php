@@ -169,6 +169,11 @@ class Joueurs
      */
     private $fonction;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $actif;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -657,6 +662,18 @@ class Joueurs
         }
 
         $this->fonction = $fonction;
+
+        return $this;
+    }
+
+    public function getActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(?bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

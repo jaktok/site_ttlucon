@@ -3,6 +3,8 @@
 {% block body %}
 <meta charset="UTF-8" />
 
+
+
 <!-- Insérer cette balise "link" après celle de Bootstrap -->
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
@@ -25,7 +27,17 @@
  	</div>
  	
  	</div>
-      <h1>Liste des Joueurs</h1>
+<ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Joueurs actifs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Joueurs inactifs</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+<div class="tab-pane fade show active" id="home"  role="tabpanel" aria-labelledby="home-tab">	
+      <h1>Liste des Joueurs actifs</h1>
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
@@ -37,6 +49,7 @@
             <th data-sortable="true">Certif</th>
             <th data-sortable="true">Cotis.</th>
             <th>Classement</th>
+            <th>Actif</th>
             <th>Modif.</th>
             <th>Supp.</th>
           </tr>
@@ -61,6 +74,11 @@
            			<td>non</td>
            	{% endif %}
            	<td>{{ joueur.classement }}</td>
+           	{% if joueur.actif == 1  %}
+		    	<td>oui</td>
+		    {% else %}
+		    	<td>non</td>
+		    {% endif %}
              <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modifier</a></td>
              <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supprimer</a></td>
           </tr>
@@ -68,6 +86,60 @@
 		{% endif %}
         </tbody>
       </table>
+</div>
+      
+       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+       		<h1>Liste des Joueurs inactifs</h1>
+       	      <table class="table table-striped" data-toggle="table" data-pagination="false">
+		        <thead>
+		          <tr>
+		            <th data-sortable="true">Nom</th>
+		            <th>Prénom</th>
+		            <th>telephone</th>
+		            <th>Licence</th>
+		            <th data-sortable="true">Catégorie</th>
+		            <th data-sortable="true">Certif</th>
+		            <th data-sortable="true">Cotis.</th>
+		            <th>Classement</th>
+		            <th>Actif</th>
+		            <th>Modif.</th>
+		            <th>Supp.</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		        {% if joueursInactifs is defined %}
+		        {% for joueurInactif in joueursInactifs %}
+		          <tr>
+		           	<td>{{ joueurInactif.nom }}</td>
+		           	<td>{{ joueurInactif.prenom }}</td>
+		           	<td>{{ joueurInactif.telephone }}</td>
+		           	<td>{{ joueurInactif.numLicence }}</td>
+		           	<td>{{ joueurInactif.libelleCat }}</td>
+		           	{% if joueurInactif.certificat == 1  %}
+		           		<td>oui</td>
+		           	{% else %}
+		           			<td>non</td>
+		           	{% endif %}
+		           	{% if joueurInactif.cotisation == 1  %}
+		           		<td>oui</td>
+		           	{% else %}
+		           			<td>non</td>
+		           	{% endif %}
+		           	<td>{{ joueurInactif.classement }}</td>
+		           	{% if joueurInactif.actif == 1  %}
+		           		<td>oui</td>
+		           	{% else %}
+		           			<td>non</td>
+		           	{% endif %}
+		             <td><a href="{{ path('joueur_param_modif', { 'id': joueurInactif.id})}}" class="btn btn-primary">Modifier</a></td>
+		             <td><a href="{{ path('supprime_joueur', { 'id': joueurInactif.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueurInactif.nom }} ?');">Supprimer</a></td>
+		          </tr>
+		        {% endfor %}
+				{% endif %}
+		        </tbody>
+		      </table>
+      	</div>
+      	</div>
     </div>
 
 

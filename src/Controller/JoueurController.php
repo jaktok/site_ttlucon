@@ -41,7 +41,8 @@ class JoueurController extends AbstractController
             $listeCategories = $categoriesRepo->findAll();
             
             // recuperation de tous les joueurs
-            $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
+            //$listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
+            $listeJoueurs = $joueursRepo->findByActif();
             // recuperation du resultat dans un tableau licencies a passer a la vue
             $this->licencies = array();
             foreach($listeJoueurs as $player)
@@ -106,6 +107,7 @@ class JoueurController extends AbstractController
         $licencier->setId($joueur->getId());
         $licencier->setAdresse($joueur->getAdresse());
         $licencier->setBureau($joueur->getBureau());
+        $licencier->setActif($joueur->getActif());
         $licencier->setCertificat($joueur->getCertificat());
         $licencier->setContactNom($joueur->getContactNom());
         $licencier->setContactPrenom($joueur->getContactPrenom());
