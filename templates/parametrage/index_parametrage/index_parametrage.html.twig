@@ -6,62 +6,71 @@
 
 <div class="container" align="center">
 	<h1 class="text-center">Paramétrage</h1><br><br>
-	<table class="table table-striped d-inline-block justify-content-center table-bordered" 
-		data-pagination="false">
-		<tbody>
-			<tr>
-			{% if is_granted('ROLE_CAPITAINE') %}
-				<td class="text-center"><a class="nav-link" href="/capitaine/param/articles">Articles</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/fonctions">Fonctions</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/equipes">Equipes</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/competition">Autres compétitions</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_CAPITAINE') %}
-				<td class="text-center"><a class="nav-link" href="/capitaine/param/resultat">Résultats</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/infos/club">Infos club</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/doc">Docs Accueil</a></td>
-			{% endif %}
-			</tr>
-			<tr>
-			{% if is_granted('ROLE_DIRIGEANT') %}
-				<td class="text-center"><a class="nav-link" href="/dirigeant/param/partenaire">Partenaires</a></td>
-			{% endif %}
-			</tr>
-
-		</tbody>
-	</table>
+	<div class="row justify-content-center" align="center">
+	<div class="col-sm-3 ">
+			<table class="table table-striped d-inline-block justify-content-center table-bordered" 
+				data-pagination="false">
+				<tbody>
+					<tr>
+					{% if is_granted('ROLE_DIRIGEANT') %}
+						<td class="text-center"><a class="nav-link" href="/dirigeant/param/joueurs">Joueurs</a></td>
+					{% endif %}
+					</tr>
+					<tr>
+					{% if is_granted('ROLE_DIRIGEANT') %}
+						<td class="text-center"><a class="nav-link" href="/dirigeant/param/fonctions">Fonctions</a></td>
+					{% endif %}
+					</tr>
+					<tr>
+					{% if is_granted('ROLE_DIRIGEANT') %}
+						<td class="text-center"><a class="nav-link" href="/dirigeant/param/equipes">Equipes</a></td>
+					{% endif %}
+					</tr>
+					<tr>
+					{% if is_granted('ROLE_DIRIGEANT') %}
+						<td class="text-center"><a class="nav-link" href="/dirigeant/param/competition">Autres compétitions</a></td>
+					{% endif %}
+					</tr>
+					<tr>
+					{% if is_granted('ROLE_CAPITAINE') %}
+						<td class="text-center"><a class="nav-link" href="/capitaine/param/resultat">Résultats</a></td>
+					{% endif %}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<div class="col-sm-3">
+			<table class="table table-striped d-inline-block justify-content-center table-bordered" 
+				data-pagination="false">
+				<tbody>
+				<tr>
+				{% if is_granted('ROLE_CAPITAINE') %}
+					<td class="text-center"><a class="nav-link" href="/capitaine/param/articles">Articles</a></td>
+				{% endif %}
+				</tr>
+				<tr>
+				{% if is_granted('ROLE_DIRIGEANT') %}
+					<td class="text-center"><a class="nav-link" href="/dirigeant/param/entrainement">Entraînements</a></td>
+				{% endif %}
+				</tr>
+				<tr>
+				{% if is_granted('ROLE_DIRIGEANT') %}
+					<td class="text-center"><a class="nav-link" href="/dirigeant/param/infos/club">Infos club</a></td>
+				{% endif %}
+				</tr>
+				<tr>
+				{% if is_granted('ROLE_DIRIGEANT') %}
+					<td class="text-center"><a class="nav-link" href="/dirigeant/param/doc">Docs Accueil</a></td>
+				{% endif %}
+				</tr>
+				<tr>
+				{% if is_granted('ROLE_DIRIGEANT') %}
+					<td class="text-center"><a class="nav-link" href="/dirigeant/param/partenaire">Partenaires</a></td>
+				{% endif %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 
