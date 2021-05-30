@@ -13,6 +13,8 @@ use App\Form\FonctionsType;
 
 class FonctionController extends AbstractController
 {
+    
+    
     /**
      * @Route("dirigeant/param/fonctions", name="fonctions")
      */
@@ -23,7 +25,10 @@ class FonctionController extends AbstractController
         
         $form = $this->createFormBuilder($listeFonction)
         ->getForm();
-      //  dd($listeFonction);
+      
+ 
+        
+        
         return $this->render('parametrage/fonction/fonction.html.twig', [
             'formFonctions' => $form->createView(),
             'fonctions' => $listeFonction

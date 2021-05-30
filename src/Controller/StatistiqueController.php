@@ -32,8 +32,6 @@ class StatistiqueController extends AbstractController
         
         // recup liste des joueurs du club
         $tabJoueurByClub = $this->api->getJoueursByClub($this->idClub);
-        //dd($tabJoueurByClub);
-        
         
         $tabJoueursLucon = array();
         $i=0;
@@ -43,7 +41,6 @@ class StatistiqueController extends AbstractController
             $noLicence = $joueurs->getLicence();
             // on recupere le joueur chez nous
             $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
-            //dd($cat,$categorie);
             if ($joueurTTL!=null){
                 $categorie = $joueurTTL->getCategories()->getLibelle();
                 if (($cat==$categorie || $cat=="tous") && $categorie!='Loisir'){
@@ -121,7 +118,6 @@ class StatistiqueController extends AbstractController
         // tri du tableau par progression
         $progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
         array_multisort($progressionAnnuelle, SORT_DESC, $tabJoueursLucon);
-       // dd($tabJoueursLucon);
         return $this->render('statistique/statistique.html.twig', [
             'tabJoueursTTL' => $tabJoueursLucon,
             'categorie' => $cat,
