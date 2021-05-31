@@ -48,7 +48,7 @@ class Matchs
     private $matchDouble;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $score;
 
@@ -149,12 +149,12 @@ class Matchs
         return $this;
     }
 
-    public function getScore(): ?int
+    public function getScore(): ?string
     {
         return $this->score;
     }
 
-    public function setScore(?int $score): self
+    public function setScore(?string $score): self
     {
         $this->score = $score;
 

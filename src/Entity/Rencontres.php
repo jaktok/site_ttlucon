@@ -74,6 +74,11 @@ class Rencontres
      */
     private $scoreB;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $is_retour;
+
     public function __construct()
     {
         $this->matchs = new ArrayCollection();
@@ -230,6 +235,18 @@ class Rencontres
     public function setScoreB(?int $scoreB): self
     {
         $this->scoreB = $scoreB;
+
+        return $this;
+    }
+
+    public function getIsRetour(): ?string
+    {
+        return $this->is_retour;
+    }
+
+    public function setIsRetour(?string $is_retour): self
+    {
+        $this->is_retour = $is_retour;
 
         return $this;
     }
