@@ -13,7 +13,7 @@ use App\Entity\EquipeType;
 use App\Form\RencontreType;
 
 use App\Repository\RencontresRepository;
-use App\Repository\EquipeTypeRepository;
+
 class CalendrierParamController extends AbstractController
 {
     
@@ -84,7 +84,6 @@ class CalendrierParamController extends AbstractController
         return $this->redirectToRoute('calendrier_param',array('id' => $idEquipe));
         
     }
-
 
     /**
      * @Route("/dirigeant/param/calendrier/{id}", name="calendrier_param")

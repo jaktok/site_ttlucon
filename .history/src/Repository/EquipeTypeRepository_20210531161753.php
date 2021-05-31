@@ -36,25 +36,15 @@ class EquipeTypeRepository extends ServiceEntityRepository
     }
     */
 
-    
-    public function findOneByNom($value): ?EquipeType
+    /*
+    public function findOneBySomeField($value): ?EquipeType
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.nom = :val')
+            ->andWhere('e.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-
-    public function findOneByNum($value): ?EquipeType
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.num_equipe = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    
+    */
 }

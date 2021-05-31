@@ -43,11 +43,11 @@ class PrevisionEquipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('nom_photo',FileType::class,[
+            ->add('photo',FileType::class,[
                 'label' => 'Image',
                 'multiple' => false,
                 'mapped' => false,
-                'required' => false 
+                'required' => false
             ])
             ->add('capitaine')
             ->add('salle')

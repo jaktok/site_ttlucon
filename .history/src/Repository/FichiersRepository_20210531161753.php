@@ -57,14 +57,4 @@ class FichiersRepository extends ServiceEntityRepository
         ->getOneOrNullResult()
         ;
     }
-
-    public function findOneByEquipeType($value): ?Fichiers
-    {
-        return $this->createQueryBuilder('f')
-        ->andWhere('f.equipeType= :val')
-        ->setParameter('val', $value)
-        ->getQuery()
-        ->getOneOrNullResult()
-        ;
-    }
 }
