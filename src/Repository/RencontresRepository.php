@@ -26,10 +26,10 @@ class RencontresRepository extends ServiceEntityRepository
     public function findByEquipe($value)
     {
         return $this->createQueryBuilder('r')
+            ->select('r.id')
             ->andWhere('r.equipeType = :val')
             ->setParameter('val', $value)
             ->orderBy('r.date_rencontre', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

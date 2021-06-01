@@ -59,7 +59,29 @@ class MatchsRepository extends ServiceEntityRepository
         ;
     }
     
+    
+    public function findByIdRencontre($value)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.rencontre = :val')
+        ->setParameter('val', $value)
+        ->orderBy('m.id', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 
+    
+    public function findIdJoueursMatch($value)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.rencontre IN (:val)')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     /*
     public function findOneBySomeField($value): ?Matchs
     {

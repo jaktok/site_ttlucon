@@ -66,6 +66,8 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="{{ path ('calendrier', {'cat': cat} ) }}">Calendrier</a> 
 						<a class="dropdown-item" href="/resultat">Resultats</a>
 						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path ('brule') }}">Brûlages</a>
+						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('joueur', {'cat': cat} ) }}">Liste des joueurs</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>

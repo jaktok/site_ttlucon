@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BruleController!{% endblock %}
+
+{% block body %}
+<meta charset="UTF-8" />
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+
+<div class="fluide">
+   <div class="container" align="center">
+   <br>
+   <h3>Tableau des Brûlages</h3>
+
+   
+      <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+          {% if tabEquipe is defined and tabEquipe|length > 0 %}
+          	<th>Joueurs</th>
+          	% for equipe in tabEquipe %}
+            <th>equipe.nom</th>
+            {% endif %}
+     		{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+        {% if tabBrule is defined %}
+        {% for brule in tabBrule %}
+          <tr>
+          
+           	<td>{{ entrainement.libelle }}</td>
+           	<td>{{ entrainement.jour }}</td>
+           	<td>{{ entrainement.heureDebut|date('H:i') }}</td>
+           	<td>{{ entrainement.heureFin|date('H:i') }}</td>
+           	<td>{{ entrainement.categorie.libelle }}</td>
+          </tr>
+        {% endfor %}
+        {% endif %} 
+        </tbody>
+      </table>
+   	    <div class="row mt-5" align="center">
+       		<div class="col-sm-12" >
+				{% if dateVacances is defined %}
+					<h2 style="color: red">{{ dateVacances|raw }}</h2> 
+				{% endif %}
+			</div>
+		</div> 
+      
+    </div>
+</div>
+
+{% endblock %}
