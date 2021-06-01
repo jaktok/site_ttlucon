@@ -17,41 +17,43 @@
    <br>
    <h3>Tableau des Brûlages</h3>
 
-   
+   	{% if tabEquipes is defined and tabEquipes|length > 0 %}
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
-          {% if tabEquipe is defined and tabEquipe|length > 0 %}
           	<th>Joueurs</th>
-          	% for equipe in tabEquipe %}
-            <th>equipe.nom</th>
-            {% endif %}
-     		{% endfor %}
+          	{% for equipe in tabEquipes %}
+            <th>{{ equipe.nom }}</th>
+          {% endfor %}
           </tr>
         </thead>
         <tbody>
         {% if tabBrule is defined %}
         {% for brule in tabBrule %}
           <tr>
-          
-           	<td>{{ entrainement.libelle }}</td>
-           	<td>{{ entrainement.jour }}</td>
-           	<td>{{ entrainement.heureDebut|date('H:i') }}</td>
-           	<td>{{ entrainement.heureFin|date('H:i') }}</td>
-           	<td>{{ entrainement.categorie.libelle }}</td>
+          	<td>{{ brule.joueur.nom }}</td>
+          	{% for equipe in tabEquipes %}
+          	{% for brl in brule %}
+          	{% if brl.equipe is defined %}
+           		{% if brl.equipe[0].id == equipe.id %}
+           		{% if brl.nbMatchs is defined %}
+           		<td>{{ brl.nbMatchs}}</td>
+           		{% else %}
+           			<td></td>
+           		{% endif %}
+           		
+          	{% else %}
+          			<td>0</td>
+          	{% endif %}
+           	{% endif %}
+           	{% endfor %}
+           	{% endfor %}
           </tr>
         {% endfor %}
         {% endif %} 
         </tbody>
       </table>
-   	    <div class="row mt-5" align="center">
-       		<div class="col-sm-12" >
-				{% if dateVacances is defined %}
-					<h2 style="color: red">{{ dateVacances|raw }}</h2> 
-				{% endif %}
-			</div>
-		</div> 
-      
+      {% endif %}
     </div>
 </div>
 

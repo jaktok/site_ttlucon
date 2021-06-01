@@ -73,7 +73,7 @@ class MatchsRepository extends ServiceEntityRepository
 
     
     public function findIdJoueursMatch($value)
-    {
+    {//dd($value);
         return $this->createQueryBuilder('m')
         ->andWhere('m.rencontre IN (:val)')
         ->setParameter('val', $value)
@@ -81,6 +81,16 @@ class MatchsRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
+    
+    public function findIdJoueursMatchEquipe()
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.rencontre IS NOT NULL')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     
     /*
     public function findOneBySomeField($value): ?Matchs
