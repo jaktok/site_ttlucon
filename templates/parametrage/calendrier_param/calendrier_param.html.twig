@@ -11,15 +11,23 @@ endblock %} {% block body %}
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
- 		    <h1>Calendrier</h1>
- 	    </div>	
+        <div class="col-sm-4" align="center">
+ 		      <h1>Calendrier</h1>
+ 	      </div>	
+    </div>
+    <div class="row">
    	    <div class="col-sm-3">
- 		    <br><a href="{{ path('calendrier_param_new', { 'idTeam': idTeam }) }}" class="btn btn-primary mb-2" aria-current="page">Ajouter une rencontre</a>
- 	    </div>
-         <div class="col-sm-3">
- 		    <br><a href="{{ path('equipes_param') }}" class="btn btn-primary mb-2" aria-current="page">Retour</a>
- 	    </div>
+ 		      <br><a href="{{ path('calendrier_param_new', { 'idTeam': idTeam }) }}" class="btn btn-primary mb-2" aria-current="page">Ajouter une rencontre</a>
+ 	      </div>
+        <div class="col-sm-3">
+ 		      <br><a href="{{ path('equipes_param') }}" class="btn btn-primary mb-2" aria-current="page">Retour</a>
+ 	      </div>
+        <div class="col-sm-3">
+ 		      <br><a href="{{ path('majAuto_calendrier', { 'idTeam': idTeam }) }}" class="btn btn-warning mb-2" aria-current="page">MajAuto</a>
+ 	      </div>
+        <div class="col-sm-3">
+ 		      <br><a href="{{ path('vider_calendrier', { 'idTeam': idTeam }) }}" class="btn btn-danger mb-2" aria-current="page">Vider calendrier</a>
+ 	      </div>
     </div>
 </div>
 
@@ -28,7 +36,7 @@ endblock %} {% block body %}
           <tr>
             <th data-sortable="true">Date Rencontre</th>
             <th>Adversaire</th>
-            <th>Domicile</th>
+            <th data-sortable="true">Domicile</th>
             <th data-sortable="true">Phase</th>
             <th>Modif.</th>
             <th>Supp.</th>

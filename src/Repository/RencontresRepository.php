@@ -35,7 +35,16 @@ class RencontresRepository extends ServiceEntityRepository
         ;
     }
     
-
+    public function findByNomEquipeDate($value,$date): ?Rencontres
+    {//dd($value,$date);
+        return $this->createQueryBuilder('e')
+        ->andWhere('e.equipeA = :val')
+        ->andWhere('e.date_rencontre = :dat')
+        ->setParameters(array('val' => $value,'dat' => $date))
+        ->getQuery()
+        ->getOneOrNullResult()
+        ;
+    }
     /*
     public function findOneBySomeField($value): ?Rencontres
     {

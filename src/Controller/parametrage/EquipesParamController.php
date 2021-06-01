@@ -48,24 +48,28 @@ class EquipesParamController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $name = $form->get('nom')->getData();
-            //dd($name);
             $nameTeam = $equipeRepo->findOneByNom($name);
-            //dd($nameTeam);
-            $num = $form->get('num_equipe')->getData();
-            //dd($num);
-            $numTeam = $equipeRepo->findOneByNum($num);
-            //dd($numTeam);
-            if($nameTeam){
-            return $this->render('parametrage/equipes_param/error_name_equipe_param.html.twig', [
-                'equipes' => $equipeTypes
-            ]);
-            }
 
-            if($numTeam){
-                return $this->render('parametrage/equipes_param/error_num_equipe_param.html.twig', [
-                    'equipes' => $equipeTypes
-                ]);
-                }
+            $numero = explode(" ",$name);
+            $numeroFinal = $numero[1];
+            $equipeTypes->setNumEquipe($numeroFinal);
+
+            $numTeam = $equipeRepo->findOneByNum($numeroFinal);
+            if(!$equipeTypes->getId()){
+                if($nameTeam){
+                    return $this->render('parametrage/equipes_param/error_name_equipe_param.html.twig', [
+                        'equipes' => $equipeTypes
+                    ]);
+                    }
+                    if($numTeam){
+                        return $this->render('parametrage/equipes_param/error_num_equipe_param.html.twig', [
+                            'equipes' => $equipeTypes
+                        ]);
+                        }
+            }
+            
+
+            
 
 
             $images = $form->get('nom_photo')->getData();

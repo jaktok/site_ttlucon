@@ -7,16 +7,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 //use Doctrine\Common\Persistence\ObjectManager;
-
+use FFTTApi\FFTTApi;
 use App\Entity\Rencontres;
 use App\Entity\EquipeType;
 use App\Form\RencontreType;
-
+use phpDocumentor\Reflection\Types\String_;
 use App\Repository\RencontresRepository;
 use App\Repository\EquipeTypeRepository;
 class CalendrierParamController extends AbstractController
 {
-    
+    private $ini_array;
+    private $api;
+    private $idClub;
+
+    public function __construct()
+    {
+        // Recuperation infos config.ini
+        $this->ini_array = parse_ini_file("../config/config.ini");
+        $this->api = new FFTTApi();
+        $this->idClub = $this->ini_array['id_club_lucon'];
+    }
 
     /**
      * @Route("/dirigeant/param/calendrier/new/{idTeam}", name="calendrier_param_new")
@@ -85,6 +95,84 @@ class CalendrierParamController extends AbstractController
         
     }
 
+
+    /**
+     * @Route("/majauto/calendrier/{idTeam}", name="majAuto_calendrier")
+     */
+    public function majAutoCalendrier(Request $request,RencontresRepository  $rencontreRepo, EquipeTypeRepository $equipeTypeRepo, int $id = null, int $idTeam=null): Response
+    {
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");
+        $entityManager = $this->getDoctrine()->getManager();
+        foreach ($equipesByClub as $equipeClub) {
+            $nom = $equipeClub->getLibelle();
+            $tabNom = explode(" ",$nom);
+            $nomFinal = $tabNom[0] . " " . $tabNom[1];
+            $phase =  $tabNom[4];
+
+            $equipeLucon = $equipeTypeRepo->findOneByNom($nomFinal);
+
+            if($equipeLucon){
+                //dd($equipesByClub);
+                if($equipeLucon->getId() == $idTeam){
+                    $rencontrePouleByLienDivR = $this->api->getRencontrePouleByLienDivision($equipeClub->getLienDivision());
+                    $noJournee = 1;
+                    foreach($rencontrePouleByLienDivR as $rencontre) {
+                        $date = substr($rencontre->getLibelle(),-8 );
+                        // formatage d ela date pour pouvoir comparer si elle existe
+                        $date.=" 00:00:00";
+                        $dateTime = str_replace("/", "-", $date);
+                        $dt = \DateTime::createFromFormat("d-m-y H:i:s", $dateTime);
+
+                        if($rencontre->getNomEquipeA() == $nomFinal || $rencontre->getNomEquipeB() == $nomFinal){
+                            $Newrencontre = new Rencontres();
+                            if($nomFinal == $rencontre->getNomEquipeA()){
+                                $Newrencontre->setDomicile(true);
+                            }
+                            else{
+                                $Newrencontre->setDomicile(false);
+                            }
+                            $Newrencontre->setequipeA($rencontre->getNomEquipeA());
+                            $Newrencontre->setequipeB($rencontre->getNomEquipeB());
+                            $Newrencontre->setDateRencontre($dt);
+                            $Newrencontre->setNoJournee($noJournee);
+                            $Newrencontre->setIsRetour($rencontre->getLien());
+                            $Newrencontre->setPhase($phase);
+                            $Newrencontre->setEquipeType($equipeLucon);
+                            
+                            $existeRencontre = $rencontreRepo->findByNomEquipeDate($Newrencontre->getEquipeA(),$dt->format("yy-m-d")." 00:00:00");
+                            if ($existeRencontre == null){
+                            $entityManager->persist($Newrencontre);
+                            $entityManager->flush();
+                            }
+                            $noJournee++;
+
+                            
+                        }
+                    }
+                }
+            }
+            //dd($equipeLucon);
+            
+        }  
+        return $this->redirectToRoute('calendrier_param',array('id' => $idTeam));      
+    }
+
+    /**
+     * @Route("/vider/calendrier/{idTeam}", name="vider_calendrier")
+     */
+    public function viderCalendrier(Request $request, RencontresRepository  $rencontreRepo, int $id = null, int $idTeam=null): Response
+    {
+        $listeRencontre = $rencontreRepo->findByEquipe($idTeam);
+        $entityManager = $this->getDoctrine()->getManager();
+        foreach ($listeRencontre as $rencontre) {
+            $entityManager->remove($rencontre);
+            $entityManager->flush();
+        }
+        //dd($rencontre);
+
+        return $this->redirectToRoute('calendrier_param',array('id' => $idTeam));
+        
+    }
 
     /**
      * @Route("/dirigeant/param/calendrier/{id}", name="calendrier_param")

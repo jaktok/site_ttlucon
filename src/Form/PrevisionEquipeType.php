@@ -34,7 +34,6 @@ class PrevisionEquipeType extends AbstractType
                     'LUCON 9' => 'LUCON 9',
                 ]
             ])
-            ->add('num_equipe')
             ->add('division')
             ->add('saison')
             ->add('joueur', EntityType::class, [
