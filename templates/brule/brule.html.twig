@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BruleController!{% endblock %}
+{% block title %}Tableau des brulages{% endblock %}
 
 {% block body %}
 <meta charset="UTF-8" />
@@ -18,40 +18,55 @@
    <h3>Tableau des Brûlages</h3>
 
    	{% if tabEquipes is defined and tabEquipes|length > 0 %}
-      <table class="table table-striped" data-toggle="table" data-pagination="false">
+      <table class="table table-striped mt-4" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
-          	<th>Joueurs</th>
+          		<th>Joueurs</th>
           	{% for equipe in tabEquipes %}
-            <th>{{ equipe.nom }}</th>
-          {% endfor %}
+            	<th class="text-center">{{ equipe.nom }}</th>
+          	{% endfor %}
           </tr>
         </thead>
+        
         <tbody>
-        {% if tabBrule is defined %}
-        {% for brule in tabBrule %}
-          <tr>
-          	<td>{{ brule.joueur.nom }}</td>
-          	{% for equipe in tabEquipes %}
-          	{% for brl in brule %}
-          	{% if brl.equipe is defined %}
-           		{% if brl.equipe[0].id == equipe.id %}
-           		{% if brl.nbMatchs is defined %}
-           		<td>{{ brl.nbMatchs}}</td>
-           		{% else %}
-           			<td></td>
-           		{% endif %}
-           		
-          	{% else %}
-          			<td>0</td>
-          	{% endif %}
-           	{% endif %}
-           	{% endfor %}
-           	{% endfor %}
-          </tr>
-        {% endfor %}
-        {% endif %} 
-        </tbody>
+        	{% if tabBrule is defined %}
+        	
+        		{% for brule in tabBrule %}{# parcours du tableau sur chaque joueur #}
+        		{% set cptBrule = 0 %}
+          		<tr>
+          			<td>{{ brule.joueur.nom }} {{ brule.joueur.prenom }}</td>
+          				{% for equipe in tabEquipes %}{# parcours des equipes #}
+          				{% set cptEquipeBrule = 0 %}
+          					{% for brl in brule %}
+          						{% if brl.equipe is defined %}
+           							{% if brl.equipe[cptEquipeBrule].id == equipe.id %}
+           								{% if brl.nbMatchs is defined %}
+           									{% if cptBrule == 0 %}
+						           				<td class="table-success text-center">{{ brl.nbMatchs}}</td>
+						           			{% elseif cptBrule == 1 %}
+						           				<td  class="table-warning text-center">{{ brl.nbMatchs}}</td>
+						           			{% elseif cptBrule > 1  %}
+						           				<td  class="table-danger text-center">{{ brl.nbMatchs}}</td>
+						           			{% endif %}
+						           		{% set cptBrule = cptBrule + brl.nbMatchs %}	
+           								{% else %}
+						           			{% if cptBrule == 0 %}
+						           			<td class="table-success text-center"></td>
+						           			{% elseif cptBrule == 1 %}
+						           				<td  class="table-warning text-center"></td>
+						           			{% elseif cptBrule > 1  %}
+						           				<td  class="table-danger text-center"></td>
+						           			{% endif %}
+           								{% endif %}
+          							{% endif %}
+           						{% endif %}
+           					{% endfor %}
+           					{% set cptEquipeBrule = cptEquipeBrule+1 %}
+           				{% endfor %}
+          			</tr>
+        			{% endfor %}
+        		{% endif %} 
+        	</tbody>
       </table>
       {% endif %}
     </div>

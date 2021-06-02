@@ -25,51 +25,16 @@ class BruleController extends AbstractController
             'nom' => 'ASC'
         ));
 
-        $listeJoueurs = $joueurRepo->findAll();
+        $listeJoueurs = $joueurRepo->findByActif();
 
         $tabBrule = array();
         
-/*         foreach ($listeEquipes as $equipe) {
-            $idEquipe = $equipe->getId();
-            $numEquipe = $equipe->getNumEquipe();
-            $listeRencontres = $rencontreRepo->findByEquipe($idEquipe);
-            $listeJoueursMatch = $matchRepo->findIdJoueursMatch($listeRencontres);
-            $i=0;
-            foreach ($listeJoueurs as $joueur) {
-               
-                foreach ($listeJoueursMatch as $joueurMatch) {
-                    if ($joueur && $joueurMatch->getJoueur()) {
-                        if ($joueur->getId() == $joueurMatch->getJoueur()->getId()) {
-                            if (empty($tabBrule[$numEquipe][$i]["nbMatchs"])) {
-                                $tabBrule[$numEquipe][$i]["nbMatchs"] = 1;
-                                $tabBrule[$numEquipe][$i]["joueur"] = $joueur;
-                                $tabBrule[$numEquipe][$i]["equipe"] = [$equipe];
-                                
-                                $idRencontre = $joueurMatch->getRencontre()->getId();
-                            } else {
-                                if ($idRencontre == null || $idRencontre != $joueurMatch->getRencontre()->getId()) {
-                                    //dd($tabBrule,$i);
-                                    $tabBrule[$numEquipe][$i]["nbMatchs"] += 1;
-                                    $idRencontre = $joueurMatch->getRencontre()->getId();
-                                }
-                            }
-                            // dd($joueurMatch);
-                        }
-                    }
-                   
-                }
-                $i++;
-            }
-        } */
-
-       // dd($tabBrule);
         $listeJoueursMatchEquipe = $matchRepo->findIdJoueursMatchEquipe();
-        //dd($listeJoueursMatchEquipe);
         $numJoueur = 0;
         foreach ($listeJoueurs as $joueur) {
             foreach ($listeEquipes as $equipe) {
                 $idEquipe = $equipe->getId();
-                $listeRencontres = $rencontreRepo->findByEquipe($idEquipe);
+                $listeRencontres = $rencontreRepo->findByIdEquipe($idEquipe);
               // dd($listeRencontres);
                 $tabRencontres = array();
                 $cpt = 0;
@@ -79,7 +44,6 @@ class BruleController extends AbstractController
                 }
                 $numEquipe = $equipe->getNumEquipe();
                 foreach ($listeJoueursMatchEquipe as $joueurMatch) {
-                   // dd($joueurMatch);
                     if ($joueur && $joueurMatch->getJoueur()) {
                         if ($joueur->getId() == $joueurMatch->getJoueur()->getId() && in_array($joueurMatch->getRencontre()->getId(),$tabRencontres)) {
                             if (empty($tabBrule[$numJoueur][$numEquipe]["nbMatchs"])) {
@@ -91,20 +55,23 @@ class BruleController extends AbstractController
                                 $idRencontre = $joueurMatch->getRencontre()->getId();
                             } else {
                                 if ($idRencontre == null || $idRencontre != $joueurMatch->getRencontre()->getId()) {
-                                    //dd($tabBrule,$i);
                                     $tabBrule[$numJoueur][$numEquipe]["nbMatchs"] += 1;
                                     $idRencontre = $joueurMatch->getRencontre()->getId();
                                 }
                             }
-                            // dd($joueurMatch);
                         }
                     }
                     
                 }
-            }
+                if(!isset($tabBrule[$numJoueur][$numEquipe]["nbMatchs"])){
+                    $tabBrule[$numJoueur][$numEquipe]["nbMatchs"] = 0;
+                    $tabBrule[$numJoueur]['joueur'] = $joueur;
+                    $tabBrule[$numJoueur][$numEquipe]["joueur"] = $joueur;
+                    $tabBrule[$numJoueur][$numEquipe]["equipe"] = [$equipe];
+                }
+            }// fin boucle equipe
             $numJoueur++;
-        }
-       // dd($tabBrule);
+        }// fin boucle joueur
         
 
         return $this->render('brule/brule.html.twig', [

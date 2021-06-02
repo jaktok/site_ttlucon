@@ -60,6 +60,20 @@ class MatchsRepository extends ServiceEntityRepository
     }
     
     
+    public function findByIdRencontreJoueurScore($idRencontre,$idJoueur,$score)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.rencontre = :val')
+        ->andWhere('m.joueur = :val2')
+        ->andWhere('m.score = :val3')
+        ->setParameter('val', $idRencontre)
+        ->setParameter('val2', $idJoueur)
+        ->setParameter('val3', $score)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     public function findByIdRencontre($value)
     {
         return $this->createQueryBuilder('m')
@@ -86,6 +100,16 @@ class MatchsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
         ->andWhere('m.rencontre IS NOT NULL')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
+    public function nettoieIdJoueurNull()
+    {
+         $this->createQueryBuilder('m')
+        ->delete()
+        ->andWhere('m.joueur IS NULL')
         ->getQuery()
         ->getResult()
         ;

@@ -27,8 +27,16 @@ class CalendrierController extends AbstractController
                 $this->categorie = "Jeune";
         }
 
+        $calendrierPhase1 = $rencontreRepo->findByPhase(1);
+        
+        // test pour dev phase 2 sur la phase 1
+        //$calendrierPhase2 = $rencontreRepo->findByPhase(2);
+        $calendrierPhase2 = $rencontreRepo->findByPhase(1);
+        
         return $this->render('calendrier/calendrier.html.twig', [
             'rencontres' => $rencontreRepo->findAll(),
+            'calendrierPhase1' => $calendrierPhase1,
+            'calendrierPhase2' => $calendrierPhase2,
             'equipes' => $equipeRepo->findAll(),
             'categorie' => $this->categorie,
         ]);

@@ -35,8 +35,8 @@ class CalendrierParamController extends AbstractController
      */ 
     public function createCalendrier(Request $request,RencontresRepository $rencontreRepo, int $id = null, int $idTeam = null)
     {
-        $rencontre = new Rencontres();
-        $idEquipe= $idTeam ;
+        $rencontre = new Rencontres();dd($rencontre);
+        $idEquipe= $idTeam ;dd($id,$idTeam);
         if($id)
         {
             $rencontre = $rencontreRepo->find($id);
@@ -45,7 +45,7 @@ class CalendrierParamController extends AbstractController
             //dd($rencontre->getNoJournee());
         }
         $dateRencontre = null;
-
+dd($rencontre);
         $form = $this->createForm(RencontreType::class, $rencontre);
 
         $form->handleRequest($request);

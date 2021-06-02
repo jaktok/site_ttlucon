@@ -662,14 +662,27 @@ class FFTTApi
      */
     public function getDetailsRencontreByLien(string $lienRencontre, string $clubEquipeA = "", string $clubEquipeB = ""): RencontreDetails
     {
-        $data = $this->apiRequest->get('xml_chp_renc', [], $lienRencontre);
+        $data = $this->apiRequest->getDetailRencontrByLien('xml_chp_renc', [], $lienRencontre);
         if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
             throw new InvalidLienRencontre($lienRencontre);
         }
         $factory = new RencontreDetailsFactory($this);
         return $factory->createFromArray($data, $clubEquipeA, $clubEquipeB);
     }
-
+    
+    // permet de tester si le resultat journee existe
+    public function isDetailsRencontreByLien(string $lienRencontre, string $clubEquipeA = "", string $clubEquipeB = ""): bool
+    {
+        $data = $this->apiRequest->getDetailRencontrByLien('xml_chp_renc', [], $lienRencontre);
+        if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+    
     /**
      * @return Actualite[]
      * @throws Exception\InvalidURIParametersException
