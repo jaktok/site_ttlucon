@@ -20,7 +20,9 @@ class EditUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login')
+            ->add('login',null,[
+                'label' => 'Nom utilisateur'
+            ])
             ->add('roles', ChoiceType::class,[
                 'choices' => [
                     'Utilisateur' => 'ROLE_USER',
@@ -33,12 +35,13 @@ class EditUserType extends AbstractType
                 'multiple' => true,
                 'label' => 'Roles'
             ])
-            ->add('password')
+            ->add('password',null,[
+                'label' => 'Mot de passe'
+            ])
             ->add('joueur', EntityType::class, [
                 'class' => Joueurs::class,
                 'choice_label' => 'nom',
             ])
-            ->add('valider', SubmitType::class)
             ;
     }
 

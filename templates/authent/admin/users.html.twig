@@ -3,11 +3,12 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Liste des utilisateurs</h1>
     <table  class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
             <th>ID</th>
-            <th>Login</th>
+            <th>Identifiant</th>
             <th>Rôles</th>
         </thead>
         <tbody>
@@ -40,5 +41,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <p><a href="{{ path('admin')}}" class="btn btn-danger">Retour</a></p>
+    <div class="col-sm-4" >
+                <a href="{{ path('admin') }}" class="btn btn-primary" aria-current="page">Retour</a>
+    </div>
+</div>
 {% endblock %}
