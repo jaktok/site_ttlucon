@@ -306,11 +306,8 @@ class CompetitionParamController extends AbstractController
         if ($idJoueur && $request->query->get('idCompet')){
         
         $idCompet = $request->query->get('idCompet');
-        
         // recup de la lidte des matchs pour suppression
-        $player = new Joueurs();
-        $player = $data["joueur_compet"];
-        $idPlayer = $player->getId();
+        $idPlayer = $request->attributes->get("idJoueur");
         $listeMatchs = $matchsRepo->findByIdCompetJoueur($idCompet,$idPlayer);
         foreach ($listeMatchs as $matche){
             $entityManager->remove($matche);

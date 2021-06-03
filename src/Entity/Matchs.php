@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MatchsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,28 +71,6 @@ class Matchs
      * @ORM\Column(type="integer", nullable=true)
      */
     private $id_joueur2;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $score2;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $victoire2;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Joueurs::class, inversedBy="double1")
-     */
-    private $joueur1;
-
-    public function __construct()
-    {
-        $this->joueur_double1 = new ArrayCollection();
-        $this->joueur1 = new ArrayCollection();
-        $this->joueur2 = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -232,53 +208,4 @@ class Matchs
 
         return $this;
     }
-
-    public function getScore2(): ?string
-    {
-        return $this->score2;
-    }
-
-    public function setScore2(?string $score2): self
-    {
-        $this->score2 = $score2;
-
-        return $this;
-    }
-
-    public function getVictoire2(): ?bool
-    {
-        return $this->victoire2;
-    }
-
-    public function setVictoire2(?bool $victoire2): self
-    {
-        $this->victoire2 = $victoire2;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Joueurs[]
-     */
-    public function getJoueur1(): Collection
-    {
-        return $this->joueur1;
-    }
-
-    public function addJoueur1(Joueurs $joueur1): self
-    {
-        if (!$this->joueur1->contains($joueur1)) {
-            $this->joueur1[] = $joueur1;
-        }
-
-        return $this;
-    }
-
-    public function removeJoueur1(Joueurs $joueur1): self
-    {
-        $this->joueur1->removeElement($joueur1);
-
-        return $this;
-    }
-
 }

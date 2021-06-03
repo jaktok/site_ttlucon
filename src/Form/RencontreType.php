@@ -43,7 +43,6 @@ class RencontreType extends AbstractType
                     '1' => 1,
                     '2' => 2,
             ]])
-            //->add('equipeRencontre')
             ->add('equipeType', EntityType::class, [
                 'class' => EquipeType::class,
                 'label' => 'Equipe',

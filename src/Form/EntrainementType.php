@@ -17,6 +17,7 @@ class EntrainementType extends AbstractType
         $builder
         ->add('libelle',TextType::class,array(
             'label' => 'Description :  ',
+            'attr' => array('style' => 'width: 400px')
         ))
             ->add('jour',TextType::class,array(
                 'label' => 'Journee :  ',

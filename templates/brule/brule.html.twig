@@ -20,10 +20,10 @@
    	{% if tabEquipes is defined and tabEquipes|length > 0 %}
       <table class="table table-striped mt-4" data-toggle="table" data-pagination="false">
         <thead>
-          <tr>
-          		<th>Joueurs</th>
+          <tr class="d-flex">
+          		<th class="col-2">Joueurs</th>
           	{% for equipe in tabEquipes %}
-            	<th class="text-center">{{ equipe.nom }}</th>
+            	<th class="col-2 text-center table-primary">{{ equipe.nom }}</th>
           	{% endfor %}
           </tr>
         </thead>
@@ -33,7 +33,7 @@
         	
         		{% for brule in tabBrule %}{# parcours du tableau sur chaque joueur #}
         		{% set cptBrule = 0 %}
-          		<tr>
+          		<tr >
           			<td>{{ brule.joueur.nom }} {{ brule.joueur.prenom }}</td>
           				{% for equipe in tabEquipes %}{# parcours des equipes #}
           				{% set cptEquipeBrule = 0 %}

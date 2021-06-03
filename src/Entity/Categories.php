@@ -29,10 +29,6 @@ class Categories
      */
     private $joueur;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EquipeRencontre::class, mappedBy="categories")
-     */
-    private $equipeRencontre;
 
     /**
      * @ORM\OneToMany(targetEntity=EquipeType::class, mappedBy="categories")
@@ -52,7 +48,6 @@ class Categories
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
-        $this->equipeRencontre = new ArrayCollection();
         $this->equipeType = new ArrayCollection();
         $this->entrainements = new ArrayCollection();
         $this->competition = new ArrayCollection();
@@ -98,36 +93,6 @@ class Categories
         // set the owning side to null (unless already changed)
         if ($joueur->getCategories() === $this) {
             $joueur->setCategories(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|EquipeRencontre[]
-     */
-    public function getEquipeRencontre(): Collection
-    {
-        return $this->equipeRencontre;
-    }
-
-    public function addEquipeRencontre(EquipeRencontre $equipeRencontre): self
-    {
-        if (!$this->equipeRencontre->contains($equipeRencontre)) {
-            $this->equipeRencontre[] = $equipeRencontre;
-            $equipeRencontre->setCategories($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipeRencontre(EquipeRencontre $equipeRencontre): self
-    {
-        if ($this->equipeRencontre->removeElement($equipeRencontre)) {
-            // set the owning side to null (unless already changed)
-            if ($equipeRencontre->getCategories() === $this) {
-                $equipeRencontre->setCategories(null);
-            }
         }
 
         return $this;

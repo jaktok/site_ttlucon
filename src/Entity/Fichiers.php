@@ -42,10 +42,6 @@ class Fichiers
      */
     private $equipeType;
 
-    /**
-     * @ORM\OneToOne(targetEntity=EquipeRencontre::class, mappedBy="fichier", cascade={"persist", "remove"})
-     */
-    private $equipeRencontre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Articles::class, inversedBy="fichier",cascade={"persist"})
@@ -118,28 +114,6 @@ class Fichiers
     public function setEquipeType(?EquipeType $equipeType): self
     {
         $this->equipeType = $equipeType;
-
-        return $this;
-    }
-
-    public function getEquipeRencontre(): ?EquipeRencontre
-    {
-        return $this->equipeRencontre;
-    }
-
-    public function setEquipeRencontre(?EquipeRencontre $equipeRencontre): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($equipeRencontre === null && $this->equipeRencontre !== null) {
-            $this->equipeRencontre->setFichier(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($equipeRencontre !== null && $equipeRencontre->getFichier() !== $this) {
-            $equipeRencontre->setFichier($this);
-        }
-
-        $this->equipeRencontre = $equipeRencontre;
 
         return $this;
     }
