@@ -68,10 +68,6 @@ class EquipesParamController extends AbstractController
                         }
             }
             
-
-            
-
-
             $images = $form->get('nom_photo')->getData();
             //dd($equipeTypes->getNom());
             if ($images){
@@ -87,6 +83,7 @@ class EquipesParamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             if ($equipeTypes->getId()!=null){
                 $img = $fichierRepo->findOneByEquipeType($equipeTypes->getId());
+                
             }
 
             if ($images && $img!=null&&$img->getId()!=null) {
@@ -156,7 +153,7 @@ class EquipesParamController extends AbstractController
     }
 
     /**
-     * @Route("/dirigeant/supprime/equipe/image/{id}", name="supprime_equipe_img")
+     * @Route("/supprime/equipe/image/{id}", name="supprime_equipe_img")
      */
     public function supprimeImage(Request $request,FichiersRepository $fichierRepo, int $id = null): Response{
         $img = new Fichiers();

@@ -1,0 +1,61 @@
+{% extends 'parametrage/base_parametrage.html.twig' %} 
+{% block title %} Hello IndexController! {% endblock %}
+{% form_theme formMatch 'bootstrap_4_layout.html.twig' %} 
+
+{% block body %}
+<script type="text/javascript">
+
+</script>
+
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+<meta charset="UTF-8" />
+{{ form_start(formMatch) }}
+
+<div class="container">
+	<h1>Fiche Resultat</h1>
+        <div class="row">
+            <div class="col-sm-4">
+                {{ form_row(formMatch.victoire) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                {{ form_row(formMatch.score) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                    <div class="row mt-3">	
+                        <div class="col-sm-12" align="center">
+                                {{ form_label(formMatch.joueur1) }}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-12 overflow-auto" style="height: 20vh">
+                                {{ form_widget(formMatch.joueur1) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
+        <br>
+        <div class="row">	
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+            </div>
+            <div class="col-sm-2">
+                <a href="{{ path('double_resultat_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+            </div>
+        </div>
+</div>
+
+
+{{ form_end(formMatch) }} {% endblock %}

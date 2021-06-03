@@ -30,8 +30,8 @@ class CalendrierController extends AbstractController
         $calendrierPhase1 = $rencontreRepo->findByPhase(1);
         
         // test pour dev phase 2 sur la phase 1
-        //$calendrierPhase2 = $rencontreRepo->findByPhase(2);
-        $calendrierPhase2 = $rencontreRepo->findByPhase(1);
+        $calendrierPhase2 = $rencontreRepo->findByPhase(2);
+        //$calendrierPhase2 = $rencontreRepo->findByPhase(1);
         
         return $this->render('calendrier/calendrier.html.twig', [
             'rencontres' => $rencontreRepo->findAll(),

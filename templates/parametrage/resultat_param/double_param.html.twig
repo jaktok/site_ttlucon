@@ -12,36 +12,42 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4" align="center">
- 		      <h1>Saisie des resultats</h1>
+ 		      <h1>Saisie des doubles</h1>
+ 	      </div>
+        <div class="col-sm-3">
+ 		      <br><a href="{{ path('new_double_resultat_param') }}" class="btn btn-primary mb-2" aria-current="page">Ajouter un double</a>
  	      </div>	
     </div>
 
 <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
-            <th data-sortable="true" data-field="date_rencontre">Date Rencontre</th>
-            <th>Adversaire</th>
             <th data-sortable="true">Victoire</th>
-            <th data-sortable="true">Phase</th>
-            <th>Modif.</th>
-            <th>Saisie des doubles.</th>
+            <th>Score</th>
+            <th data-sortable="true">Joueurs</th>
+            <th>modifier</th>
           </tr>
         </thead>
         <tbody>
-        {% if resultats is defined %}
-        {% for resultat in resultats %}
+        {% if matchs is defined %}
+        {% for match in matchs %}
+        {% if match.matchDouble == 1 %}
         <tr>
-            <td>{{ resultat.dateRencontre|date('d/m/Y') }}</td>
-           	<td>{{ resultat.equipeA }} / {{ resultat.equipeB }}</td>
-            {% if resultat.victoire == 1  %}
+            {% if match.victoire == 1  %}
            		<td>Victoire</td>
             {% else %}
               <td>Défaite</td>
            	{% endif %}
-            <td>{{ resultat.phase }}</td> 
-            <td><a href="{{ path('modifier_resultat_param', { 'id': resultat.id}) }}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('double_resultat_param', { 'id': resultat.id}) }}" class="btn btn-primary">double</a></td>
+           	<td>{{ match.score }}</td>
+            <td>
+            {% for joueurs in match.joueur1 %}
+              {{ joueurs.getNom() }}
+              {{ joueurs.getPrenom() }}<br>
+            {% endfor %}
+            </td>
+            <td><a href="{{ path('modifier_double_resultat_param', { 'id': match.id}) }}" class="btn btn-primary">Modifier</a></td>
         </tr>
+        {% endif %}
         {% endfor %}
         {% endif %}
     </tbody>

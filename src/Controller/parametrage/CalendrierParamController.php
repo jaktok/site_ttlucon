@@ -45,7 +45,7 @@ class CalendrierParamController extends AbstractController
             //dd($rencontre->getNoJournee());
         }
         $dateRencontre = null;
-dd($rencontre);
+//dd($rencontre);
         $form = $this->createForm(RencontreType::class, $rencontre);
 
         $form->handleRequest($request);

@@ -174,6 +174,21 @@ class Joueurs
      */
     private $actif;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Matchs::class, mappedBy="joueur_double1")
+     */
+    private $match_double1;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Matchs::class, mappedBy="joueur1")
+     */
+    private $double1;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Matchs::class, mappedBy="joueur2")
+     */
+    private $double2;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -182,6 +197,9 @@ class Joueurs
         $this->classements = new ArrayCollection();
         $this->matchs = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->match_double1 = new ArrayCollection();
+        $this->double1 = new ArrayCollection();
+        $this->double2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -674,6 +692,87 @@ class Joueurs
     public function setActif(?bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getMatchDouble1(): Collection
+    {
+        return $this->match_double1;
+    }
+
+    public function addMatchDouble1(Matchs $matchDouble1): self
+    {
+        if (!$this->match_double1->contains($matchDouble1)) {
+            $this->match_double1[] = $matchDouble1;
+            $matchDouble1->addJoueurDouble1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatchDouble1(Matchs $matchDouble1): self
+    {
+        if ($this->match_double1->removeElement($matchDouble1)) {
+            $matchDouble1->removeJoueurDouble1($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getDouble1(): Collection
+    {
+        return $this->double1;
+    }
+
+    public function addDouble1(Matchs $double1): self
+    {
+        if (!$this->double1->contains($double1)) {
+            $this->double1[] = $double1;
+            $double1->addJoueur1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDouble1(Matchs $double1): self
+    {
+        if ($this->double1->removeElement($double1)) {
+            $double1->removeJoueur1($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matchs[]
+     */
+    public function getDouble2(): Collection
+    {
+        return $this->double2;
+    }
+
+    public function addDouble2(Matchs $double2): self
+    {
+        if (!$this->double2->contains($double2)) {
+            $this->double2[] = $double2;
+            $double2->addJoueur2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDouble2(Matchs $double2): self
+    {
+        if ($this->double2->removeElement($double2)) {
+            $double2->removeJoueur2($this);
+        }
 
         return $this;
     }
