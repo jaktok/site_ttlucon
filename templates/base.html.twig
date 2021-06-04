@@ -104,7 +104,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 					{% set cat = 'Adapte' %}
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Resultats</a> <a
-							class="dropdown-item" href="/calendrier">Calendrier</a>
+							class="dropdown-item" href="{{ path ('calendrier', {'cat': cat} ) }}">Calendrier</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('joueur',{'cat': cat} ) }}">Liste des joueurs</a>
 						<div class="dropdown-divider"></div>

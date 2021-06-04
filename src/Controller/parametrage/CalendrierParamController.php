@@ -14,6 +14,7 @@ use App\Form\RencontreType;
 use phpDocumentor\Reflection\Types\String_;
 use App\Repository\RencontresRepository;
 use App\Repository\EquipeTypeRepository;
+use App\Repository\MatchsRepository;
 class CalendrierParamController extends AbstractController
 {
     private $ini_array;
@@ -35,8 +36,8 @@ class CalendrierParamController extends AbstractController
      */ 
     public function createCalendrier(Request $request,RencontresRepository $rencontreRepo, int $id = null, int $idTeam = null)
     {
-        $rencontre = new Rencontres();dd($rencontre);
-        $idEquipe= $idTeam ;dd($id,$idTeam);
+        $rencontre = new Rencontres();
+        $idEquipe= $idTeam ;
         if($id)
         {
             $rencontre = $rencontreRepo->find($id);
@@ -71,7 +72,7 @@ class CalendrierParamController extends AbstractController
     /**
      * @Route("/supprime/calendrier/{id}", name="supprime_calendrier")
      */
-    public function supprimeCalendrier(Request $request, RencontresRepository  $rencontreRepo, int $id = null, int $idTeam=null): Response
+    public function supprimeCalendrier(Request $request, RencontresRepository  $rencontreRepo,MatchsRepository $matchRepo, int $id = null, int $idTeam=null): Response
     {
         $idEquipe= $idTeam ;
         if($id)
@@ -87,6 +88,14 @@ class CalendrierParamController extends AbstractController
         
         if ($rencontre) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $listeMatchs = $matchRepo->findByIdRencontre($rencontre->getId());
+            // on boucle sur les matchs pour suppression
+            foreach ($listeMatchs as $match){
+                $entityManager->remove($match);
+                $entityManager->flush();
+            }
+            
             $entityManager->remove($rencontre);
             $entityManager->flush();
         }
@@ -160,11 +169,17 @@ class CalendrierParamController extends AbstractController
     /**
      * @Route("/vider/calendrier/{idTeam}", name="vider_calendrier")
      */
-    public function viderCalendrier(Request $request, RencontresRepository  $rencontreRepo, int $id = null, int $idTeam=null): Response
+    public function viderCalendrier(Request $request, RencontresRepository  $rencontreRepo,MatchsRepository $matchRepo, int $id = null, int $idTeam=null): Response
     {
         $listeRencontre = $rencontreRepo->findByEquipe($idTeam);
         $entityManager = $this->getDoctrine()->getManager();
         foreach ($listeRencontre as $rencontre) {
+            $listeMatchs = $matchRepo->findByIdRencontre($rencontre->getId());
+            // on boucle sur les matchs pour suppression
+            foreach ($listeMatchs as $match){
+                $entityManager->remove($match);
+                $entityManager->flush();
+            }
             $entityManager->remove($rencontre);
             $entityManager->flush();
         }

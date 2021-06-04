@@ -12,16 +12,17 @@
 
 <div class="fluide" >
    <div class="container" align="center">
+   <br>
         {% if categorie == 'tous'  %}
-        	<h4 style="color: white">Liste des licenciés Luçonnais</h4>
+        	<h4 style="color: #0000FF">licenciés Luçonnais</h4>
 		{% elseif categorie == 'Adulte'  %}
-		    <h4 style="color: white">Liste des Joueurs Adultes</h4>
+		    <h4 style="color: #5B3C11">Joueurs Adultes</h4>
 		{% elseif categorie == 'Jeune'  %}
-			<h4 style="color: white">Liste des Joueurs en catégorie jeunes</h4>
+			<h4 style="color: #0000FF">Joueurs en catégorie jeunes</h4>
 		{% elseif categorie == 'Adapte'  %}
-		    <h4 style="color: white">Liste des Joueurs en catégorie Adapté</h4>
+		    <h4 style="color: #0000FF">Joueurs en catégorie Adapté</h4>
     	{% else %}
-        	<h4 style="color: white">Liste des licenciés Luçonnais</h4>
+        	<h4 style="color: #0000FF">licenciés Luçonnais</h4>
 		{% endif %}
 		<br>
         <table class="table table-dark table-sm table-borderless  mw-100" data-toggle="table" >

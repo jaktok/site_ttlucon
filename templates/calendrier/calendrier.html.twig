@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
+{% extends 'base.html.twig' %} {% block title %}Calendrier{%
 endblock %} {% block body %}
 <meta charset="UTF-8" />
 
@@ -11,10 +11,15 @@ endblock %} {% block body %}
 
    <div class="container">
         {% if categorie == 'Adulte'  %}
-        	<h1 style="color: black" align="center">Liste des calendriers des Equipes Adultes</h1>
-		{% elseif categorie == 'Jeune'  %}
-			<h1 style="color: black" align="center">Liste des calendriers des Equipes jeunes</h1>
+        	<h1 style="color: black" align="center">Calendrier Adultes</h1>
+        {% endif %}
+		{% if categorie == 'Jeune'  %}
+			<h1 style="color: black" align="center">Calendrier Jeunes</h1>
 		{% endif %}
+		{% if categorie == 'Adapte'  %}
+			<h1 style="color: black" align="center">Calendrier Sport Adapté</h1>
+		{% endif %}
+
 
        <div class="row">
        		<div class="col-sm-6" >

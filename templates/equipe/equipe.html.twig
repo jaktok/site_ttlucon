@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %} {% block title %}Hello IndexController!{%
+{% extends 'base.html.twig' %} {% block title %}Equipes{%
 endblock %} 
 {% block body %}
 <meta charset="UTF-8" />
@@ -9,40 +9,81 @@ endblock %}
 <!-- Insérer cette balise "script" après celle de Bootstrap -->
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
-   <div class="container">
-        {% if categorie == 'Adulte'  %}
-        	<h1 style="color: black">Liste des Equipes Adultes</h1>
+<div class="container">
+	    {% if categorie == 'Adulte'  %}
+	      	<h1 align="center" style="color: black">Equipes Adultes</h1>
 		{% elseif categorie == 'Jeune'  %}
-			<h1 style="color: black">Liste des Equipes jeunes</h1>
+			<h1 align="center" style="color: black">Equipes jeunes</h1>
 		{% endif %}
 
-      <table class="table table-striped" data-toggle="table" data-pagination="false">
-        <thead>
-          <tr>
-            <th data-sortable="true" data-field="nom">Nom</th>
-            <th>Division</th>
-            <th>Membre</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% if equipes is defined %}
-            {% for equipe in equipes %}
-                {% if equipe.categories.libelle == categorie %}
-                    <tr>
-                        <td>{{ equipe.nom }}</td>
-                        <td>{{ equipe.division }}</td>
-                        <td>
-                            {% for joueurs in equipe.joueur %}
-                            {{ joueurs.getNom() }}
-                            {{ joueurs.getPrenom() }}<br>
-                            {% endfor %}
-                        </td>
-                    </tr>
+
+
+    {% if equipes is defined %}
+        {% for equipe in equipes %}
+            {% if equipe.categories.libelle == categorie %}
+ 			<div class="container mt-5">
+ 			<div class="col-sm-12" >
+       			<div class="row text-center" style="background-color: #B0F2B6">
+   					<div class="col-sm-12 center" >
+   						<h2>TT {{ equipe.nom }}</h2>
+   					</div>
+       			</div>	
+     			<div class="row " style="background-color: #B0F2B6">
+   					<div class="col-sm-6 text-center" >
+   				 		<H4>Division : {{ equipe.division }}</H4>				
+   				 	</div>
+   				 	<div class="col-sm-6" >
+   				 		<H4>Capitaine : {{ equipe.capitaine }}</H4>
+   				 	</div>
+   				 </div>
+      				 {% if equipe.photo is defined  and equipe.photo is not null  %}
+				 <div class="row  justify-content-md-center mt-3" align="center">
+					 <div class="col-sm-6 thumbnail" style="background-color: #D2CAEC" >
+							<img src="{{ asset('/equipes/'~equipe.photo.nom) }}" alt="" class="thumbnail" width="50%">
+					 </div>
+				 </div>	 
+					 {% endif %}
+					 
+					 <div class="row mt-2" style="background-color: #F5F5DC">
+					 {% set cpt = 0 %}
+					 {% for joueurs in equipe.joueur %}		 
+      				 {% if cpt==3 or cpt==6 or cpt==9 or cpt==12 %}
+      				 	<div class="row" style="background-color: #F5F5DC">
+      				 {% endif %}	
+      				 	<div class="col-sm-4" >
+      				 		<div class="row"  >
+      				 			{% if joueurs.getPhoto() is defined  and joueurs.getPhoto() is not null  %}
+								<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+									<img src="{{ asset('/images/'~joueurs.photo.nom) }}" alt="" align="center" width="50">
+								</div>
+								{% else %}
+								<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+									<img src="{{ asset('/images/defautP.jpg') }}" alt="" align="center" width="50">
+								</div>
+								{% endif %}  				 			
+      				 			<div class="col-sm-9  align-self-center" align="left">
+							      	{{ joueurs.getPrenom()}} {{ joueurs.getNom() }} 			 			
+      				 			</div>
+      				 		</div>
+      				 	</div>
+      				 	{% set cpt = cpt + 1 %}
+      				 	{% if cpt==3 or cpt==6 or cpt==9 or cpt==12 %}
+      				 		</div>
+      				 	{% endif %}
+      				 	
+      				 	{% endfor %}
+      				 	</div>
+      				    	<div class="row mt-5 align-self-center" align="center">
+								<div class="col-sm-12 align-self-center" align="center">
+									<hr align="center" color="black" >
+								</div>
+							</div>
+	      			</div>
+	            </div>   
+
                 {% endif %}
             {% endfor %}
 		{% endif %}
-        </tbody>
-      </table>
-    </div>
+</div>
 
 {% endblock %}

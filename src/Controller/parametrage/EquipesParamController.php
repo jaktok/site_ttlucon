@@ -15,6 +15,7 @@ use App\Repository\RencontresRepository;
 use App\Entity\EquipeType;
 use App\Entity\Fichiers;
 use App\Form\PrevisionEquipeType;
+use App\Repository\MatchsRepository;
 
 class EquipesParamController extends AbstractController
 {
@@ -127,7 +128,7 @@ class EquipesParamController extends AbstractController
     /**
      * @Route("/supprime/equipe/{id}", name="supprime_equipe")
      */
-    public function supprimeEquipe(Request $request,RencontresRepository $rencontreRepo,EquipeTypeRepository $equipeTypeRepo, int $id = null): Response
+    public function supprimeEquipe(Request $request,RencontresRepository $rencontreRepo,EquipeTypeRepository $equipeTypeRepo,MatchsRepository $matchRepo, int $id = null): Response
     {
         
         $entityManager = $this->getDoctrine()->getManager();
@@ -139,9 +140,17 @@ class EquipesParamController extends AbstractController
 
             $listeRencontre = $rencontreRepo->findByEquipe($equipe->getId());
             if ($listeRencontre){
-                foreach ($listeRencontre as $rencontre)
+                foreach ($listeRencontre as $rencontre){
+                    $listeMatchs = $matchRepo->findByIdRencontre($rencontre->getId());
+                        // on boucle sur les matchs pour suppression
+                    foreach ($listeMatchs as $match){
+                        $entityManager->remove($match);
+                        $entityManager->flush();
+                    }
+                    
                     $entityManager->remove($rencontre);
                     $entityManager->flush();
+                }
             }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($equipe);

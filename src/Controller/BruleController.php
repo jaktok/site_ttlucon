@@ -29,12 +29,20 @@ class BruleController extends AbstractController
 
         $tabBrule = array();
         
+        // on récupère la phase
+        $phase = 2;
+        $moisEncours = date("m");
+        $tabPhase1 = array("01","02","03","04","05","06");
+        if (in_array($moisEncours, $tabPhase1)){
+            $phase = 1;
+        }
+        
         $listeJoueursMatchEquipe = $matchRepo->findIdJoueursMatchEquipe();
         $numJoueur = 0;
         foreach ($listeJoueurs as $joueur) {
             foreach ($listeEquipes as $equipe) {
                 $idEquipe = $equipe->getId();
-                $listeRencontres = $rencontreRepo->findByIdEquipe($idEquipe);
+                $listeRencontres = $rencontreRepo->findByIdEquipeAndPhase($idEquipe,$phase);
               // dd($listeRencontres);
                 $tabRencontres = array();
                 $cpt = 0;

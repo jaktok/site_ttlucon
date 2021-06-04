@@ -25,6 +25,12 @@ class CalendrierController extends AbstractController
                 break;
             case "Jeune":
                 $this->categorie = "Jeune";
+                break;
+            case "Adapte":
+                $this->categorie = "Adapte";
+                break;
+            default :
+                $this->categorie = "Adulte";
         }
 
         $calendrierPhase1 = $rencontreRepo->findByPhase(1);
@@ -32,6 +38,7 @@ class CalendrierController extends AbstractController
         // test pour dev phase 2 sur la phase 1
         $calendrierPhase2 = $rencontreRepo->findByPhase(2);
         //$calendrierPhase2 = $rencontreRepo->findByPhase(1);
+        
         
         return $this->render('calendrier/calendrier.html.twig', [
             'rencontres' => $rencontreRepo->findAll(),
