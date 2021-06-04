@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RencontresRepository;
 use App\Repository\MatchsRepository;
+use App\Repository\EquipeTypeRepository;
 use App\Entity\Rencontres;
 use App\Entity\Matchs;
 use App\Form\ResultatsType;
@@ -79,13 +80,32 @@ class ResultatParamController extends AbstractController
                 
             }
         }
-       
+
         $form = $this->createForm(ResultatsType::class, $rencontre);
         
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 
+            $scoreA = $form["scoreA"]->getData();
+            $scoreB = $form["scoreB"]->getData();
+            $domicile = $rencontre->getDomicile();
+            if($scoreA > $scoreB && $domicile == true){
+                $rencontre->setVictoire(true);
+            }
+            elseif($scoreA > $scoreB && $domicile == false){
+                $rencontre->setVictoire(false);
+            }
+            elseif($scoreB > $scoreA && $domicile == true){
+                $rencontre->setVictoire(false);
+            }
+            elseif($scoreB > $scoreA && $domicile == false){
+                $rencontre->setVictoire(true);
+            }
+            else{
+                $rencontre->setVictoire(null);
+            }
+            
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($rencontre);
             $entityManager->flush();
@@ -100,6 +120,34 @@ class ResultatParamController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/capitaine/param/resultat/match/new", name="new_match_resultat_param")
+     * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
+     */
+    public function doublemodifResultat(Request $request,MatchsRepository $matchRepo, Matchs $match = null): Response
+    {
+        if(!$match){
+            $match = new Matchs();
+        }
+        $form = $this->createForm(MatchsType::class, $match);
+        
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($match);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('resultat_param');
+        }
+
+        return $this->render('parametrage/resultat_param/fiche_double_param.html.twig', [
+            'formMatch' => $form->createView(),
+        ]);
+    }
+
     /**
      * @Route("/capitaine/param/resultat/double/{id}", name="double_resultat_param")
      */
@@ -110,35 +158,8 @@ class ResultatParamController extends AbstractController
         //return $this->redirectToRoute('resultat_param');
 
         return $this->render('parametrage/resultat_param/double_param.html.twig', [
-            'matchs' => $matchs
-        ]);
-    }
-
-    /**
-     * @Route("/capitaine/param/resultat/new", name="new_double_resultat_param")
-     * @Route("/capitaine/param/resultat/double/modifer/{id}", name="modifier_double_resultat_param")
-     */
-    public function doublemodifResultat(Request $request,MatchsRepository $matchRepo, Matchs $match = null): Response
-    {
-        if(!$match){
-            $match = new Matchs();
-        }
-
-        $form = $this->createForm(MatchsType::class, $match);
-        
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $match->setMatchDouble(true);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($match);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('resultat_param');
-        }
-
-        return $this->render('parametrage/resultat_param/fiche_double_param.html.twig', [
-            'formMatch' => $form->createView(),
+            'matchs' => $matchs,
+            'idRencontre' =>$id
         ]);
     }
 }

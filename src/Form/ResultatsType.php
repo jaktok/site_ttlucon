@@ -33,13 +33,13 @@ class ResultatsType extends AbstractType
                 ),
                 'label' => 'Equipe B'
             ])
-            ->add('victoire',ChoiceType::class,[
+            /*->add('victoire',ChoiceType::class,[
                 'choices' => [
                     'oui' => true,
                     'non' => false,
                 ],
                 'label' => 'Victoire de Luçon'
-            ])
+            ])*/
             ->add('scoreA')
             ->add('scoreB')
         ;

@@ -15,7 +15,7 @@
  		      <h1>Saisie des doubles</h1>
  	      </div>
         <div class="col-sm-3">
- 		      <br><a href="{{ path('new_double_resultat_param') }}" class="btn btn-primary mb-2" aria-current="page">Ajouter un double</a>
+ 		      <br><a href="{{ path('new_match_resultat_param') }}" class="btn btn-primary mb-2" aria-current="page">Ajouter un double</a>
  	      </div>	
     </div>
 
@@ -40,7 +40,7 @@
            	{% endif %}
            	<td>{{ match.score }}</td>
             <td>
-            {% for joueurs in match.joueur1 %}
+            {% for joueurs in match.joueur %}
               {{ joueurs.getNom() }}
               {{ joueurs.getPrenom() }}<br>
             {% endfor %}

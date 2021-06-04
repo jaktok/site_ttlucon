@@ -26,14 +26,14 @@ class MatchsType extends AbstractType
                     'oui' => true,
                     'non' => false,
                 ],
-                'label' => 'Victoire du double 1'])
+                'label' => 'Victoire de Luçon'])
             //->add('position')
             //->add('matchDouble')
             ->add('score')
-            ->add('joueur1', EntityType::class, [
+            ->add('joueur', EntityType::class, [
                 'class' => Joueurs::class,
                 'choice_label' => 'nom',
-                'multiple' => true,
+                'multiple' => false,
                 'expanded' => true,
             ])
             /*->add('joueur2', EntityType::class, [
