@@ -69,8 +69,18 @@ class PartenaireParamController extends AbstractController
         if ($images){
                 // On copie le fichier dans le dossier uploads
             $fichier = 'partenaire'.$nmImgDate.'.'.$images->guessExtension();
-                //dd($this->getParameter('images_destination'),$images,$fichier,$form);
-                $images->move($this->getParameter('images_destination'),
+            // si on a modifie l image on supprime l ancienne
+            if ($partenaire->getFichier()!=null){
+                if($partenaire->getFichier()->getNom() != 'partenaire'.$nmImgDate.'.'.$images->guessExtension()){
+                    $nomImage = $this->getParameter('partenaires_destination').'/'.$partenaire->getFichier()->getNom();
+                    if (file_exists($nomImage)){
+                        // on va chercher le chemin defini dans services yaml
+                        // si elle existe on la supprime physiquement du rep public
+                        unlink($nomImage);
+                    }
+                }
+            }
+            $images->move($this->getParameter('partenaires_destination'),
                     $fichier
                     );
         }
@@ -82,7 +92,7 @@ class PartenaireParamController extends AbstractController
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
                 $image->setNom($fichier);//dd($image,$images);
-                $image->setUrl($this->getParameter('images_destination'));
+                $image->setUrl($this->getParameter('partenaires_destination'));
                 $entityManager->flush();
             }
             
@@ -90,7 +100,7 @@ class PartenaireParamController extends AbstractController
                 // On crée l'image dans la base de données
                 $img = new Fichiers();//dd($fichier);
                 $img->setNom($fichier);
-                $img->setUrl($this->getParameter('images_destination'));
+                $img->setUrl($this->getParameter('partenaires_destination'));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($img);
                 $entityManager->flush();
@@ -147,7 +157,7 @@ class PartenaireParamController extends AbstractController
                     $entityManager->flush();
             }
             // on va chercher le chemin defini dans services yaml
-            $nomImage = $this->getParameter('images_destination').'/'.$nmDoc;
+            $nomImage = $this->getParameter('partenaires_destination').'/'.$nmDoc;
             // on verifie si image existe
             if (file_exists($nomImage)){
                 // si elle existe on la supprime physiquement du rep public

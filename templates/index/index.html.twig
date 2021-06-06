@@ -35,7 +35,7 @@
 							{% if cpt == 0 %}
 							<div class="carousel-item active">
 									<img
-									src="{{ asset('images/'~nmPhoto) }}"
+									src="{{ asset('partenaires/'~nmPhoto) }}"
 									alt="" class="img-fluid">
 
 							</div>
@@ -43,7 +43,7 @@
 							{% else %}
 							<div class="carousel-item">
 									<img
-									src="{{ asset('images/'~nmPhoto) }}"
+									src="{{ asset('partenaires/'~nmPhoto) }}"
 									alt="" class="img-fluid">
 
 							</div>
@@ -68,10 +68,10 @@
 					<div class="col-sm-12">
 						<p>{{ doc.libelle }}</p>
 						{% if extention == 'jpg' %}
-							<img alt="" src="{{ asset('images/'~nomFichier) }}"
+							<img alt="" src="{{ asset('docaccueil/'~nomFichier) }}"
 						alt="" class="img-thumbnail" >
 						{% else %}
-						<a href="{{ asset('images/'~nomFichier) }}" target="_blank"> <img src="{{ asset('images/'~extention) }}" alt="" class="img-thumbnail" width="30%"> 
+						<a href="{{ asset('docaccueil/'~nomFichier) }}" target="_blank"> <img src="{{ asset('docaccueil/'~extention) }}" alt="" class="img-thumbnail" width="30%"> 
 						{% endif %}
 						</a>
 					</div>

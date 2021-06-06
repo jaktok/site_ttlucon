@@ -69,8 +69,19 @@ class DocAccueilController extends AbstractController
             if ($images){
                 // On copie le fichier dans le dossier uploads
                 $fichier = 'docaccueil'.$nmImgDate.'.'.$images->guessExtension();
-                //  dd($this->getParameter('images_destination'),$images,$form);
-                $images->move($this->getParameter('images_destination'),
+                // si on a modifie l image on supprime l ancienne
+                if ($doc->getFichier()!=null){
+                    if($doc->getFichier()->getNom() != 'docaccueil'.$nmImgDate.'.'.$images->guessExtension()){
+                        $nomImage = $this->getParameter('docaccueil_destination').'/'.$doc->getFichier()->getNom();
+                            if (file_exists($nomImage)){
+                            // on va chercher le chemin defini dans services yaml
+                            // si elle existe on la supprime physiquement du rep public
+                            unlink($nomImage);
+                        }
+                    }
+                }
+               // dd($this->getParameter('docaccueil_destination'),$images,$form,$doc->getFichier()->getNom(),'docaccueil'.$nmImgDate.'.'.$images->guessExtension());
+                $images->move($this->getParameter('docaccueil_destination'),
                     $fichier
                     );
             }
@@ -82,7 +93,7 @@ class DocAccueilController extends AbstractController
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
                 $image->setNom($fichier);
-                $image->setUrl($this->getParameter('images_destination'));
+                $image->setUrl($this->getParameter('docaccueil_destination'));
                 $entityManager->flush();
             }
             
@@ -90,7 +101,7 @@ class DocAccueilController extends AbstractController
                 // On crée l'image dans la base de données
                 $img = new Fichiers();//dd($fichier);
                 $img->setNom($fichier);
-                $img->setUrl($this->getParameter('images_destination'));
+                $img->setUrl($this->getParameter('docaccueil_destination'));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($img);
                 $entityManager->flush();
@@ -147,7 +158,7 @@ class DocAccueilController extends AbstractController
                 $entityManager->flush();
             }
             // on va chercher le chemin defini dans services yaml
-            $nomImage = $this->getParameter('images_destination').'/'.$nmDoc;
+            $nomImage = $this->getParameter('docaccueil_destination').'/'.$nmDoc;
             // on verifie si image existe
             if (file_exists($nomImage)){
                 // si elle existe on la supprime physiquement du rep public

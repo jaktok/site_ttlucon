@@ -7,6 +7,8 @@ parameters:
     images_destination: '%kernel.project_dir%/public/images'
     articles_destination: '%kernel.project_dir%/public/articles'
     equipes_destination: '%kernel.project_dir%/public/equipes'
+    docaccueil_destination: '%kernel.project_dir%/public/docaccueil'
+    partenaires_destination: '%kernel.project_dir%/public/partenaires'
 services:
     # default configuration for services in *this* file
     _defaults:
