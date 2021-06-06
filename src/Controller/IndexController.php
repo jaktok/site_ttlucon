@@ -31,6 +31,7 @@ class IndexController extends AbstractController
     /**
      *
      * @Route("/index/{page}", name="index")
+     * @Route("/")
      */
     public function index(ArticlesRepository $articleRepo,PartenaireRepository $partenaireRepo, DocAccueilRepository $docAccueilRepo, int $page=1): Response
     {

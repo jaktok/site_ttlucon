@@ -31,6 +31,7 @@ class JoueursParamController extends AbstractController
     private $api;
     private $idClub;
     private $categorie;
+    private $delaiMoisPurge;
     
     
     public function __construct()
@@ -39,6 +40,7 @@ class JoueursParamController extends AbstractController
         $this->ini_array = parse_ini_file("../config/config.ini");
         $this->api = new FFTTApi();
         $this->idClub = $this->ini_array['id_club_lucon'];
+        $this->delaiMoisPurge = $this->ini_array['delai_mois_purge_classement'];
     }
     /**
      * @Route("/dirigeant/param/joueurs", name="joueurs_param")
@@ -48,6 +50,15 @@ class JoueursParamController extends AbstractController
 
         // recuperation de la liste des categories
         $listeCategories = $categoriesRepo->findAll();
+        
+        
+        $dateJour = new \DateTime();
+        $datePurge = date_sub($dateJour,date_interval_create_from_date_string( $this->delaiMoisPurge.' month'));
+        $listeClassementPerimes = $classementRepo->findByDatePerime($datePurge);
+        $purge = "desabled";
+        if(! empty($listeClassementPerimes)){
+            $purge = "enabled";
+        }
         
         // recuperation de tous les joueurs tries sur le nom
        // $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
@@ -100,6 +111,7 @@ class JoueursParamController extends AbstractController
             'formJoueurs' => $form->createView(),
             'joueurs' => $this->licencies,
             'joueursInactifs' => $this->licenciesInactifs,
+            'purge' => $purge,
         ]);
     }
     
@@ -374,6 +386,19 @@ class JoueursParamController extends AbstractController
                 $entityManager->flush();
             }
         }
+        return $this->redirectToRoute('joueurs_param');
+    }
+    
+    
+    /**
+     * @Route("/dirigeant/purgeclassement/joueur/", name="purge_classements")
+     */
+    public function purgeClassements(Request $request,ClassementRepository $classementRepo): Response
+    {
+        
+        $dateJour = new \DateTime();
+        $datePurge = date_sub($dateJour,date_interval_create_from_date_string( $this->delaiMoisPurge.' month'));
+        $purgeClassementsPerimes = $classementRepo->purgeClassementsPerime($datePurge);
         return $this->redirectToRoute('joueurs_param');
     }
     

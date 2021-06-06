@@ -34,6 +34,29 @@ class ClassementRepository extends ServiceEntityRepository
         ;
     }
     
+    
+    public function findByDatePerime($dtPurge)
+    {
+        return $this->createQueryBuilder('c')
+        ->andWhere('c.date < :val')
+        ->setParameter('val', $dtPurge)
+        ->orderBy('c.date', 'DESC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
+    
+    public function purgeClassementsPerime($dtPurge)
+    {
+        return $this->createQueryBuilder('c')
+        ->delete()
+        ->andWhere('c.date < :val')
+        ->setParameter('val', $dtPurge)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Classement

@@ -25,6 +25,19 @@
  	<div class="col-sm-2">
  		<a href="{{ path('maj_joueur_auto') }}" class="btn btn-warning" aria-current="page">Ajout joueurs auto</a>
  	</div>
+ 	<div class="col-sm-2">
+ 		
+ 	</div>
+ 	<div class="col-sm-3" align="right">
+ 		{% if purge == 'desabled' %}
+ 			<a href="{{ path('purge_classements') }}" class="btn btn-warning disabled" aria-current="page"  >Purge anciens classements</a>
+ 		{% else %}
+ 			<a href="{{ path('purge_classements') }}" class="btn btn-warning" aria-current="page"  >Purge anciens classements</a>
+ 		{% endif %}	
+ 	</div>
+ 	<div class="col-sm-1 align-items-center">
+ 		<img src="{{ asset('/images/question.png')}}" alt="" onclick="alert('Lorsque le bouton Purge anciens classements est actif, cliquer dessus pour puger les anciens classements')"  width="50">
+ 	</div>
  	
  	</div>
 <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
