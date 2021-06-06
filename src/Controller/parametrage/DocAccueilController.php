@@ -122,7 +122,7 @@ class DocAccueilController extends AbstractController
             $idImage = $doc->getFichier()->getId();
         }
         
-        //dd($idImage,$nmPhoto);
+       //dd($idImage,$nmPhoto);
         return $this->render('parametrage/doc_accueil_param/fiche_doc.html.twig', [
             'formDocs' =>  $form->createView(),
             'idDoc' => $id,
