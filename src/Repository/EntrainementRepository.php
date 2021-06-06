@@ -35,7 +35,19 @@ class EntrainementRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    
+    // rajoutee pour le tri sur les jours de la semaine mais pas mieux que le find array a gerer
+    public function findByOrder()
+    {
+        return $this->createQueryBuilder('e')
+        ->orderBy('e.jour', 'ASC')
+        ->addOrderBy('e.heure_debut', 'ASC')
+        ->addOrderBy('e.heure_fin', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     /*
     public function findOneBySomeField($value): ?Entrainement
     {

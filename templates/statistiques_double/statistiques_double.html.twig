@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+{% block title %}Stast Doubles{% endblock %}
+
+{% block body %}
+<meta charset="UTF-8" />
+
+<div class="container">
+			<div class="row" align="center">
+				<div class="col-sm-12">
+					<h1>Statistiques Doubles {{categorie}} </h1>
+				</div>
+			</div>
+			
+			{% if tabDoubleStats is defined %} {% if tabDoubleStats is not empty%}
+			 {% set place = 1 %}
+			 {% for joueur in tabDoubleStats %}
+		<div class="container border">
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-1 align-items-center" style="background-color: #CC5500" align="center">
+					<h4>N° {{ place }}</h4>
+				</div>
+		</div>	
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="row" align="center">
+					{% if joueur.joueur1.photo is defined  and joueur.joueur1.photo is not null  %}
+					<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/'~joueur.joueur1.photo.nom) }}" alt="" width="50">
+					</div>
+					{% else %}
+					<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+					</div>
+					{% endif %}
+					<div class="col-sm-3 align-self-center" align="left">
+						<h2>{{ joueur.joueur1.prenom }} {{ joueur.joueur1.nom }}</h2>
+					</div>
+					{% if joueur.joueur2.photo is defined  and joueur.joueur2.photo is not null  %}
+					<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/'~joueur.joueur2.photo.nom) }}" alt="" width="50">
+					</div>
+					{% else %}
+					<div class="col-sm-3" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+					</div>
+					{% endif %}
+					<div class="col-sm-3 align-self-center" align="left">
+						<h2>{{ joueur.joueur2.prenom }} {{ joueur.joueur2.nom }}</h2>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row mt-4 align-items-center" style="background-color: #FFF0BC">
+				<div class="col-sm-12 " align="center">
+					<h4>Victoires :&nbsp;&nbsp; {{ joueur.pourcent }} % &nbsp;&nbsp; {{ joueur.victoires }} victoires - {{ joueur.defaites }} défaites  </h4>
+				</div>
+
+			</div>
+		</div>
+		
+			<div class="row mt-2" >
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			{% set place = place + 1 %}
+			{% endfor %} {% endif %} {% endif %}
+
+</div>
+<br><br>
+<div class="container">
+			<div class="row" align="center">
+				<div class="col-sm-12">
+					<h1>Statistiques Doubles {{categorie}} par Joueur </h1>
+				</div>
+			</div>
+			
+			{% if tabJoueurDouble is defined %} {% if tabJoueurDouble is not empty%}
+			 {% set place = 1 %}
+			 {% for joueur in tabJoueurDouble %}
+		<div class="container border">
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-1 align-items-center" style="background-color: #CC5500" align="center">
+					<h4>N° {{ place }}</h4>
+				</div>
+			</div>	
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="row align-self-center" align="center">
+				
+					{% if joueur.joueur.photo is defined  and joueur.joueur.photo is not null  %}
+					<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/'~joueur.joueur.photo.nom) }}" alt="" width="50">
+					</div>
+					{% else %}
+					<div class="col-sm-3 align-self-center" style="background-color: #F5F5DC" >
+						<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+					</div>
+					{% endif %}
+					<div class="col-sm-3" align="left">
+						<h2>{{ joueur.joueur.prenom }} {{ joueur.joueur.nom }}</h2>
+					</div>
+				</div>	
+					<div class="row mt-2" align="center"  style="background-color: #FFF0BC">
+						<div class="col-sm-12 align-items-center" align="center">
+							<h4>Victoires &nbsp;&nbsp;: {{ joueur.pourcent }} % &nbsp;&nbsp; {{ joueur.victoires }} victoires - {{ joueur.defaites }} défaites </h4>
+						</div>
+					</div>
+			</div>
+		</div>
+		
+			<div class="row mt-2" >
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			{% set place = place + 1 %}
+			{% endfor %} {% endif %} {% endif %}
+
+</div>
+{% endblock %}

@@ -73,6 +73,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
+						<a class="dropdown-item" href="{{ path ('statistiques_double', {'cat': cat} ) }}">Statistiques Doubles</a>
 						<div class="dropdown-divider"></div>
 						{% set categ = 'tous' %}
 						<a class="dropdown-item" href="{{ path ('statistique', {'cat': categ} ) }}">Stats toutes catégories</a>
@@ -95,6 +96,8 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path ('statistiques_double', {'cat': cat} ) }}">Statistiques Doubles</a>
 					</div></li>
 
 				<li class="nav-item dropdown"><a

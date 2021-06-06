@@ -62,11 +62,13 @@ class PartenaireParamController extends AbstractController
         }
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
-           // dd($partenaire);
+   
+            $dt = new \DateTime();
+            $nmImgDate =$dt->getTimestamp();
             
         if ($images){
                 // On copie le fichier dans le dossier uploads
-                $fichier = $partenaire->getNom().'partenaire'.'.'.$images->guessExtension();
+            $fichier = 'partenaire'.$nmImgDate.'.'.$images->guessExtension();
                 //dd($this->getParameter('images_destination'),$images,$fichier,$form);
                 $images->move($this->getParameter('images_destination'),
                     $fichier
@@ -130,6 +132,7 @@ class PartenaireParamController extends AbstractController
         $partenaire = $partenaireRepo->find($id);
         if ($partenaire) {
             $idPart = $partenaire->getFichier()->getId();
+            $nmDoc = $partenaire->getFichier()->getNom();
             // On supprimer le partenaire
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($partenaire);
@@ -142,6 +145,13 @@ class PartenaireParamController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->remove($fichier);
                     $entityManager->flush();
+            }
+            // on va chercher le chemin defini dans services yaml
+            $nomImage = $this->getParameter('images_destination').'/'.$nmDoc;
+            // on verifie si image existe
+            if (file_exists($nomImage)){
+                // si elle existe on la supprime physiquement du rep public
+                unlink($nomImage);
             }
             
 

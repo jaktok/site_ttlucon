@@ -63,9 +63,12 @@ class DocAccueilController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
             
+             $dt = new \DateTime();
+             $nmImgDate =$dt->getTimestamp();
+             
             if ($images){
                 // On copie le fichier dans le dossier uploads
-                $fichier = $doc->getLibelle().'docaccueil'.'.'.$images->guessExtension();
+                $fichier = 'docaccueil'.$nmImgDate.'.'.$images->guessExtension();
                 //  dd($this->getParameter('images_destination'),$images,$form);
                 $images->move($this->getParameter('images_destination'),
                     $fichier
@@ -129,6 +132,7 @@ class DocAccueilController extends AbstractController
         $doc = $docAccueilRepo->find($id);
         if ($doc) {
             $idDoc = $doc->getFichier()->getId();
+            $nmDoc = $doc->getFichier()->getNom();
             // On supprimer le doc
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($doc);
@@ -136,12 +140,19 @@ class DocAccueilController extends AbstractController
             
             // On supprime le fichiers lié au doc
             $fichier = $docAccueilRepo->find($idDoc);
+           
             if ($fichier){
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($fichier);
                 $entityManager->flush();
             }
-            
+            // on va chercher le chemin defini dans services yaml
+            $nomImage = $this->getParameter('images_destination').'/'.$nmDoc;
+            // on verifie si image existe
+            if (file_exists($nomImage)){
+                // si elle existe on la supprime physiquement du rep public
+                unlink($nomImage);
+            }
 
         }
         

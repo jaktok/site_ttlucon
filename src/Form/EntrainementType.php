@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EntrainementType extends AbstractType
 {
@@ -19,9 +20,16 @@ class EntrainementType extends AbstractType
             'label' => 'Description :  ',
             'attr' => array('style' => 'width: 400px')
         ))
-            ->add('jour',TextType::class,array(
+        ->add('jour', ChoiceType::class,[
                 'label' => 'Journee :  ',
-            ))
+                'choices' => [
+                    'Lundi' => 'Lundi',
+                    'Mardi' => 'Mardi',
+                    'Mercredi' => 'Mercredi',
+                    'Jeudi' => 'Jeudi',
+                    'Vendredi' => 'Vendredi',
+                    'Samedi' => 'Samedi',
+            ]])
             ->add('heure_debut',TimeType::class)
             ->add('heure_fin',TimeType::class)
             ->add('categorie',EntityType::class, array(

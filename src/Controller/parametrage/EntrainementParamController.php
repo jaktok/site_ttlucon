@@ -18,7 +18,7 @@ class EntrainementParamController extends AbstractController
     public function index(Request $request,EntrainementRepository $entraineRepo): Response
     {
         // recuperation de tout les entrainements
-        $listeEntraine = $entraineRepo->findAll();
+        $listeEntraine = $entraineRepo->findByOrder();
         
         $form = $this->createFormBuilder($listeEntraine)
         ->getForm();
@@ -38,7 +38,7 @@ class EntrainementParamController extends AbstractController
     {
         
         // recuperation de tout les entrainements
-        $listeEntraine = $entraineRepo->findAll();
+        $listeEntraine = $entraineRepo->findBy(array(),array('jour' => 'ASC','heure_debut' => 'ASC','heure_fin' => 'ASC'));
         
           if ($id){
             // recuperation de l enregistrements selectionne
@@ -68,7 +68,7 @@ class EntrainementParamController extends AbstractController
     }
     
     /**
-     * @Route("/supprime/entrainement/{id}", name="supprime_entrainement")
+     * @Route("/dirigeant/param/entrainement/supprime/{id}", name="supprime_entrainement")
      */
     public function supprimeCompet(Request $request, EntrainementRepository $entraineRepo, int $id = null): Response
     {

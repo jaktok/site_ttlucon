@@ -15,10 +15,16 @@ endblock %} {% block body %}
 {{ form_start(formEntrainements) }}
 
    <div class="container">
-      <h1>Liste des Entrainements</h1>
-    <div class="col-sm-2">
- 		<a href="{{ path('entrainement_param_nouveau') }}" class="btn btn-primary mb-2" aria-current="page">Créer un entrainement</a>
+      <h1 align="center">Liste des Entrainements</h1>
+    <div class="row">
+	    <div class="col-sm-2 mt-4">
+	 		<a href="{{ path('entrainement_param_nouveau') }}" class="btn btn-primary mb-2" aria-current="page">Créer un entrainement</a>
+	 	</div>
+	 	    <div class="col-sm-2 mt-4">
+	 			<img src="{{ asset('/images/question.png')}}" alt="" onclick="alert('pour gérer les dates d\'arrêt reprise pour les vacances renseigner le champ date_arret_entrainement dans infos club')"  width="50">
+	 	</div>
  	</div>
+ 	<br>
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
