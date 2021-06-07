@@ -201,6 +201,25 @@ class FFTTApi
         return $result;
     }
 
+    
+    /**
+     * @param string $clubId
+     * @return Joueur[]
+     * @throws ClubNotFoundException
+     * @throws Exception\InvalidURIParametersException
+     * @throws Exception\URIPartNotValidException
+     */
+    public function getLicenceJoueursByClub(string $clubId): array
+    {
+        try {
+            return $this->apiRequest->getLicencesParClub('xml_liste_joueur_o', [
+                'club' => $clubId,
+            ]
+                );
+        } catch (NoFFTTResponseException $e) {
+            return null;
+        }
+    }
 
     /**
      * @param string $nom
@@ -400,6 +419,33 @@ class FFTTApi
         return $res;
     }
 
+    /**
+     * @param string $joueurId
+     * @return Partie[]
+     * @throws Exception\InvalidURIParametersException
+     * @throws Exception\URIPartNotValidException
+     */
+    public function getPartiesParLicenceStats(string $joueurId): array
+    {
+        
+        try {
+            
+            $parties = $this->apiRequest->getPartiesParLicenceStats('xml_partie_mysql', [
+                'licence' => $joueurId,
+            ]);
+            
+            $tabVide = array();
+            if ($parties==null){
+                return $tabVide;
+            }
+            else{
+                return $parties;
+            }
+        } catch (NoFFTTResponseException $e) {
+            $parties = [];
+        }
+    }
+    
 
     /**
      * @param string $joueurId

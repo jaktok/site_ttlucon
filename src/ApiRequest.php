@@ -69,6 +69,24 @@ class ApiRequest
     }
     
     
+    public function getLicencesParClub(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return array_column($result["joueur"], 'licence');;
+    }
+    
     public function getDetailRencontrByLien(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
@@ -106,6 +124,40 @@ class ApiRequest
             throw new NoFFTTResponseException($chaine);
         }
         return $result;
+    }
+    
+    
+    // cree pour alleger les stats et ne retourner que les victoires defaites
+    public function getPartiesParLicenceStats(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);if($result){
+                $vict = 0;
+                $def = 0;
+                foreach ($result["partie"] as $resultat){
+                    if($resultat["vd"]=="V"){
+                        $vict += 1 ;
+                    }
+                    else{
+                        $def += 1;
+                    }
+                }
+                $tabResult = array();
+                $tabResult['vict'] = $vict;
+                $tabResult['def'] = $def;
+            }
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            return null;
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $tabResult;
     }
     
     // cree pour gerer les cas ou la licence n existe pas cote fftt
