@@ -8,9 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\RencontresRepository;
 use App\Repository\MatchsRepository;
+use App\Repository\FichiersRepository;
 use App\Repository\EquipeTypeRepository;
 use App\Entity\Rencontres;
 use App\Entity\Matchs;
+use App\Entity\Fichiers;
 use App\Form\ResultatsType;
 use App\Form\MatchsType;
 use FFTTApi\FFTTApi;
@@ -42,7 +44,7 @@ class ResultatParamController extends AbstractController
     /**
      * @Route("/capitaine/param/resultat/modifier/{id}", name="modifier_resultat_param")
      */
-    public function Resultat(Request $request,RencontresRepository $rencontreRepo,Rencontres $rencontre): Response
+    public function Resultat(Request $request,FichiersRepository $ficRepo,MatchsRepository $matchRepo,RencontresRepository $rencontreRepo,Rencontres $rencontre): Response
     {
         if(!$rencontre)
         {
@@ -84,8 +86,42 @@ class ResultatParamController extends AbstractController
         $form = $this->createForm(ResultatsType::class, $rencontre);
         
         $form->handleRequest($request);
-
+        $matchs = $matchRepo->findByIdRencontre($rencontre->getId());
+        $idRencontre = $rencontre->getId();
+        //dd($matchs);
         if($form->isSubmitted() && $form->isValid()){
+            $images = $form->get('fichier')->getData();
+            //dd($images);
+            if ($images){
+                $fichier = $rencontre->getNoJournee().$rencontre->getDateRencontre()->format('dmy').'.'.$images->guessExtension();
+                // On copie le fichier dans le dossier uploads
+                $images->move(
+                    $this->getParameter('resultats_destination'),
+                    $fichier
+                    );
+            }
+            $img = new Fichiers();
+            $entityManager = $this->getDoctrine()->getManager();
+            if ($rencontre->getId()!=null){
+                $img = $ficRepo->findOneByRencontre($rencontre->getId());
+            }
+            if ($images && $img!=null&&$img->getId()!=null) {
+                $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+                $image->setNom($fichier);
+                $image->setUrl($this->getParameter('resultats_destination'));
+                $entityManager->flush();
+            }
+            if (($img==null || $img->getId()==null) && isset($fichier)) {
+                // On cr�e l'image dans la base de donn�es
+                $img = new Fichiers();
+                $img->setNom($fichier);
+                $img->setRencontres($rencontre);
+                $img->setUrl($this->getParameter('resultats_destination'));
+                //dd($img);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($img);
+                $entityManager->flush();
+            }
 
             $scoreA = $form["scoreA"]->getData();
             $scoreB = $form["scoreB"]->getData();
@@ -116,26 +152,33 @@ class ResultatParamController extends AbstractController
         
         return $this->render('parametrage/resultat_param/fiche_resultat_param.html.twig', [
             'formResultat' => $form->createView(),
-            'rencontre' => $rencontre
+            'rencontre' => $rencontre,
+            'matchs' => $matchs,
+            'idRencontre' => $idRencontre
         ]);
     }
 
 
     /**
-     * @Route("/capitaine/param/resultat/match/new", name="new_match_resultat_param")
+     * @Route("/capitaine/param/resultat/match/new/{idRencontre}", name="new_match_resultat_param")
      * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
      */
-    public function doublemodifResultat(Request $request,MatchsRepository $matchRepo, Matchs $match = null): Response
+    public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null): Response
     {
+        $idMatch = $idRencontre;
+
         if(!$match){
             $match = new Matchs();
         }
         $form = $this->createForm(MatchsType::class, $match);
         
         $form->handleRequest($request);
+        $idMatch = $_GET['id'];
+        $rencontre = $rencontreRepo->find($idMatch);
 
         if($form->isSubmitted() && $form->isValid()){
-
+            
+            $match->setRencontre($rencontre);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($match);
             $entityManager->flush();
@@ -145,6 +188,7 @@ class ResultatParamController extends AbstractController
 
         return $this->render('parametrage/resultat_param/fiche_double_param.html.twig', [
             'formMatch' => $form->createView(),
+            'idRencontre' => $idMatch,
         ]);
     }
 
@@ -161,5 +205,27 @@ class ResultatParamController extends AbstractController
             'matchs' => $matchs,
             'idRencontre' =>$id
         ]);
+    }
+
+    /**
+     * @Route("/supprime/match/{id}", name="supprime_match")
+     */
+    public function supprimeEquipe(Request $request,MatchsRepository $matchRepo, int $id = null): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // recuperation de l enregistrements selectionne
+        $match = $matchRepo->find($id);
+        
+        if ($match) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($match);
+            $entityManager->flush();
+        }
+        
+        return $this->redirectToRoute('resultat_param');
+        
     }
 }

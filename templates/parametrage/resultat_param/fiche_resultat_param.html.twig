@@ -40,10 +40,10 @@
 	<br>
 	<div class="row">
 		<div class="col-sm-4">
-			<a href="{{ path('new_match_resultat_param') }}" class="btn btn-primary">Ajouter un match</a>
+			<a href="{{ path('new_match_resultat_param', { 'id': idRencontre }) }}" class="btn btn-primary">Ajouter un match</a>
 		</div>
 		<div class="col-sm-4">
-			<a href="{{ path('new_match_resultat_param') }}" class="btn btn-primary">Ajouter un double</a>
+			<a href="{{ path('new_match_resultat_param', { 'id': idRencontre }) }}" class="btn btn-primary">Ajouter un double</a>
 		</div>
 	</div>
 	
@@ -51,28 +51,67 @@
 	<table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
-            <th>Victoire</th>
-            <th>Score</th>
-            <th data-sortable="true">Joueur</th>
-			<th>Modifier</th>
-			<th>Supprimer</th>
+            <th data-sortable="true">Victoire</th>
+            <th data-sortable="true">Score</th>
+            <th>Joueur</th>
+			<th>Modif.</th>
+			<th>Suppr.</th>
           </tr>
         </thead>
         <tbody>
+		{% if matchs is defined %}
+        {% for match in matchs %}
         <tr>
-            <td></td>
-           	<td></td>
-           	<td></td>
-			<td></td>
-           	<td></td>
+            {% if match.victoire == 1  %}
+           		<td>Victoire</td>
+            {% else %}
+              <td>Défaite</td>
+           	{% endif %}
+           	<td> {{ match.score }}</td>
+            <td>
+            {% for joueurs in match.joueur %}
+              {{ joueurs.getNom() }}
+              {{ joueurs.getPrenom() }}<br>
+            {% endfor %}
+            </td>
+            <td><a href="{{ path('modifier_double_resultat_param', { 'id': match.id}) }}" class="btn btn-primary">Modifier</a></td>
+            <td><a href="{{ path('supprime_match', { 'id': match.id}) }}" class="btn btn-primary">Supprimer</a></td>
         </tr>
+        {% endfor %}
+        {% endif %}
     	</tbody>
 	</table>
 	<br>
+	<div class="row"  >
+		<div class="col-sm-12">
+			<div class="row border border-primary mt-3"  >
+				<div class="col-sm-4">
+					<div class="row">
+						<div class="col-sm-4">
+							{{ form_row(formResultat.fichier) }}
+						</div>
+					</div>
+					<br><br><br>
+					<div class="row">
+						<div class="col-sm-4">
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="col-sm-8 h-auto">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="row">
-		<div class="col-sm-4">
+		<div class="col-sm-2">
 				<button type="submit" class="btn btn-success">Enregistrer</button>
 		</div>
+		<div class="col-sm-2">
+                <a href="{{ path('resultat_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+            </div>
 	</div>
 </div>
 

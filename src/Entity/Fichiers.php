@@ -53,6 +53,11 @@ class Fichiers
      */
     private $docAccueil;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Rencontres::class, mappedBy="fichier", cascade={"persist", "remove"})
+     */
+    private $rencontres;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -148,6 +153,28 @@ class Fichiers
         }
 
         $this->docAccueil = $docAccueil;
+
+        return $this;
+    }
+
+    public function getRencontres(): ?Rencontres
+    {
+        return $this->rencontres;
+    }
+
+    public function setRencontres(?Rencontres $rencontres): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($rencontres === null && $this->rencontres !== null) {
+            $this->rencontres->setFichier(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($rencontres !== null && $rencontres->getFichier() !== $this) {
+            $rencontres->setFichier($this);
+        }
+
+        $this->rencontres = $rencontres;
 
         return $this;
     }

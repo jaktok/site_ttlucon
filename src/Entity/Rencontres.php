@@ -79,6 +79,11 @@ class Rencontres
      */
     private $is_retour;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Fichiers::class, inversedBy="rencontres", cascade={"persist", "remove"})
+     */
+    private $fichier;
+
     public function __construct()
     {
         $this->matchs = new ArrayCollection();
@@ -247,6 +252,18 @@ class Rencontres
     public function setIsRetour(?string $is_retour): self
     {
         $this->is_retour = $is_retour;
+
+        return $this;
+    }
+
+    public function getFichier(): ?Fichiers
+    {
+        return $this->fichier;
+    }
+
+    public function setFichier(?Fichiers $fichier): self
+    {
+        $this->fichier = $fichier;
 
         return $this;
     }

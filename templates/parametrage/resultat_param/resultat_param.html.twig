@@ -23,8 +23,7 @@
             <th>Adversaire</th>
             <th data-sortable="true">Victoire</th>
             <th data-sortable="true">Phase</th>
-            <th>Modif.</th>
-            <th>Saisie des doubles.</th>
+            <th>Saisie des Résultats</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +39,6 @@
            	{% endif %}
             <td>{{ resultat.phase }}</td> 
             <td><a href="{{ path('modifier_resultat_param', { 'id': resultat.id}) }}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('double_resultat_param', { 'id': resultat.id}) }}" class="btn btn-primary">double</a></td>
         </tr>
         {% endfor %}
         {% endif %}

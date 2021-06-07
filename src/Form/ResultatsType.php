@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ResultatsType extends AbstractType
 {
@@ -42,6 +43,12 @@ class ResultatsType extends AbstractType
             ])*/
             ->add('scoreA')
             ->add('scoreB')
+            ->add('fichier',FileType::class,[
+                'label' => 'Feuille de match',
+                'multiple' => false,
+                'mapped' => false,
+                'required' => false
+            ])
         ;
     }
 

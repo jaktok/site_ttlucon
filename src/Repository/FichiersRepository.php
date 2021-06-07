@@ -34,9 +34,7 @@ class FichiersRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
 
-    
     public function findOneByJoueur($value): ?Fichiers
     {//dd($value);
         return $this->createQueryBuilder('f')
@@ -67,4 +65,15 @@ class FichiersRepository extends ServiceEntityRepository
         ->getOneOrNullResult()
         ;
     }
+
+    public function findOneByRencontre($value): ?Fichiers
+    {
+        return $this->createQueryBuilder('f')
+        ->andWhere('f.rencontres= :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getOneOrNullResult()
+        ;
+    }
+
 }
