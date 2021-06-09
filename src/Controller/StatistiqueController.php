@@ -41,17 +41,17 @@ class StatistiqueController extends AbstractController
             foreach ($tabJoueurByClub as $noLicence) {
                 // on recupere le joueur chez nous
                 $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
-                if ($joueurTTL != null) {
+                if ($joueurTTL != null && ($joueurTTL->getVictoires()+$joueurTTL->getDefaites()>0)) {
                         $categorie = $joueurTTL->getCategories()->getLibelle();
                         if (($cat == $categorie || $cat == "tous") && $categorie != 'Loisir') {
-                            $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
-                                if ($partieJoueurByLicence) {
+                      //      $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
+                          //      if ($partieJoueurByLicence) {
                                 $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
                                 // on va chercher le classement du joueur
-                                $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
-                                $pointsDebutSaison = $joueurByLicence->getPointsInitials();
-                                $pointsActuel = $joueurByLicence->getPoints();
-                                $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
+                                //$joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
+                                $pointsDebutSaison = $joueurTTL->getPointsDebSaison();
+                                $pointsActuel = $joueurTTL->getPointsActuel();
+                                $pointsMoisDernier = $joueurTTL->getPointsMoisDernier();
                                 $progressionAnnuelle = $pointsActuel - $pointsDebutSaison;
                                 $progressionMensuelle = $pointsActuel - $pointsMoisDernier;
                                 $tabJoueursLucon[$i]['pointsDebutSaison'] = round($pointsDebutSaison);
@@ -59,12 +59,12 @@ class StatistiqueController extends AbstractController
                                 $tabJoueursLucon[$i]['pointsMoisDernier'] = round($pointsMoisDernier);
                                 $tabJoueursLucon[$i]['progressionAnnuelle'] = round($progressionAnnuelle);
                                 $tabJoueursLucon[$i]['progressionMensuelle'] = round($progressionMensuelle);
-                                $tabJoueursLucon[$i]['rangDep'] = $joueurByLicence->getRangDepartemental();
-                                $tabJoueursLucon[$i]['rangReg'] = $joueurByLicence->getRangRegional();
-                                $tabJoueursLucon[$i]['rangNat'] = $joueurByLicence->getRangNational();
+                                $tabJoueursLucon[$i]['rangDep'] = $joueurTTL->getRangDep();
+                                $tabJoueursLucon[$i]['rangReg'] = $joueurTTL->getRangReg();
+                                $tabJoueursLucon[$i]['rangNat'] = $joueurTTL->getRangNat();
                                 
-                                $tabJoueursLucon[$i]['victoires'] = $partieJoueurByLicence["vict"];
-                                $tabJoueursLucon[$i]['defaites'] = $partieJoueurByLicence["def"];
+                                $tabJoueursLucon[$i]['victoires'] = $joueurTTL->getVictoires();
+                                $tabJoueursLucon[$i]['defaites'] = $joueurTTL->getDefaites();
                                 $tabJoueursLucon[$i]['pourcent'] = round(($tabJoueursLucon[$i]['victoires'] * 100) / ($tabJoueursLucon[$i]['victoires'] + $tabJoueursLucon[$i]['defaites']));
          
                                 // on va chercher les doubles
@@ -85,7 +85,7 @@ class StatistiqueController extends AbstractController
                                 } else {
                                     $tabJoueursLucon[$i]['pourcentDouble'] = 0;
                                 }
-                            } // fin if partiesjoueurbylicence
+                         //   } // fin if partiesjoueurbylicence
                         } // fin if categorie
                 } // fin if joueur
                 $i ++;

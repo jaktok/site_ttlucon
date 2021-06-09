@@ -391,6 +391,50 @@ class JoueursParamController extends AbstractController
     
     
     /**
+     * @Route("/dirigeant/stats/joueur/", name="maj_stats")
+     */
+    public function majStats(Request $request, JoueursRepository $joueursRepo): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // recup liste des joueurs du club
+        $tabJoueurByClub = $this->api->getLicenceJoueursByClub($this->idClub);
+        $tabJoueursLucon = array();
+        $i = 0;
+        // on parcourt le tableau pour associer avec les joueurs
+        foreach ($tabJoueurByClub as $noLicence) {
+            // on recupere le joueur chez nous
+            $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
+            if ($joueurTTL != null) {
+                $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
+                
+                    $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
+                    // on va chercher le classement du joueur
+                    $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
+                    $pointsDebutSaison = $joueurByLicence->getPointsInitials();
+                    $pointsActuel = $joueurByLicence->getPoints();
+                    $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
+                    $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
+                    $joueurTTL->setPointsActuel( round($pointsActuel));
+                    $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
+                    $joueurTTL->setRangDep($joueurByLicence->getRangDepartemental());
+                    $joueurTTL->setRangReg($joueurByLicence->getRangRegional());
+                    $joueurTTL->setRangNat($joueurByLicence->getRangNational());
+                if ($partieJoueurByLicence) {
+                    $joueurTTL->setVictoires($partieJoueurByLicence["vict"]);
+                    $joueurTTL->setDefaites($partieJoueurByLicence["def"]);
+                } // fin if partiesjoueurbylicence
+                    $entityManager->persist($joueurTTL);
+                    $entityManager->flush();
+            } // fin if joueur
+            // on enregistre les données joueur
+            $i ++;
+        }
+        return $this->redirectToRoute('joueurs_param');
+    }
+    
+    /**
      * @Route("/dirigeant/purgeclassement/joueur/", name="purge_classements")
      */
     public function purgeClassements(Request $request,ClassementRepository $classementRepo): Response
@@ -398,7 +442,7 @@ class JoueursParamController extends AbstractController
         
         $dateJour = new \DateTime();
         $datePurge = date_sub($dateJour,date_interval_create_from_date_string( $this->delaiMoisPurge.' month'));
-        $purgeClassementsPerimes = $classementRepo->purgeClassementsPerime($datePurge);
+        $classementRepo->purgeClassementsPerime($datePurge);
         return $this->redirectToRoute('joueurs_param');
     }
     

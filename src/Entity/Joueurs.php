@@ -170,6 +170,46 @@ class Joueurs
      */
     private $actif;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pointsDebSaison;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pointsActuel;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pointsMoisDernier;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rangDep;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rangReg;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rangNat;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $victoires;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $defaites;
+
     public function __construct()
     {
         $this->competition_joueur = new ArrayCollection();
@@ -642,6 +682,102 @@ class Joueurs
     public function setActif(?bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getPointsDebSaison(): ?int
+    {
+        return $this->pointsDebSaison;
+    }
+
+    public function setPointsDebSaison(?int $pointsDebSaison): self
+    {
+        $this->pointsDebSaison = $pointsDebSaison;
+
+        return $this;
+    }
+
+    public function getPointsActuel(): ?int
+    {
+        return $this->pointsActuel;
+    }
+
+    public function setPointsActuel(?int $pointsActuel): self
+    {
+        $this->pointsActuel = $pointsActuel;
+
+        return $this;
+    }
+
+    public function getPointsMoisDernier(): ?int
+    {
+        return $this->pointsMoisDernier;
+    }
+
+    public function setPointsMoisDernier(?int $pointsMoisDernier): self
+    {
+        $this->pointsMoisDernier = $pointsMoisDernier;
+
+        return $this;
+    }
+
+    public function getRangDep(): ?int
+    {
+        return $this->rangDep;
+    }
+
+    public function setRangDep(?int $rangDep): self
+    {
+        $this->rangDep = $rangDep;
+
+        return $this;
+    }
+
+    public function getRangReg(): ?int
+    {
+        return $this->rangReg;
+    }
+
+    public function setRangReg(?int $rangReg): self
+    {
+        $this->rangReg = $rangReg;
+
+        return $this;
+    }
+
+    public function getRangNat(): ?int
+    {
+        return $this->rangNat;
+    }
+
+    public function setRangNat(?int $rangNat): self
+    {
+        $this->rangNat = $rangNat;
+
+        return $this;
+    }
+
+    public function getVictoires(): ?int
+    {
+        return $this->victoires;
+    }
+
+    public function setVictoires(?int $victoires): self
+    {
+        $this->victoires = $victoires;
+
+        return $this;
+    }
+
+    public function getDefaites(): ?int
+    {
+        return $this->defaites;
+    }
+
+    public function setDefaites(?int $defaites): self
+    {
+        $this->defaites = $defaites;
 
         return $this;
     }
