@@ -1,4 +1,89 @@
 {% extends 'base.html.twig' %} {% block title %}Contact{%
 endblock %} {% block body %}
-<meta charset="UTF-8" />
+<style>
+#map
+{ 
+    height:400px;
+    width: 80%;
+    border:1px dotted black;
+    margin: auto;
+}
+
+#buttons
+{
+    text-align: center;
+    padding-top: 20px;
+}
+
+#city
+{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px
+}
+
+#dragAndDrop
+{
+    background: lightblue;
+    border: 1px solid #444;
+    height : 100px;
+    padding : 40px;
+    padding-top : 45px;
+    text-align: center;
+}
+</style>
+
+<link   rel="stylesheet" 
+        href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin="">
+</script>
+<script 
+    type="text/javascript" 
+    src="http://code.jquery.com/jquery-3.4.1.min.js">
+</script>
+
+
+<script>
+let cities;
+let myMap;
+let opacity = 1;
+
+let goldIcon = new L.Icon({
+	iconUrl: '../img/marker-icon-2x-gold.png',
+	shadowUrl: '../img/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41]
+});
+
+function initMap()
+{
+    // Creation de l'objet "myMap" et insertion dans l'element HTML qui a l'ID "map"
+    myMap = L.map('map').setView([46, 2], 5);
+    // Recuperation des cartes sur openstreetmap.fr
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 
+    {
+        minZoom: 1,
+        maxZoom: 20,
+    }).addTo(myMap);
+    let marker = L.marker([46.454128728737004, -1.1729176805847663],{icon:goldIcon}).addTo(myMap);
+        marker.bindPopup('salle piscine');
+    let marker1 = L.marker([46.454698125296034, -1.1608106810599472],{icon:goldIcon}).addTo(myMap);
+        marker1.bindPopup('salle entrainement');
+}
+
+$(document).ready(function()
+{
+        initMap();
+});
+</script>
+
+
+        <div id="map"></div>
 {% endblock %}
