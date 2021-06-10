@@ -38,7 +38,10 @@ class PrevisionEquipeType extends AbstractType
             ->add('saison')
             ->add('joueur', EntityType::class, [
                 'class' => Joueurs::class,
-                'choice_label' => 'nom',
+                'choice_label' => function ($user) {
+                    return $user->getNom()." ".$user->getPrenom();
+                },
+                'mapped' => false,
                 'multiple' => true,
                 'expanded' => true,
             ])

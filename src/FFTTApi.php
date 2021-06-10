@@ -29,7 +29,6 @@ use FFTTApi\Service\PointCalculator;
 use FFTTApi\Service\RencontreDetailsFactory;
 use FFTTApi\Model\UnvalidatedPartie;
 use FFTTApi\Service\Utils;
-use phpDocumentor\Reflection\Types\Array_;
 
 class FFTTApi
 {
@@ -39,10 +38,8 @@ class FFTTApi
 
     public function __construct()
     {
-        // Recuperation infoss config.ini
-        $ini_array = parse_ini_file("../config/config.ini");
-        $idFftt = $ini_array['fftt_id'];
-        $passFftt = $ini_array['fftt_password'];
+        $idFftt = "SW624";
+        $passFftt = "93hUQWRcr6";
         $this->id = $idFftt;
         $this->password = md5($passFftt);
         $this->apiRequest = new ApiRequest($this->password, $this->id);

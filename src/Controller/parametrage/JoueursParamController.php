@@ -20,6 +20,7 @@ use FFTTApi\FFTTApi;
 use FFTTApi\Model\Joueur;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use App\Entity\Categories;
+use App\Repository\MatchsRepository;
 
 class JoueursParamController extends AbstractController
 {
@@ -334,7 +335,7 @@ class JoueursParamController extends AbstractController
     /**
      * @Route("/dirigeant/supprime/joueur/{id}", name="supprime_joueur")
      */
-    public function supprimeJoueur(Request $request, JoueursRepository $joueursRepo,ClassementRepository $classementRepo, int $id = null): Response
+    public function supprimeJoueur(Request $request, MatchsRepository $matchsRepo, JoueursRepository $joueursRepo,ClassementRepository $classementRepo, int $id = null): Response
     {
         
         $entityManager = $this->getDoctrine()->getManager();
@@ -350,6 +351,13 @@ class JoueursParamController extends AbstractController
                 foreach ($listeClassements as $classement)
                     $entityManager->remove($classement);
                     $entityManager->flush();
+            }
+            
+            
+            $matchsJoueur = $joueur->getMatchs();
+            foreach ($matchsJoueur as $match){
+                $entityManager->remove($match);
+                $entityManager->flush();
             }
            
             // On supprimer le joueur
@@ -391,7 +399,7 @@ class JoueursParamController extends AbstractController
     
     
     /**
-     * @Route("/dirigeant/stats/joueur/", name="maj_stats")
+     * @Route("/autostats/joueur/", name="maj_stats")
      */
     public function majStats(Request $request, JoueursRepository $joueursRepo): Response
     {
@@ -409,29 +417,29 @@ class JoueursParamController extends AbstractController
             if ($joueurTTL != null) {
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
                 
-                    $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
-                    // on va chercher le classement du joueur
-                    $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
-                    $pointsDebutSaison = $joueurByLicence->getPointsInitials();
-                    $pointsActuel = $joueurByLicence->getPoints();
-                    $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
-                    $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
-                    $joueurTTL->setPointsActuel( round($pointsActuel));
-                    $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
-                    $joueurTTL->setRangDep($joueurByLicence->getRangDepartemental());
-                    $joueurTTL->setRangReg($joueurByLicence->getRangRegional());
-                    $joueurTTL->setRangNat($joueurByLicence->getRangNational());
+                $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
+                // on va chercher le classement du joueur
+                $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
+                $pointsDebutSaison = $joueurByLicence->getPointsInitials();
+                $pointsActuel = $joueurByLicence->getPoints();
+                $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
+                $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
+                $joueurTTL->setPointsActuel( round($pointsActuel));
+                $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
+                $joueurTTL->setRangDep($joueurByLicence->getRangDepartemental());
+                $joueurTTL->setRangReg($joueurByLicence->getRangRegional());
+                $joueurTTL->setRangNat($joueurByLicence->getRangNational());
                 if ($partieJoueurByLicence) {
                     $joueurTTL->setVictoires($partieJoueurByLicence["vict"]);
                     $joueurTTL->setDefaites($partieJoueurByLicence["def"]);
                 } // fin if partiesjoueurbylicence
-                    $entityManager->persist($joueurTTL);
-                    $entityManager->flush();
+                $entityManager->persist($joueurTTL);
+                $entityManager->flush();
             } // fin if joueur
             // on enregistre les données joueur
             $i ++;
         }
-        return $this->redirectToRoute('joueurs_param');
+        return new Response() ;
     }
     
     /**
