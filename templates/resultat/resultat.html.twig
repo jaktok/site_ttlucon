@@ -1,4 +1,47 @@
 {% extends 'base.html.twig' %} {% block title %}Résultats{%
 endblock %} {% block body %}
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+
 <meta charset="UTF-8" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4" align="center">
+ 		      <h1>Liste des resultats</h1>
+ 	      </div>	
+    </div>
+
+<table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th data-sortable="true" data-field="date_rencontre">Date Rencontre</th>
+            <th>Adversaire</th>
+            <th data-sortable="true">Victoire</th>
+            <th data-sortable="true">Phase</th>
+            <th>Saisie des Résultats</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if resultats is defined %}
+        {% for resultat in resultats %}
+        <tr>
+            <td>{{ resultat.dateRencontre|date('d/m/Y') }}</td>
+           	<td>{{ resultat.equipeA }} / {{ resultat.equipeB }}</td>
+            {% if resultat.victoire == 1  %}
+           		<td>Victoire</td>
+            {% else %}
+              <td>Défaite</td>
+           	{% endif %}
+            <td>{{ resultat.phase }}</td> 
+            <td><a href="{{ path('resultat_rencontre', { 'id': resultat.id}) }}" class="btn btn-primary" target="_blank">Consulter</a></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+</div>
 {% endblock %}

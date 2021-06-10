@@ -80,7 +80,8 @@ class Rencontres
     private $is_retour;
 
     /**
-     * @ORM\OneToOne(targetEntity=Fichiers::class, inversedBy="rencontres", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Fichiers::class, inversedBy="rencontres", cascade={"persist", "remove"}) 
+     *  @ORM\JoinColumn(nullable=false) 
      */
     private $fichier;
 

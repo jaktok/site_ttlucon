@@ -49,7 +49,7 @@ class ResultatParamController extends AbstractController
         if(!$rencontre)
         {
             $rencontre = new Rencontres();
-        }
+        }/*
         if($rencontre){
             if($rencontre->getDomicile() == true){
                 $nomAdversaire = $rencontre->getequipeB();
@@ -81,19 +81,28 @@ class ResultatParamController extends AbstractController
                 }
                 
             }
-        }
+        }*/
 
         $form = $this->createForm(ResultatsType::class, $rencontre);
         
         $form->handleRequest($request);
+
         $matchs = $matchRepo->findByIdRencontre($rencontre->getId());
         $idRencontre = $rencontre->getId();
+        // Formatage des noms d'equipe pour le nom du fichier pdf
+        $equipeA = $rencontre->getEquipeA();
+        $equipeB = $rencontre->getEquipeB();
+        $nomA = explode(" ",$equipeA);
+        $nomB = explode(" ",$equipeB);
+        $nomEquipeA = $nomA[0] . '-' . $nomA[1];
+        $nomEquipeB = $nomB[0] . '-' . $nomB[1];
+
         //dd($matchs);
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
             //dd($images);
             if ($images){
-                $fichier = $rencontre->getNoJournee().$rencontre->getDateRencontre()->format('dmy').'.'.$images->guessExtension();
+                $fichier = $rencontre->getDateRencontre()->format('d-m-y').'-'.$nomEquipeA.'-'.$nomEquipeB.'.'.$images->guessExtension();
                 // On copie le fichier dans le dossier uploads
                 $images->move(
                     $this->getParameter('resultats_destination'),
@@ -116,6 +125,7 @@ class ResultatParamController extends AbstractController
                 $img = new Fichiers();
                 $img->setNom($fichier);
                 $img->setRencontres($rencontre);
+                //dd($img);
                 $img->setUrl($this->getParameter('resultats_destination'));
                 //dd($img);
                 $entityManager = $this->getDoctrine()->getManager();

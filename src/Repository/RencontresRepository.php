@@ -72,17 +72,17 @@ class RencontresRepository extends ServiceEntityRepository
         ->getOneOrNullResult()
         ;
     }
-    /*
-    public function findOneBySomeField($value): ?Rencontres
+    
+    public function findOneByFichier($value): ?Rencontres
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+            ->andWhere('r.fichier = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
     
     public function findByPhase($value)
     {
@@ -94,5 +94,5 @@ class RencontresRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
-    
+
 }

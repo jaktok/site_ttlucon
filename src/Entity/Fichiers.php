@@ -55,6 +55,7 @@ class Fichiers
 
     /**
      * @ORM\OneToOne(targetEntity=Rencontres::class, mappedBy="fichier", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false) 
      */
     private $rencontres;
 

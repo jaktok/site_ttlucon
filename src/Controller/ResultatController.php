@@ -5,16 +5,45 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\RencontresRepository;
+use App\Repository\FichiersRepository;
 
 class ResultatController extends AbstractController
 {
     /**
-     * @Route("/resultat", name="resultat")
+     * @Route("/resultat/{cat}", name="resultat")
      */
-    public function index(): Response
+    public function index(RencontresRepository $rencontreRepo,$cat=null): Response
     {
+        switch ($cat) {
+            case "Adulte":
+                $this->categorie = "Adulte";
+                break;
+            case "Jeune":
+                $this->categorie = "Jeune";
+            default :
+                $this->categorie = "Adulte";
+        }
         return $this->render('resultat/resultat.html.twig', [
-            'controller_name' => 'ResultatController',
+            'resultats' => $rencontreRepo->findAll(),
+            'categorie' => $this->categorie
+        ]);
+    }
+
+    /**
+     * @Route("/resultat/rencontre/{id}", name="resultat_rencontre")
+     */
+    public function afficherRencontre(FichiersRepository $fichierRepo,RencontresRepository $rencontreRepo,int $id=null): Response
+    {
+        if($id){
+            $rencontre = $rencontreRepo->find($id);
+            $idRencontre = $rencontre->getId();
+            //$idFichier = $rencontre->getFichier()->getId();
+        }
+        $fichier = $fichierRepo->findOneByRencontre($rencontre);
+        //$fichier = $rencontreRepo->findOneByFichier($idFichier);
+        dd($fichier);
+        return $this->render('resultat/resultat.html.twig', [
         ]);
     }
 }
