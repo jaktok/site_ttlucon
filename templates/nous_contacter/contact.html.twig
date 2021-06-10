@@ -46,6 +46,13 @@ endblock %} {% block body %}
     type="text/javascript" 
     src="http://code.jquery.com/jquery-3.4.1.min.js">
 </script>
+<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
 
 <script>
@@ -65,7 +72,7 @@ let goldIcon = new L.Icon({
 function initMap()
 {
     // Creation de l'objet "myMap" et insertion dans l'element HTML qui a l'ID "map"
-    myMap = L.map('map').setView([46, 2], 5);
+    myMap = L.map('map').setView([46.454, -1.17], 14);
     // Recuperation des cartes sur openstreetmap.fr
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 
     {
@@ -73,9 +80,9 @@ function initMap()
         maxZoom: 20,
     }).addTo(myMap);
     let marker = L.marker([46.454128728737004, -1.1729176805847663],{icon:goldIcon}).addTo(myMap);
-        marker.bindPopup('salle piscine');
+        marker.bindPopup('Salle Emile BEAUSSIRE, Rue Adjudant Barrois');
     let marker1 = L.marker([46.454698125296034, -1.1608106810599472],{icon:goldIcon}).addTo(myMap);
-        marker1.bindPopup('salle entrainement');
+        marker1.bindPopup('Salle Tennis de Table Luçonnais, 3 Rue Jean Jaures');
 }
 
 $(document).ready(function()
@@ -83,7 +90,52 @@ $(document).ready(function()
         initMap();
 });
 </script>
-
-
+        <div class="container">
+        <br>
+        <div class="p-3 mb-2 bg-info text-white">
+        <div class="row">
+            <div class="col-sm-2" >
+                
+            </div>
+            <div class="col-sm-2" >
+                    Nous contacter
+            </div>
+            <div class="col-sm-3" >
+                Adresse Mail : {{ info.contenu }}
+            </div>
+            <div class="col-sm-3" >
+                Téléphone : 02.51.29.01.80
+            </div>
+        </div>
+        </div>
+        <br>
+        </div>
         <div id="map"></div>
+        <br>
+       <div class="container">
+        <table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+            <th>Equipe</th>
+            <th>Division</th>
+            <th>Salle</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if equipes is defined %}
+        {% for equipe in equipes %}
+        <tr>
+           	<td>{{ equipe.nom }}</td>
+           	<td>{{ equipe.division }}</td>
+            {% if equipe.salle == 1 %}
+                <td>salle Tennis de Table Luçonnais, 3 rue Jean Jaures</td>  
+            {% else %}        
+                <td>salle Emile BEAUSSIRE, Rue Adjudant Barrois</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+       {% endif %} 
+        </tbody>
+      </table>
+    </div>
 {% endblock %}
