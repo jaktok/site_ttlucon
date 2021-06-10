@@ -37,12 +37,10 @@ class ResultatController extends AbstractController
     {
         if($id){
             $rencontre = $rencontreRepo->find($id);
-            $idRencontre = $rencontre->getId();
-            //$idFichier = $rencontre->getFichier()->getId();
         }
-        $fichier = $fichierRepo->findOneByRencontre($rencontre);
+        $fichier = $rencontre->getFichier();
         //$fichier = $rencontreRepo->findOneByFichier($idFichier);
-        dd($fichier);
+        //dd($fichier);
         return $this->render('resultat/resultat.html.twig', [
         ]);
     }

@@ -9,6 +9,7 @@ parameters:
     equipes_destination: '%kernel.project_dir%/public/equipes'
     docaccueil_destination: '%kernel.project_dir%/public/docaccueil'
     partenaires_destination: '%kernel.project_dir%/public/partenaires'
+    resultats_destination: '%kernel.project_dir%/public/resultats'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -112,7 +112,8 @@ class ResultatParamController extends AbstractController
             $img = new Fichiers();
             $entityManager = $this->getDoctrine()->getManager();
             if ($rencontre->getId()!=null){
-                $img = $ficRepo->findOneByRencontre($rencontre->getId());
+               // $img = $ficRepo->findOneByRencontre($rencontre->getId());
+                $img = $rencontre->getFichier();
             }
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
