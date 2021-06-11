@@ -20,19 +20,30 @@ class PrevisionEquipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
+        $nomEquipereadOnly = $options["nomEquipereadOnly"];
+        if ($nomEquipereadOnly == null){
+            $nomEquipereadOnly = false;
+        }
+        $tabEquipesPresentes = $options["tabEquipesPresentes"];
+        
+        $nomEquipe = $options["nomEquipe"];
+        
+        $tabEquipes = array();
+        for ($i = 1; $i < 10; $i++) {
+            if (!in_array("LUCON ".$i, $tabEquipesPresentes)){
+                $tabEquipes["LUCON ".$i] = "LUCON ".$i;
+            }
+        }
+        
         $builder
+        
             ->add('nom', ChoiceType::class, [
-                'choices' => [
-                    'LUCON 1' => 'LUCON 1',
-                    'LUCON 2' => 'LUCON 2',
-                    'LUCON 3' => 'LUCON 3',
-                    'LUCON 4' => 'LUCON 4',
-                    'LUCON 5' => 'LUCON 5',
-                    'LUCON 6' => 'LUCON 6',
-                    'LUCON 7' => 'LUCON 7',
-                    'LUCON 8' => 'LUCON 8',
-                    'LUCON 9' => 'LUCON 9',
-                ]
+                'choices' => $tabEquipes,
+                'empty_data' => $nomEquipe,
+                'attr' => array(
+                    'disabled' => $nomEquipereadOnly,
+                ),
             ])
             ->add('division')
             ->add('saison')
@@ -41,7 +52,6 @@ class PrevisionEquipeType extends AbstractType
                 'choice_label' => function ($user) {
                     return $user->getNom()." ".$user->getPrenom();
                 },
-                'mapped' => false,
                 'multiple' => true,
                 'expanded' => true,
             ])
@@ -67,6 +77,9 @@ class PrevisionEquipeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => EquipeType::class,
+            'nomEquipereadOnly' => null,
+            'tabEquipesPresentes' => null,
+            'nomEquipe' => null,
         ]);
     }
 }

@@ -36,14 +36,28 @@ class EquipesParamController extends AbstractController
      */
     public function createEquipe(Request $request,FichiersRepository $fichierRepo,EquipeTypeRepository $equipeRepo, EquipeType $equipeTypes = null)
     {
-
+        // rajout indicateur de modification si  equipe deja creee on touche pas au numero 
+        $nomEquipereadOnly= true;
+        $tabEquipesPresentes = array();
+        
         if(!$equipeTypes)
         {
             $equipeTypes = new EquipeType();
+            $nomEquipereadOnly = false;
+            // recuperation des equipes deja saisies pour filtrer la liste deroulante
+            $tabEquipes = $equipeRepo->findAll();
+            foreach ($tabEquipes as $equipe) {
+                array_push($tabEquipesPresentes,$equipe->getNom());
+            }
+            $nomEquipe=null;
         }
-        
-        $form = $this->createForm(PrevisionEquipeType::class, $equipeTypes);
+        else{
+            $nomEquipe = $equipeTypes->getNom();
+        }
 
+        
+        
+        $form = $this->createForm(PrevisionEquipeType::class, $equipeTypes, array('nomEquipereadOnly' => $nomEquipereadOnly,'tabEquipesPresentes' => $tabEquipesPresentes,'nomEquipe' => $nomEquipe));
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
@@ -121,7 +135,8 @@ class EquipesParamController extends AbstractController
         return $this->render('parametrage/equipes_param/fiche_equipe_param.html.twig', [
             'formEquipe' => $form->createView(),
             'nomPhoto' => $nmPhoto,
-            'equipe' => $equipeTypes
+            'equipe' => $equipeTypes,
+            'nomEquipereadOnly' => $nomEquipereadOnly,
         ]);
     }
 
