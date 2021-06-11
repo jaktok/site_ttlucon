@@ -36,18 +36,15 @@ class StatsCommand extends Command
     {
           $io = new SymfonyStyle($input, $output);
         //dd();
-        // recup liste des joueurs du club
+        // recup liste des joueurs du club sur FFTT
         $tabJoueurByClub = $this->api->getLicenceJoueursByClub($this->idClub);
-        $tabJoueursLucon = array();
-        $i = 0;
-        // on parcourt le tableau pour associer avec les joueurs
+        // on parcourt le tableau pour associer avec les joueurs enregistrés 
         foreach ($tabJoueurByClub as $noLicence) {
             // on recupere le joueur chez nous
             $joueurTTL = $this->joueurRepo->findOneByLicenceActif($noLicence);
             if ($joueurTTL != null) {
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
                 if ($partieJoueurByLicence) {
-                    $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
                     // on va chercher le classement du joueur
                     $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
                     $pointsDebutSaison = $joueurByLicence->getPointsInitials();
@@ -66,8 +63,6 @@ class StatsCommand extends Command
                 $this->manager->persist($joueurTTL);
                 $this->manager->flush();
             } // fin if joueur
-            // on enregistre les données joueur
-            $i ++;
         }
 
         return Command::SUCCESS;
