@@ -80,10 +80,18 @@ class BruleController extends AbstractController
             }// fin boucle equipe
             $numJoueur++;
         }// fin boucle joueur
+        // suppression des joueurs n ayant fait aucun match
+        $tabBruleTrie = array();
+        $cpt=0;
+        for ($i = 0; $i < sizeof($tabBrule); $i++) {
+            if ($tabBrule[$i][1]["nbMatchs"]+$tabBrule[$i][2]["nbMatchs"]+$tabBrule[$i][3]["nbMatchs"]+$tabBrule[$i][4]["nbMatchs"]>0){
+                $tabBruleTrie[$cpt]=$tabBrule[$i];
+                $cpt++;
+            }
+        }
         
-
         return $this->render('brule/brule.html.twig', [
-            'tabBrule' => $tabBrule,
+            'tabBrule' => $tabBruleTrie,
             'tabEquipes' => $listeEquipes,
         ]);
     }
