@@ -176,7 +176,7 @@ class ResultatParamController extends AbstractController
      * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
      */
     public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null): Response
-    
+    {
         $idMatch = $idRencontre;
 
         if(!$match){
