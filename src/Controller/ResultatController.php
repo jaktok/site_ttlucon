@@ -3,17 +3,21 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RencontresRepository;
 use App\Repository\FichiersRepository;
+use App\Repository\EquipeTypeRepository;
 
 class ResultatController extends AbstractController
 {
     /**
      * @Route("/resultat/{cat}", name="resultat")
      */
-    public function index(RencontresRepository $rencontreRepo,$cat=null): Response
+    public function index(RencontresRepository $rencontreRepo,$cat=null,EquipeTypeRepository $equipeRepo): Response
     {
         switch ($cat) {
             case "Adulte":
@@ -26,22 +30,28 @@ class ResultatController extends AbstractController
         }
         return $this->render('resultat/resultat.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
-            'categorie' => $this->categorie
+            'categorie' => $this->categorie,
+            'equipes' => $equipeRepo->findAll()
         ]);
     }
 
     /**
      * @Route("/resultat/rencontre/{id}", name="resultat_rencontre")
      */
-    public function afficherRencontre(FichiersRepository $fichierRepo,RencontresRepository $rencontreRepo,int $id=null): Response
+    public function afficherRencontre(KernelInterface $kernelInterface,FichiersRepository $fichierRepo,RencontresRepository $rencontreRepo,int $id=null): Response
     {
         if($id){
             $rencontre = $rencontreRepo->find($id);
         }
         $fichier = $rencontre->getFichier();
         //$fichier = $rencontreRepo->findOneByFichier($idFichier);
-        //dd($fichier);
-        return $this->render('resultat/resultat.html.twig', [
-        ]);
+        $nom = $fichier->getNom();
+        //dd($nom);
+        $projetcRoot = $kernelInterface->getProjectDir();
+        //dd($projetcRoot);
+
+        //return $this->file($projetcRoot.'/public/resultats/'.$nom);
+        //return readfile($projetcRoot.'/public/resultats/'.$nom);
+        return new BinaryFileResponse($projetcRoot.'/public/resultats/'.$nom);
     }
 }

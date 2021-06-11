@@ -9,12 +9,31 @@
 
 
 <meta charset="UTF-8" />
-<div class="container">
+<div class="container"> 
     <div class="row">
         <div class="col-sm-4" align="center">
  		      <h1>Saisie des resultats</h1>
  	      </div>	
     </div>
+    {% if equipes is defined %}
+        {% for equipe in equipes %}
+        <div class="container mt-5">
+ 			<div class="col-sm-12" >
+       			<div class="row text-center" style="background-color: #B0F2B6">
+   					<div class="col-sm-12 center" >
+   						<h2>TT {{ equipe.nom }}</h2>
+   					</div>
+       			</div>	
+     			<div class="row " style="background-color: #B0F2B6">
+   					<div class="col-sm-6 text-center" >
+   				 		<H4>Division : {{ equipe.division }}</H4>				
+   				 	</div>
+   				 	<div class="col-sm-6" >
+   				 		<H4>Capitaine : {{ equipe.capitaine }}</H4>
+   				 	</div>
+   				</div>
+            </div>
+        </div>
 
 <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
@@ -29,6 +48,7 @@
         <tbody>
         {% if resultats is defined %}
         {% for resultat in resultats %}
+        {% if resultat.equipeA == equipe.nom or resultat.equipeB == equipe.nom %}
         <tr>
             <td>{{ resultat.dateRencontre|date('d/m/Y') }}</td>
            	<td>{{ resultat.equipeA }} / {{ resultat.equipeB }}</td>
@@ -40,9 +60,12 @@
             <td>{{ resultat.phase }}</td> 
             <td><a href="{{ path('modifier_resultat_param', { 'id': resultat.id}) }}" class="btn btn-primary">Modifier</a></td>
         </tr>
+        {% endif %}
         {% endfor %}
         {% endif %}
     </tbody>
 </table>
+        {% endfor %}
+        {% endif %}
 </div>
 {% endblock %}

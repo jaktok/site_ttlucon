@@ -34,10 +34,11 @@ class ResultatParamController extends AbstractController
     /**
      * @Route("/capitaine/param/resultat", name="resultat_param")
      */
-    public function listRencontreResultat(RencontresRepository $rencontreRepo): Response
+    public function listRencontreResultat(RencontresRepository $rencontreRepo,EquipeTypeRepository $equipeRepo): Response
     {
         return $this->render('parametrage/resultat_param/resultat_param.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
+            'equipes' => $equipeRepo->findAll()
         ]);
     }
 
@@ -111,7 +112,7 @@ class ResultatParamController extends AbstractController
             }
             $img = new Fichiers();
             $entityManager = $this->getDoctrine()->getManager();
-            if ($rencontre->getId()!=null){
+            if ($rencontre->getId()!=null && !(isset($fichier))){
                // $img = $ficRepo->findOneByRencontre($rencontre->getId());
                 $img = $rencontre->getFichier();
             }
@@ -175,7 +176,7 @@ class ResultatParamController extends AbstractController
      * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
      */
     public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null): Response
-    {
+    
         $idMatch = $idRencontre;
 
         if(!$match){
@@ -186,7 +187,6 @@ class ResultatParamController extends AbstractController
         $form->handleRequest($request);
         $idMatch = $_GET['id'];
         $rencontre = $rencontreRepo->find($idMatch);
-
         if($form->isSubmitted() && $form->isValid()){
             
             $match->setRencontre($rencontre);

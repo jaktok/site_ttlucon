@@ -14,34 +14,64 @@ endblock %} {% block body %}
  		      <h1>Liste des resultats</h1>
  	      </div>	
     </div>
-
-<table class="table table-striped" data-toggle="table" data-pagination="false">
-        <thead>
-          <tr>
-            <th data-sortable="true" data-field="date_rencontre">Date Rencontre</th>
-            <th>Adversaire</th>
-            <th data-sortable="true">Victoire</th>
-            <th data-sortable="true">Phase</th>
-            <th>Saisie des Résultats</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% if resultats is defined %}
-        {% for resultat in resultats %}
-        <tr>
-            <td>{{ resultat.dateRencontre|date('d/m/Y') }}</td>
-           	<td>{{ resultat.equipeA }} / {{ resultat.equipeB }}</td>
-            {% if resultat.victoire == 1  %}
-           		<td>Victoire</td>
-            {% else %}
-              <td>Défaite</td>
-           	{% endif %}
-            <td>{{ resultat.phase }}</td> 
-            <td><a href="{{ path('resultat_rencontre', { 'id': resultat.id}) }}" class="btn btn-primary" target="_blank">Consulter</a></td>
-        </tr>
+    {% if equipes is defined %}
+        {% for equipe in equipes %}
+        {% if equipe.categories.libelle == categorie %}
+        <div class="container mt-5">
+ 			<div class="col-sm-12" >
+       			<div class="row text-center" style="background-color: #B0F2B6">
+   					<div class="col-sm-12 center" >
+   						<h2>TT {{ equipe.nom }}</h2>
+   					</div>
+       			</div>	
+     			<div class="row " style="background-color: #B0F2B6">
+   					<div class="col-sm-6 text-center" >
+   				 		<H4>Division : {{ equipe.division }}</H4>				
+   				 	</div>
+   				 	<div class="col-sm-6" >
+   				 		<H4>Capitaine : {{ equipe.capitaine }}</H4>
+   				 	</div>
+   				</div>
+            </div>
+        </div>
+        <table class="table table-striped" data-toggle="table" data-pagination="false">
+                <thead>
+                <tr>
+                    <th data-sortable="true" data-field="date_rencontre">Date Rencontre</th>
+                    <th>Adversaire</th>
+                    <th data-sortable="true">Victoire</th>
+                    <th data-sortable="true">Phase</th>
+                    <th>Saisie des Résultats</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if resultats is defined %}
+                {% for resultat in resultats %}
+                {% if resultat.equipeA == equipe.nom or resultat.equipeB == equipe.nom %}
+                <tr>
+                    <td>{{ resultat.dateRencontre|date('d/m/Y') }}</td>
+                    <td>{{ resultat.equipeA }} / {{ resultat.equipeB }}</td>
+                    {% if resultat.victoire == 1  %}
+                        <td>Victoire</td>
+                    {% elseif resultat.victoire == null %}
+                    <td>Défaite</td>
+                    {% else %}
+                    <td>Pas joué</td>
+                    {% endif %}
+                    <td>{{ resultat.phase }}</td>
+                    {% if resultat.fichier is defined and resultat.fichier != null %} 
+                    <td><a href="{{ path('resultat_rencontre', { 'id': resultat.id}) }}" class="btn btn-primary" target="_blank">Consulter</a></td>
+                    {% else %}
+                    <td>indisponible</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        {% endif %}
         {% endfor %}
         {% endif %}
-    </tbody>
-</table>
 </div>
 {% endblock %}
