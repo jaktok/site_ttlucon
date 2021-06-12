@@ -12,14 +12,6 @@ use App\Repository\JoueursRepository;
 class BureauController extends AbstractController
 {
     
-    private $fonctions;
-    
-    public function __construct()
-    {
-        // Recuperation infos config.ini
-        $this->fonctions = array(); 
-    }
-    
     /**
      * @Route("/bureau", name="bureau")
      */
@@ -28,23 +20,16 @@ class BureauController extends AbstractController
         
         // recuperation de la liste des categories
         $listeFonctions = $fonctionsRepo->findBy(array(),array('position' => 'ASC'));
-        
-        // recuperation de tous les joueurs
-        $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
-        
-        $i=0;
+         
+        $fonctions = array(); 
         // recuperation du resultat dans un tableau 
         foreach($listeFonctions as $fonction)
         {
-            $this->fonctions[$i]=$fonction;
-            $i++;
+            array_push($fonctions,$fonction);
         }
-        
-        $form = $this->createFormBuilder($this->fonctions)
-        ->getForm();
-        //dd($this->fonctions);
+
         return $this->render('bureau/bureau.html.twig', [
-            'fonctions' => $this->fonctions,
+            'fonctions' => $fonctions,
         ]);
     }
 }
