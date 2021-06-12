@@ -42,7 +42,7 @@ class EquipesParamController extends AbstractController
         $tabEquipesPresentes = array();
         
         // recuperation de tous les joueurs actifs pour liste capitaine
-        $listeJoueurs = $joueursRepo->findByActif();
+        $listeJoueurs = $joueursRepo->findBy(array(), array('nom' => 'ASC'));
         $tabJoueurs= array();
         foreach ($listeJoueurs as $joueur){
             $tabJoueurs[$joueur->getNom()." ".$joueur->getPrenom()] = $joueur->getNom()." ".$joueur->getPrenom();

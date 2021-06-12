@@ -13,8 +13,8 @@ endblock %} {% block body %}
 
 {{ form_start(formFonctions) }}
 <div class="container">
-	<h1>Autre Fonction</h1>
-
+	<h1 align="center">Fonction</h1>
+<br>
       <table class="table table-striped" data-toggle="table" data-pagination="false">
         <thead>
           <tr>
@@ -35,17 +35,26 @@ endblock %} {% block body %}
         {% endif %}
         </tbody>
       </table>
-<br>
 
-	<div class="row">
+
+	<div class="row mt-5">
+		<div class="col-sm-1" >
+			{{ form_label(formFonctions.libelle) }}&nbsp;:
+		</div>
 		<div class="col-sm-3" >
-			{{ form_row(formFonctions.libelle) }}
+			{{ form_widget(formFonctions.libelle) }}
+		</div>
+		<div class="col-sm-1">
+			{{ form_label(formFonctions.position) }}&nbsp;:
+		</div>
+		<div class="col-sm-3" align="left">
+			{{ form_widget(formFonctions.position) }}
+		</div>
+		<div class="col-sm-1">
+			{{ form_label(formFonctions.joueurs) }}&nbsp;:
 		</div>
 		<div class="col-sm-3">
-			{{ form_row(formFonctions.position) }}
-		</div>
-		<div class="col-sm-3">
-			{{ form_row(formFonctions.joueurs) }}
+			{{ form_widget(formFonctions.joueurs) }}
 		</div>
 
 	</div>
