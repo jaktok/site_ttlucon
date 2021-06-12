@@ -36,6 +36,9 @@ class PrevisionEquipeType extends AbstractType
             }
         }
         
+        $tabJoueurs = $options["tabJoueurs"];
+        //dd($tabJoueurs);
+        
         $builder
         
             ->add('nom', ChoiceType::class, [
@@ -61,7 +64,11 @@ class PrevisionEquipeType extends AbstractType
                 'mapped' => false,
                 'required' => false 
             ])
-            ->add('capitaine')
+            ->add('capitaine', ChoiceType::class, [
+                'choices' => $tabJoueurs,
+                'multiple' => false,
+                'expanded' => false,
+                ])
             ->add('salle')
             ->add('categories',EntityType::class, array(
             'class' => 'App\Entity\Categories',
@@ -80,6 +87,7 @@ class PrevisionEquipeType extends AbstractType
             'nomEquipereadOnly' => null,
             'tabEquipesPresentes' => null,
             'nomEquipe' => null,
+            'tabJoueurs' => null,
         ]);
     }
 }

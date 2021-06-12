@@ -16,6 +16,7 @@ use App\Entity\EquipeType;
 use App\Entity\Fichiers;
 use App\Form\PrevisionEquipeType;
 use App\Repository\MatchsRepository;
+use App\Repository\JoueursRepository;
 
 class EquipesParamController extends AbstractController
 {
@@ -34,11 +35,19 @@ class EquipesParamController extends AbstractController
      * @Route("/dirigeant/param/equipes/modifier/{id}", name="equipes_param_modif")
      * 
      */
-    public function createEquipe(Request $request,FichiersRepository $fichierRepo,EquipeTypeRepository $equipeRepo, EquipeType $equipeTypes = null)
+    public function createEquipe(Request $request,FichiersRepository $fichierRepo,EquipeTypeRepository $equipeRepo, JoueursRepository $joueursRepo, EquipeType $equipeTypes = null)
     {
         // rajout indicateur de modification si  equipe deja creee on touche pas au numero 
         $nomEquipereadOnly= true;
         $tabEquipesPresentes = array();
+        
+        // recuperation de tous les joueurs actifs pour liste capitaine
+        $listeJoueurs = $joueursRepo->findByActif();
+        $tabJoueurs= array();
+        foreach ($listeJoueurs as $joueur){
+            $tabJoueurs[$joueur->getNom()." ".$joueur->getPrenom()] = $joueur->getNom()." ".$joueur->getPrenom();
+        }
+        //dd($tabJoueurs);
         
         if(!$equipeTypes)
         {
@@ -57,7 +66,7 @@ class EquipesParamController extends AbstractController
 
         
         
-        $form = $this->createForm(PrevisionEquipeType::class, $equipeTypes, array('nomEquipereadOnly' => $nomEquipereadOnly,'tabEquipesPresentes' => $tabEquipesPresentes,'nomEquipe' => $nomEquipe));
+        $form = $this->createForm(PrevisionEquipeType::class, $equipeTypes, array('nomEquipereadOnly' => $nomEquipereadOnly,'tabEquipesPresentes' => $tabEquipesPresentes,'tabJoueurs' => $tabJoueurs,'nomEquipe' => $nomEquipe));
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
