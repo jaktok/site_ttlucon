@@ -21,9 +21,7 @@ class BruleController extends AbstractController
     {
 
         // rencontres lucon
-        $listeEquipes = $equipeRepo->findBy(array(), array(
-            'nom' => 'ASC'
-        ));
+        $listeEquipes = $equipeRepo->findByAdultes();
 
         $listeJoueurs = $joueurRepo->findByActif();
 
@@ -37,13 +35,12 @@ class BruleController extends AbstractController
             $phase = 1;
         }
         
-        $listeJoueursMatchEquipe = $matchRepo->findIdJoueursMatchEquipe();
+        $listeJoueursMatchEquipe = $matchRepo->findIdJoueursMatchEquipeSimple();
         $numJoueur = 0;
         foreach ($listeJoueurs as $joueur) {
             foreach ($listeEquipes as $equipe) {
                 $idEquipe = $equipe->getId();
-                $listeRencontres = $rencontreRepo->findByIdEquipeAndPhase($idEquipe,$phase);
-              // dd($listeRencontres);
+                $listeRencontres = $rencontreRepo->findByIdEquipeAndPhaseAdultes($idEquipe,$phase);
                 $tabRencontres = array();
                 $cpt = 0;
                 foreach ($listeRencontres as $renc){
