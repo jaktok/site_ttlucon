@@ -439,7 +439,7 @@ class JoueursParamController extends AbstractController
             // on enregistre les données joueur
             $i ++;
         }
-        return new Response() ;
+        return $this->redirectToRoute('joueurs_param');
     }
     
     /**

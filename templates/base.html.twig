@@ -51,7 +51,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="{{ path ('joueur', {'cat': cat} ) }}">Liste des joueurs</a>
 					</div></li>
 
-				<li class="nav-item"><a class="nav-link" href="/entrainement">Entraînements</a>
+				<li class="nav-item"><a class="nav-link" href="{{ path ('entrainement') }}">Entraînements</a>
 				</li>
 
 				<li class="nav-item dropdown"><a
@@ -74,6 +74,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
+						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistiques_double', {'cat': cat} ) }}">Statistiques Doubles</a>
 						<div class="dropdown-divider"></div>
 						{% set categ = 'tous' %}
@@ -132,7 +133,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<a class="dropdown-item" href="http://forum.tennis-de-table.com/" target="_blank">Forum</a>
 					</div></li>
 
-				<li class="nav-item"><a class="nav-link" href="/nous/contacter">Nous
+				<li class="nav-item"><a class="nav-link" href="{{ path ('nous_contacter') }}">Nous
 						contacter</a></li>
 			</ul>
 		</div>

@@ -80,7 +80,7 @@ class DocAccueilController extends AbstractController
                         }
                     }
                 }
-               // dd($this->getParameter('docaccueil_destination'),$images,$form,$doc->getFichier()->getNom(),'docaccueil'.$nmImgDate.'.'.$images->guessExtension());
+               // dd($this->getParameter('docaccueil_destination'),$images,$form,'docaccueil'.$nmImgDate.'.'.$images->guessExtension());
                 $images->move($this->getParameter('docaccueil_destination'),
                     $fichier
                     );

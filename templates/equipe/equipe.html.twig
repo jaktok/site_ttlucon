@@ -25,15 +25,15 @@ endblock %}
  			<div class="col-sm-12" >
        			<div class="row text-center" style="background-color: #B0F2B6">
    					<div class="col-sm-12 center" >
-   						<h2>TT {{ equipe.nom }}</h2>
+   						<h2>TT {{ equipe.nom }} &nbsp;-&nbsp;&nbsp;{{ equipe.division }}</h2>
    					</div>
        			</div>	
      			<div class="row " style="background-color: #B0F2B6">
    					<div class="col-sm-6 text-center" >
-   				 		<H4>Division : {{ equipe.division }}</H4>				
+   				 		Capitaine :<H4>{{ equipe.capitaine }}</H4>				
    				 	</div>
-   				 	<div class="col-sm-6" >
-   				 		<H4>Capitaine : {{ equipe.capitaine }}</H4>
+   				 	<div class="col-sm-6" align="center">
+   				 		Salle :  <H4>{{ equipe.salle }}</H4>
    				 	</div>
    				 </div>
       				 {% if equipe.photo is defined  and equipe.photo is not null  %}

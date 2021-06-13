@@ -69,12 +69,19 @@ class PrevisionEquipeType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 ])
-            ->add('salle')
+                ->add('salle', ChoiceType::class, [
+                    'choices' => [
+                     'Salle Jean Jaures' => '1',
+                     'Salle Emile Beaussire' => '2'    
+                    ],
+                    'multiple' => false,
+                    'expanded' => false,
+                ])
             ->add('categories',EntityType::class, array(
             'class' => 'App\Entity\Categories',
             'label' => 'Categorie : ',
-            'choice_label' => function ($user) {
-            return $user->getLibelle();
+            'choice_label' => function ($cat) {
+            return $cat->getLibelle();
             },
             ));
         ;

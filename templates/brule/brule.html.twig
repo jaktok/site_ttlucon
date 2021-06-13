@@ -21,9 +21,9 @@
       <table class="table table-striped mt-4" data-toggle="table" data-pagination="false">
         <thead>
           <tr class="d-flex">
-          		<th class="col-2">Joueurs</th>
+          		<th class="col-2" data-sortable="true">Joueurs</th>
           	{% for equipe in tabEquipes %}
-            	<th class="col-2 text-center table-primary">{{ equipe.nom }}</th>
+            	<th class="col-2 text-center table-primary" data-sortable="true">{{ equipe.nom }}</th>
           	{% endfor %}
           </tr>
         </thead>
