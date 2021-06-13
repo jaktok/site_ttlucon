@@ -16,14 +16,45 @@
 {{ form_start(formJoueurMatch) }}
 
 <div class="container">
-	<h1>Matchs Joueur</h1>
+	<h2 align="center">Matchs Joueur &nbsp;{{ competition.nom }} &nbsp; {{ competition.numJournee }}</h1>
 
-
-	
-	<div class="row">
-		<div class="col-sm-3" >
-			{{ form_row(formJoueurMatch.joueur_compet) }}
+		<div class="container mt-3">
+			  <table class="table table-striped" data-toggle="table" data-pagination="false">
+		        <thead>
+		          <tr>
+		            <th>Nom</th>
+		            <th>Prénom</th>
+		            <th>Victoires</th>
+		            <th>Défaites</th>
+		            <th>Position</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		        {% if tableauMatchs is defined %}
+		        {% for matches in tableauMatchs %}
+		          <tr>
+		           	<td>{{ matches.nom }}</td>
+		           	<td>{{ matches.prenom }}</td>
+		           	<td>{{ matches.victoires }}</td>
+		           	<td>{{ matches.defaites }}</td>
+		           	<td>{{ matches.position }}</td>
+		          </tr>
+		        {% endfor %}
+				{% endif %}
+		        </tbody>
+		      </table>
 		</div>
+	
+	<div class="row mt-5">
+	  {% if activeJoueur %}
+		<div class="col-sm-3" >
+			{{ form_row(formJoueurMatch.joueur_compet)}}
+		</div>
+		{% else %}
+			<div class="col-sm-3" >
+			{{ form_row(formJoueurMatch.joueur_compet,{'attr':{'disabled':'disabled'}})}}
+		</div>
+		{% endif %}
 		<div class="col-sm-2">
 			{{ form_row(formJoueurMatch.victoires) }}
 		</div>

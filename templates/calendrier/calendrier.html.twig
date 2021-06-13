@@ -21,6 +21,29 @@ endblock %} {% block body %}
 		{% endif %}
 
 
+	        {% if compets is defined %}
+	        {% for compet in compets %}
+	        {% if compet.categories.libelle == categorie %}
+	          <table class="table table-striped" data-toggle="table" data-pagination="false">
+	
+	        <tbody>
+	          <tr bordercolor="red" bgcolor= '#DAF7A6' >
+	           	<td>{{ compet.nom }}</td>
+	           	<td>Numéro de journée :&nbsp; {{ compet.numJournee }}</td>
+	           	<td>{{ compet.date|date('d-m-Y')  }}</td>
+	        </tr>
+	       </tbody>
+		<div class="row" >
+	    <div class="col" ><hr color="red"></div>
+	   </div>
+	
+			{% endif %}
+	         {% endfor %}
+			{% endif %}
+	      </table>
+
+
+
        <div class="row">
        		<div class="col-sm-6" >
 		        {% if equipes is defined %}

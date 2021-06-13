@@ -105,10 +105,11 @@ class MatchsRepository extends ServiceEntityRepository
         ;
     }
     
-    public function findIdJoueursMatchEquipe()
+    public function findIdJoueursMatchEquipeSimple()
     {
         return $this->createQueryBuilder('m')
         ->andWhere('m.rencontre IS NOT NULL')
+        ->andWhere('m.double1 IS NULL OR m.double2 IS NULL')
         ->getQuery()
         ->getResult()
         ;

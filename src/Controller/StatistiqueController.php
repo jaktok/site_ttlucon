@@ -94,9 +94,15 @@ class StatistiqueController extends AbstractController
         // tri du tableau par progression
         $progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
         array_multisort($progressionAnnuelle, SORT_DESC, $tabJoueursLucon);
+        $tabAutresCompetAdapte = array();
+        if ($cat=="Adapte"){
+            /**@TODO gerer des stats uniquement sur les tournois sport adapte */
+        }
+        
         return $this->render('statistique/statistique.html.twig', [
             'tabJoueursTTL' => $tabJoueursLucon,
-            'categorie' => $cat
+            'categorie' => $cat,
+            'tabAutresCompetAdapte' => $tabAutresCompetAdapte,
         ]);
     }
 }

@@ -59,8 +59,22 @@ class CompetitionParamController extends AbstractController
         // recuperation de la liste des Types competition
         $listeCategories = $categoriesRepo->findAll();
         
+        // recuperation de la liste des competition
+        $listeCompet = $competRepo->findAll();
+        foreach ($listeCompet as $compet){
+            $competition = new Competition();
+            $competition = $compet;
+            foreach ($listeCategories as $categorie){
+                if ($competition->getCategories() == $categorie){
+                    $competition->setCategories($categorie);
+                }
+            }
+        }
+        
+        
         // recuperation de tous les joueurs tries sur le nom
         $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
+        
         
         if ($id){
             // recuperation de l enregistrements selectionne
@@ -71,15 +85,15 @@ class CompetitionParamController extends AbstractController
                         $competition->setCategories($categories);
                     }
                 }
-                $form = $this->createForm(CompetitionType::class,$competition);
-                $form->handleRequest($request);
             }
         }
         else{
             $competition = new Competition();
-            $form = $this->createForm(CompetitionType::class,($competition));
-            $form->handleRequest($request);
         }
+        
+        $form = $this->createForm(CompetitionType::class,$competition);
+        $form->handleRequest($request);
+        
         
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
@@ -90,6 +104,7 @@ class CompetitionParamController extends AbstractController
         
         return $this->render('parametrage/competition_param/fiche_compet_param.html.twig', [
             'formCompet' => $form->createView(),
+            'compets'   => $listeCompet,
         ]);
         
     }
@@ -130,8 +145,6 @@ class CompetitionParamController extends AbstractController
     public function renseignerCompet(Request $request, CompetitionRepository $competRepo, MatchsRepository $matchsRepo , JoueursRepository $joueursRepo ,int $id = null): Response
     {
         
-        $entityManager = $this->getDoctrine()->getManager();
-        
         // recuperation de l enregistrements selectionne
         $compet = $competRepo->find($id);
         
@@ -141,7 +154,6 @@ class CompetitionParamController extends AbstractController
             $j = 0;
             // rechercher les matchs liés à l id competition
             $matchsCompet = $matchsRepo->findByIdCompet($id);
-            $defaultData;
             if ($matchsCompet){
                 // recup nbjoueurs
                 $tabJoueurs = array();
@@ -199,19 +211,96 @@ class CompetitionParamController extends AbstractController
      * @Route("/ajoute/joueurmatch/{idCompet}", name="ajoute_joueurmatch")
      * @Route("/modifie/joueurmatch/{idJoueur}", name="modifie_joueurmatch")
      */
-    public function ajouterJoueurMatch(Request $request, CompetitionRepository $competRepo, MatchsRepository $matchsRepo , JoueursRepository $joueursRepo, int $idCompet = null,int $idJoueur = null): Response
+    public function ajouterJoueurMatch(Request $request, CompetitionRepository $competRepo, CategoriesRepository $categoriesRepo, MatchsRepository $matchsRepo , JoueursRepository $joueursRepo, int $idCompet = null,int $idJoueur = null): Response
     {
         
         $entityManager = $this->getDoctrine()->getManager();
         $tabMatchs = array();
+        
+        //dd($idCompet,$idJoueur,$request->get('idCompet'));
+        
+        if (!$idCompet && $request->get('idCompet')){
+            $idCompet = $request->get('idCompet');
+        }
+        
+        // recuperation de la liste des Types competition
+        $listeCategories = $categoriesRepo->findAll();
+        // recuperation de la liste des competition
+        $listeCompet = $competRepo->findAll();
+        foreach ($listeCompet as $compet){
+            $competition = new Competition();
+            $competition = $compet;
+            foreach ($listeCategories as $categorie){
+                if ($competition->getCategories() == $categorie){
+                    $competition->setCategories($categorie);
+                }
+            }
+        }
+        
+        
+        if ($idCompet){
+        // recuperation de l enregistrements selectionne
+            $compet = $competRepo->find($idCompet);
+        }
+        $tableauMatchs = array();
+        
+        if ($compet) {
+            $j = 0;
+            // rechercher les matchs liés à l id competition
+            $matchsCompet = $matchsRepo->findByIdCompet($idCompet);
+            if ($matchsCompet){
+                // recup nbjoueurs
+                $tabJoueurs = array();
+                $nbJoueur = 0;
+                foreach ($matchsCompet as $match){
+                    if (!in_array($match->getJoueur()->getId(),$tabJoueurs)){
+                        $tabJoueurs[$nbJoueur]= $match->getJoueur()->getId();
+                        $nbJoueur++;
+                    }
+                }
+                foreach ($tabJoueurs as $idPlayer){
+                    $nbVic = 0;
+                    $nbDef = 0;
+                    $joueur = $joueursRepo->find($idPlayer);
+                    foreach ($matchsCompet as $match){
+                        // recuperation de l enregistrements selectionne
+                        if($match->getJoueur()->getId()==$idPlayer){
+                            
+                            if ($match->getVictoire()){
+                                $nbVic++;
+                            }
+                            else{
+                                $nbDef++;
+                            }
+                            $tableauMatchs[$j]["position"] =  $match->getPosition();
+                        }
+                    }
+                    $tableauMatchs[$j]['nom'] = $joueur->getNom();
+                    $tableauMatchs[$j]['prenom'] = $joueur->getPrenom();
+                    $tableauMatchs[$j]["victoires"] =  trim($nbVic);
+                    $tableauMatchs[$j]["defaites"] =  trim($nbDef);
+                    $tableauMatchs[$j]["joueur"] =  $joueur;
+                    $tableauMatchs[$j]['idJoueur'] = $joueur->getId();
+                    $tableauMatchs[$j]['id'] = $idCompet;
+                    $j++;
+                    
+                }
+            }
+            
+        }
+        
+        
+        
         
         $compet = new Competition();
         if ($idCompet){
             // recuperation de l enregistrements selectionne
             $compet = $competRepo->find($idCompet);
         }
+        $activeJoueur = true;
         $joueur = new Joueurs();
         if ($idJoueur){
+            $activeJoueur = false;
             $idCompet = $request->query->get('idCompet');
             $compet = $competRepo->find($idCompet);
             $joueur = $joueursRepo->find($idJoueur);
@@ -239,12 +328,7 @@ class CompetitionParamController extends AbstractController
                     $tabMatchs["joueur_compet"] =  $joueur;
             }
           
-            $form = $this->createForm(JoueurMatchType::class,array(
-                'victoires'  => (trim($nbVic)),
-                'defaites'  => (trim($nbDef)),
-                'joueur_compet'  => ($joueur),
-                'position'  => ($tabMatchs["position"])
-            ));
+            $form = $this->createForm(JoueurMatchType::class,$tabMatchs);
             $form->handleRequest($request);
         }
         else {
@@ -259,8 +343,15 @@ class CompetitionParamController extends AbstractController
 
             // recup de la lidte des matchs pour suppression
             $player = new Joueurs();
-            $player = $data["joueur_compet"];
-            $idPlayer = $player->getId();
+            $player = $data["joueur_compet"];//dd($player,$data,$idJoueur);
+            if($player){
+                $idPlayer = $player->getId();
+            }
+            else{
+                $idPlayer = $idJoueur;
+                $player = $joueursRepo->find($idJoueur);
+            }
+            //dd($player);
             $listeMatchs = $matchsRepo->findByIdCompetJoueur($idCompet,$idPlayer);
             foreach ($listeMatchs as $matche){
                 $entityManager->remove($matche);
@@ -270,7 +361,7 @@ class CompetitionParamController extends AbstractController
             for ($i = 0; $i < $nbVictoires;$i++ ){
                 $match = new Matchs();
                 $match->setVictoire(true);
-                $match->setJoueur($data["joueur_compet"]);
+                $match->setJoueur($player);
                 $match->setCompetition($compet);
                 $match->setPosition($data["position"]);
                 $entityManager->persist($match);
@@ -279,7 +370,7 @@ class CompetitionParamController extends AbstractController
             for ($i = 0; $i < $nbDefaites;$i++ ){
                 $match = new Matchs();
                 $match->setVictoire(false);
-                $match->setJoueur($data["joueur_compet"]);
+                $match->setJoueur($player);
                 $match->setCompetition($compet);
                 $match->setPosition($data["position"]);
                 $entityManager->persist($match);
@@ -290,7 +381,12 @@ class CompetitionParamController extends AbstractController
         }
         return $this->render('parametrage/competition_param/joueurmatch_compet_param.html.twig', [
             'formJoueurMatch' => $form->createView(),
-            'idCompet'=> $idCompet
+            'idCompet'=> $idCompet,
+            'compets'   => $listeCompet,
+            'tabMatchs' => $tabMatchs,
+            'tableauMatchs' => $tableauMatchs,
+            'competition'  =>  $compet,
+            'activeJoueur'  => $activeJoueur,
         ]);
         
     }

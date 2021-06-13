@@ -35,6 +35,11 @@ class PrevisionEquipeType extends AbstractType
                 $tabEquipes["LUCON ".$i] = "LUCON ".$i;
             }
         }
+        for ($i = 1; $i < 6; $i++) {
+            if (!in_array("LUCON JEUNES ".$i, $tabEquipesPresentes)){
+                $tabEquipes["LUCON JEUNES ".$i] = "LUCON JEUNES ".$i;
+            }
+        }
         
         $tabJoueurs = $options["tabJoueurs"];
         //dd($tabJoueurs);

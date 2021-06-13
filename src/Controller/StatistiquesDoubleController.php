@@ -24,7 +24,7 @@ class StatistiquesDoubleController extends AbstractController
         $cpt = 0;
         foreach ($tabDoubles as $double){
             $categorie = "Adulte";
-           
+            if ($double->getRencontre()){
             $idRencontre = $double->getRencontre()->getId();  
             $rencontre = $rencontreRepo->findBy(['id'=>$idRencontre]);
             if($rencontre[0]->getScoreA() != null && $rencontre[0]->getScoreB() != null ){
@@ -77,7 +77,7 @@ class StatistiquesDoubleController extends AbstractController
                     }
                 }
             }
-            
+          }// fin if double->getRencontre
         }
         for($j=0;$j < sizeof($tabDoublesStat);$j++){
             $pourcent = ($tabDoublesStat[$j]['victoires']*100)/($tabDoublesStat[$j]['victoires']+$tabDoublesStat[$j]['defaites']);

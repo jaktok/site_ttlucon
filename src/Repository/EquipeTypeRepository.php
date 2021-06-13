@@ -36,6 +36,17 @@ class EquipeTypeRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByAdultes()
+    {
+        return $this->createQueryBuilder('e')
+        ->andWhere('e.nom NOT LIKE :val')
+        ->setParameter('val', 'LUCON JEUNES%')
+        ->orderBy('e.nom', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     
     public function findOneByNom($value): ?EquipeType
     {

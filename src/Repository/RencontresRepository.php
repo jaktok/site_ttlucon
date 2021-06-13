@@ -47,14 +47,17 @@ class RencontresRepository extends ServiceEntityRepository
     }
     
     // pour le tableau des brules on gere les phases
-    public function findByIdEquipeAndPhase($value,$phase)
+    public function findByIdEquipeAndPhaseAdultes($value,$phase)
     {
         return $this->createQueryBuilder('r')
         ->select('r.id')
         ->andWhere('r.equipeType = :val')
         ->andWhere('r.phase = :val2')
+        ->andWhere('r.equipeA NOT LIKE :val3')
+        ->andWhere('r.equipeB NOT LIKE :val3')
         ->setParameter('val', $value)
         ->setParameter('val2', $phase)
+        ->setParameter('val3', 'LUCON JEUNES%')
         ->orderBy('r.date_rencontre', 'ASC')
         ->getQuery()
         ->getResult()

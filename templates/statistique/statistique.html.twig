@@ -6,7 +6,11 @@
 <div class="container">
 			<div class="row" align="center">
 				<div class="col-sm-12">
-					<h1>Statistiques catégorie {{categorie}} </h1>
+					{% if categorie == 'Adapte' %} 
+						<h1>Statistiques catégorie sport {{categorie}} </h1>
+					{% else %}
+						<h1>Statistiques catégorie {{categorie}} </h1>
+					{% endif %}
 				</div>
 			</div>
 			
