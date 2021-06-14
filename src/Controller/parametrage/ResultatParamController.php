@@ -10,6 +10,7 @@ use App\Repository\RencontresRepository;
 use App\Repository\MatchsRepository;
 use App\Repository\FichiersRepository;
 use App\Repository\EquipeTypeRepository;
+use App\Repository\JoueursRepository;
 use App\Entity\Rencontres;
 use App\Entity\Matchs;
 use App\Entity\Fichiers;
@@ -50,39 +51,7 @@ class ResultatParamController extends AbstractController
         if(!$rencontre)
         {
             $rencontre = new Rencontres();
-        }/*
-        if($rencontre){
-            if($rencontre->getDomicile() == true){
-                $nomAdversaire = $rencontre->getequipeB();
-                $nomTTL = $rencontre->getequipeA();
-                $lettreTTL = 'A';
-                //dd($nomTTL);
-            }
-            else{
-                $nomAdversaire = $rencontre->getequipeA();
-                $nomTTL = $rencontre->getequipeB();
-                $lettreTTL = 'B';
-                //dd($nomAdversaire);
-            }
-            $nomClubAdversaire = substr($nomAdversaire,0,-2);
-            $clubByName = $this->api->getClubsByName($nomClubAdversaire);
-            $idAdversaire = $clubByName[0]->getNumero();
-            //dd($idAdversaire);
-            $detailRencontreByLien = $this->api->getDetailsRencontreByLien($rencontre->getIsRetour(),$this->idClub,$idAdversaire);
-            //dd($detailRencontreByLien);
-            //$p = $detailRencontreByLien->getParties()[0]->getAdversaireA();
-            //dd($p);
-            $partieRencontre = $detailRencontreByLien->getParties();
-            //dd($partieRencontre);
-            foreach ($partieRencontre as $partie) 
-            {
-                if($partie->getAdversaireA() != 'double' || $partie->getAdversaireB() != 'double')
-                {
-                    //dd($partie);
-                }
-                
-            }
-        }*/
+        }
 
         $form = $this->createForm(ResultatsType::class, $rencontre);
         
@@ -201,6 +170,109 @@ class ResultatParamController extends AbstractController
             'formMatch' => $form->createView(),
             'idRencontre' => $idMatch,
         ]);
+    }
+    /**
+     * @Route("/capitaine/param/resultat/auto/{id}", name="auto_resultat_param")
+     */
+    public function majAutoMatch(Request $request,int $id = null,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, JoueursRepository $joueursRepo): Response
+    {
+        $id = 78;
+        $idRencontre = $id;
+        $rencontre = $rencontreRepo->find($idRencontre);
+        //dd($rencontre);
+        if($rencontre)
+        {
+            if($rencontre->getDomicile() == true)
+            {
+                $nomAdversaire = $rencontre->getequipeB();
+                $nomTTL = $rencontre->getequipeA();
+                $lettreTTL = 'A';
+                //dd($nomTTL);
+            }
+            else
+            {
+                $nomAdversaire = $rencontre->getequipeA();
+                $nomTTL = $rencontre->getequipeB();
+                $lettreTTL = 'B';
+                //dd($nomAdversaire);
+            }
+            $nomClubAdversaire = substr($nomAdversaire,0,-2);
+            $clubByName = $this->api->getClubsByName($nomClubAdversaire);
+            //dd($clubByName);
+            foreach ($clubByName as $club) 
+            {
+                $num = $club->getNumero();
+                $numComplet = substr($num,0,-5);
+                //dd($numComplet);
+                if($numComplet == 128)
+                {
+                    $idAdversaire = $num;
+                }
+            }
+            //dd($idAdversaire);
+            $detailRencontreByLien = $this->api->getDetailsRencontreByLien($rencontre->getIsRetour(),$this->idClub,$idAdversaire);
+            $partieRencontre = $detailRencontreByLien->getParties();
+            //dd($partieRencontre);
+            $match = new Matchs();
+            foreach ($partieRencontre as $partie) 
+            {
+                if($partie->getAdversaireA() != 'Double')
+                {
+                    if($lettreTTL == 'B')
+                    {
+                        $nomJoueur = $partie->getAdversaireB();
+                        //dump($nomJoueur);
+                        $name = explode(" ",$nomJoueur);
+                        $nameJoueur = $name[0];
+                        $prenomJoueur = $name[1];
+                        //dd($prenomJoueur);
+                        $nomJoueurTTL = $joueursRepo->findOneByNomPrenom($nameJoueur,$prenomJoueur);
+                        //dd($nomJoueurTTL);
+                                //dd($match);
+                                $match->setRencontre($rencontre);
+                                $match->setJoueur($nomJoueurTTL);
+                                $match->setScore($partie->getDetail());
+                                if ($partie->getScoreB() == 1) 
+                                {
+                                    $match->setVictoire(true);
+                                }
+                                else
+                                {
+                                    $match->setVictoire(false);
+                                }
+                                    $entityManager = $this->getDoctrine()->getManager();
+                                    $entityManager->persist($match);
+                                    $entityManager->flush();   
+                    }
+                    if ($lettreTTL == 'A') 
+                    {
+                        $nomJoueur = $partie->getAdversaireA();
+                        $name = explode(" ",$nomJoueur);
+                        $nameJoueur = $name[0];
+                        $prenomJoueur = $name[1];
+                        //dd($prenomJoueur);
+                        $nomJoueurTTL = $joueursRepo->findOneByNomPrenom($nameJoueur,$prenomJoueur);
+                        //dd($nomJoueurTTL);
+                                $match->setRencontre($rencontre);
+                                $match->setJoueur($nomJoueurTTL);
+                                $match->setScore($partie->getDetail());
+                                if ($partie->getScoreB() == 1) 
+                                {
+                                    $match->setVictoire(true);
+                                }
+                                else
+                                {
+                                    $match->setVictoire(false);
+                                }
+                                $entityManager->persist($match);
+                                $entityManager->flush();
+                    }
+                }
+                
+            }
+            return $this->redirectToRoute('modifier_resultat_param',array('id' => $idRencontre));  
+        }
+          
     }
 
     /**

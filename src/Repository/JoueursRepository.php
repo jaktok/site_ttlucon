@@ -35,6 +35,17 @@ class JoueursRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findOneByNomPrenom($nom,$prenom)
+    {
+        return $this->createQueryBuilder('m')
+        ->andWhere('m.nom = :val')
+        ->andWhere('m.prenom = :val2')
+        ->setParameter('val', $nom)
+        ->setParameter('val2', $prenom)
+        ->getQuery()
+        ->getOneOrNullResult()
+        ;
+    }
 
     public function findByActif()
     {
@@ -65,5 +76,5 @@ class JoueursRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    
+
 }
