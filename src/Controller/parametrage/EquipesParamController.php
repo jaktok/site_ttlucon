@@ -26,7 +26,7 @@ class EquipesParamController extends AbstractController
     public function equipesList(EquipeTypeRepository $equipes): Response
     {
         return $this->render('parametrage/equipes_param/equipes_param.html.twig', [
-            'equipes' => $equipes->findAll(),
+            'equipes' => $equipes->findBy(array(),array('nom' => 'ASC')),
         ]);
     }
 

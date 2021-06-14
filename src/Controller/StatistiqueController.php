@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use FFTTApi\FFTTApi;
 use App\Repository\JoueursRepository;
 use App\Repository\MatchsRepository;
+use App\Repository\CompetitionRepository;
 
 class StatistiqueController extends AbstractController
 {
@@ -29,7 +30,7 @@ class StatistiqueController extends AbstractController
      *
      * @Route("/statistique{cat}", name="statistique")
      */
-    public function index(JoueursRepository $joueursRepo, MatchsRepository $matchsRepo, $cat = null): Response
+    public function index(JoueursRepository $joueursRepo, MatchsRepository $matchsRepo,CompetitionRepository $competitionRepo  ,$cat = null): Response
     {
 
         // recup liste des joueurs du club
@@ -94,15 +95,44 @@ class StatistiqueController extends AbstractController
         // tri du tableau par progression
         $progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
         array_multisort($progressionAnnuelle, SORT_DESC, $tabJoueursLucon);
-        $tabAutresCompetAdapte = array();
+        $tabJoueursAdapte = array();
         if ($cat=="Adapte"){
-            /**@TODO gerer des stats uniquement sur les tournois sport adapte */
-        }
+            $listeIdCompetitionsAutreAdapte = $competitionRepo->findIdAdapte();
+            $matchsAdapteTTL = $matchsRepo->findOneByLicenceAdapte($listeIdCompetitionsAutreAdapte);
+           //dd($matchsAdapteTTL);
+           $joueurAdapteTTL = $joueursRepo->findByLicenceAdapte();
+           $i = 0;
+           foreach ($joueurAdapteTTL as $joueurAdapte) {
+               $vict = 0;
+               $def = 0;
+               foreach ($matchsAdapteTTL as $matchAdapte){
+                   if ($matchAdapte->getJoueur()->getId() == $joueurAdapte->getId()){
+                       if($matchAdapte->getVictoire()){
+                           $vict += 1;
+                       }
+                       else{
+                           $def += 1;
+                       }
+                   }
+               }
+               if ($vict + $def > 0){
+               $tabJoueursAdapte[$i]['joueur'] = $joueurAdapte;
+               $tabJoueursAdapte[$i]['vict'] = $vict;
+               $tabJoueursAdapte[$i]['def'] = $def;
+               $tabJoueursAdapte[$i]['pourcent'] = round(($vict * 100) / ($vict + $def));
+               $i++;
+               }
+            }
+               
+        } 
+           $pourcent = array_column($tabJoueursAdapte, 'pourcent');
+           array_multisort($pourcent, SORT_DESC, $tabJoueursAdapte);
+         //  dd ($tabJoueursAdapte);
         
         return $this->render('statistique/statistique.html.twig', [
             'tabJoueursTTL' => $tabJoueursLucon,
             'categorie' => $cat,
-            'tabAutresCompetAdapte' => $tabAutresCompetAdapte,
+            'tabAutresCompetAdapte' => $tabJoueursAdapte,
         ]);
     }
 }

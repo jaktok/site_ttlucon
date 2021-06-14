@@ -31,7 +31,7 @@ class ResultatController extends AbstractController
         return $this->render('resultat/resultat.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
             'categorie' => $this->categorie,
-            'equipes' => $equipeRepo->findAll()
+            'equipes' => $equipeRepo->findBy(array(),array('nom' => 'ASC')),
         ]);
     }
 

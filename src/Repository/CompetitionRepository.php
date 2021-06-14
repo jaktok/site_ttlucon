@@ -46,6 +46,17 @@ class CompetitionRepository extends ServiceEntityRepository
         ;
     }
     
+    public function findIdAdapte()
+    {
+        return $this->createQueryBuilder('c')
+        ->addSelect('c.id')
+        ->andWhere('c.categories = 2')
+        ->orderBy('c.date', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     /*
     public function findOneBySomeField($value): ?Competition
     {

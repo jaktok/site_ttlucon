@@ -7,14 +7,97 @@
 			<div class="row" align="center">
 				<div class="col-sm-12">
 					{% if categorie == 'Adapte' %} 
-						<h1>Statistiques catégorie sport {{categorie}} </h1>
+						<h4>Statistiques catégorie sport {{categorie}} et Adulte traditionnel</h4>
 					{% else %}
 						<h1>Statistiques catégorie {{categorie}} </h1>
 					{% endif %}
 				</div>
 			</div>
 			
+<br>			
+			
+			{% if tabAutresCompetAdapte is defined %} {% if tabAutresCompetAdapte is not empty%}
+			 {% set position = 1 %}
+			 {% for joueurA in tabAutresCompetAdapte %}
+			 <h4>Statistiques spécifiques catégorie sport {{categorie}}</h4>
+		<div class="container border">
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-1 align-items-center" style="background-color: #CC5500" align="center">
+					<h4>N° {{ position }}</h4>
+				</div>
+		</div>	
+			<div class="row mt-3 align-items-center" align="center">
+				<div class="col-sm-5">
+					<div class="row" align="center">
+						{% if joueurA.joueur.photo is defined  and joueurA.joueur.photo is not null  %}
+						<div class="col-sm-3" style="background-color: #F5F5DC" >
+							<img src="{{ asset('/images/'~joueurA.joueur.photo.nom) }}" alt="" width="50">
+						</div>
+						{% else %}
+						<div class="col-sm-3" style="background-color: #F5F5DC" >
+							<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
+						</div>
+						{% endif %}
+						<div class="col-sm-9" align="left">
+							<h2>{{ joueurA.joueur.prenom }} {{ joueurA.joueur.nom }}</h2>
+						</div>
+					</div>	
+				</div>
+				<div class="col-sm-7" style="background-color: #FEFDF0">
+					<div class="row" align="center">
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Class. en cours :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueurA.joueur.pointsActuel }} points</h4>
+						</div>
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Class. début :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueurA.joueur.pointsDebSaison }} points</h4>
+						</div>
+					</div>
+					<div class="row mt-2" align="center">
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Progr. pts annuel :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4> {{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison}} points</h4>
+						</div>
+						<div class="col-sm-3 align-items-center" align="left">
+							<p>Progr. pts mensuel :</p>
+						</div>
+						<div class="col-sm-3" align="left">
+							<h4>{{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsMoisDernier}} points</h4>
+						</div>
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class="row mt-4" align="center"  style="background-color: #FFF0BC">
+				<div class="col-sm-2 align-items-center" align="left">
+					<h4>Victoires : </h4>
+				</div>
+				<div class="col-sm-4 align-items-center" align="left">
+					<h4>{{ joueurA.pourcent }} % &nbsp;&nbsp; {{ joueurA.vict }} victoires - {{ joueurA.def }} défaites </h4>
+				</div>
+			</div>
+			
+		</div>
+		
+			<div class="row mt-2" >
+				<div class="col">
+					<hr color="black">
+				</div>
+			</div>
+			{% set position = position + 1 %}
+			{% endfor %} {% endif %} {% endif %}
+			
+			
 			{% if tabJoueursTTL is defined %} {% if tabJoueursTTL is not empty%}
+			 <h4>Statistiques générales Adulte traditionel</h4>
 			 {% set place = 1 %}
 			 {% for joueur in tabJoueursTTL %}
 		<div class="container border">
@@ -110,6 +193,7 @@
 			</div>
 			{% set place = place + 1 %}
 			{% endfor %} {% endif %} {% endif %}
+
 
 </div>
 

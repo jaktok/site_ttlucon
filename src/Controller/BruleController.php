@@ -22,7 +22,8 @@ class BruleController extends AbstractController
 
         // rencontres lucon
         $listeEquipes = $equipeRepo->findByAdultes();
-
+        
+        
         $listeJoueurs = $joueurRepo->findByActif();
 
         $tabBrule = array();

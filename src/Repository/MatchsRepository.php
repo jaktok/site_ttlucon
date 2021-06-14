@@ -115,6 +115,17 @@ class MatchsRepository extends ServiceEntityRepository
         ;
     }
     
+    public function findOneByLicenceAdapte($value)
+    {
+        return $this->createQueryBuilder('j')
+        ->andWhere('j.competition IN (:val)')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
+    
     public function nettoieIdJoueurNull()
     {
          $this->createQueryBuilder('m')

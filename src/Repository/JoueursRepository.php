@@ -76,5 +76,15 @@ class JoueursRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+    
+    
+    public function findByLicenceAdapte()
+    {
+        return $this->createQueryBuilder('j')
+        ->andWhere('j.categories = 2')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 
 }
