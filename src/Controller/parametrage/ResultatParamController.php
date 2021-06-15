@@ -37,8 +37,13 @@ class ResultatParamController extends AbstractController
      */
     public function listRencontreResultat(RencontresRepository $rencontreRepo,EquipeTypeRepository $equipeRepo): Response
     {
+        $calendrierPhase1 = $rencontreRepo->findByPhase(1);
+
+        $calendrierPhase2 = $rencontreRepo->findByPhase(2);
         return $this->render('parametrage/resultat_param/resultat_param.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
+            'calendrierPhase1' => $calendrierPhase1,
+            'calendrierPhase2' => $calendrierPhase2,
             'equipes' => $equipeRepo->findBy(array(),array('nom' => 'ASC')),
         ]);
     }
@@ -309,7 +314,7 @@ class ResultatParamController extends AbstractController
         
         // recuperation de l enregistrements selectionne
         $match = $matchRepo->find($id);
-        
+        $idRencontre = $match->getRencontre()->getId();
         if ($match) {
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -317,7 +322,7 @@ class ResultatParamController extends AbstractController
             $entityManager->flush();
         }
         
-        return $this->redirectToRoute('resultat_param');
+        return $this->redirectToRoute('modifier_resultat_param',array('id' => $idRencontre));
         
     }
 }

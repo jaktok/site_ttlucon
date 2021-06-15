@@ -28,9 +28,16 @@ class ResultatController extends AbstractController
             default :
                 $this->categorie = "Adulte";
         }
+
+        $calendrierPhase1 = $rencontreRepo->findByPhase(1);
+
+        $calendrierPhase2 = $rencontreRepo->findByPhase(2);
+        
         return $this->render('resultat/resultat.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
             'categorie' => $this->categorie,
+            'calendrierPhase1' => $calendrierPhase1,
+            'calendrierPhase2' => $calendrierPhase2,
             'equipes' => $equipeRepo->findBy(array(),array('nom' => 'ASC')),
         ]);
     }
