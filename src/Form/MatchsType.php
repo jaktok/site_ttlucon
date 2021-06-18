@@ -36,12 +36,6 @@ class MatchsType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
             ])
-            /*->add('joueur2', EntityType::class, [
-                'class' => Joueurs::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
-                'expanded' => true,
-            ])*/
             //->add('score2')
             /*->add('victoire2',ChoiceType::class,[
                 'choices' => [
@@ -50,10 +44,12 @@ class MatchsType extends AbstractType
                 ],
                 'label' => 'Victoire du double 2'])*/
             //->add('id_joueur1')
-            //->add('id_joueur2')
-            //->add('joueur')
-            //->add('competition')
-            //->add('rencontre')
+            ->add('id_joueur2', EntityType::class, [
+                'class' => Joueurs::class,
+                'choice_label' => 'nom',
+                'multiple' => false,
+                'expanded' => true,
+            ])
         ;
     }
 

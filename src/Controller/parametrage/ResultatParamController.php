@@ -146,13 +146,22 @@ class ResultatParamController extends AbstractController
 
 
     /**
-     * @Route("/capitaine/param/resultat/match/new/{idRencontre}", name="new_match_resultat_param")
+     * @Route("/capitaine/param/resultat/match/new/{idRencontre}/{cat}", name="new_match_resultat_param")
      * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
      */
-    public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null): Response
+    public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null, $cat = null): Response
     {
+        switch ($cat) {
+            case "simple":
+                $cat = "simple";
+                break;
+            case "double":
+                $cat = "double";
+                break;
+        }
+        $cat = 'double';
+        // dd($cat);
         $idMatch = $idRencontre;
-
         if(!$match){
             $match = new Matchs();
         }
@@ -174,6 +183,7 @@ class ResultatParamController extends AbstractController
         return $this->render('parametrage/resultat_param/fiche_double_param.html.twig', [
             'formMatch' => $form->createView(),
             'idRencontre' => $idMatch,
+            'type' => $cat,
         ]);
     }
     /**
