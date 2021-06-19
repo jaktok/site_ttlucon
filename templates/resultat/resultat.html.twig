@@ -13,6 +13,7 @@ endblock %} {% block body %}
 		<div class="col-sm-6" >
      {% if equipes is defined %}
         {% for equipe in equipes %}
+        	{% if categorie is defined and equipe.categories.libelle == categorie %}
           <table class="table table-striped">
             <tr bordercolor="red" bgcolor= '#DAF7A6' >
               <td>{{ equipe.nom }}</td>
@@ -21,7 +22,7 @@ endblock %} {% block body %}
               <td>{{ equipe.division }}</td>
             </tr>
 				</table>
-			  <table class="table table-striped" data-toggle="table" data-pagination="false">
+			  <table class="table table-striped table-sm" data-toggle="table" data-pagination="false">
 			    <thead>
 			      <tr class="align-middle">
 			        <th>Date</th>
@@ -47,13 +48,14 @@ endblock %} {% block body %}
                                     <td>Défaite</td>
                                     {% endif %}
                                     {% if rencontre.fichier is defined and rencontre.fichier != null %} 
-                                    <td><a href="{{ path('resultat_rencontre', { 'id': rencontre.id}) }}" class="btn btn-primary" target="_blank">Consulter</a></td>
+                                    <td><a href="{{ path('resultat_rencontre', { 'id': rencontre.id}) }}" class="btn btn-primary btn-sm" target="_blank">Consulter</a></td>
                                     {% else %}
                                     <td>indisponible</td>
                                     {% endif %}
 					            </tr>
 					            {% endif %}
 					    {% endfor %}
+				  {% endif %}
 				  {% endif %}
 				{% endfor %}
 			{% endif %}
@@ -72,7 +74,7 @@ endblock %} {% block body %}
 		                <td>{{ equipe.division }}</td>
 		            </tr>
 			</table>
-		    <table class="table table-striped" data-toggle="table" data-pagination="false">
+		    <table class="table table-striped table-sm" data-toggle="table" data-pagination="false">
 		      <thead>
 		        <tr class="align-middle">
 		          <th>Date</th>
@@ -98,7 +100,7 @@ endblock %} {% block body %}
                                         <td>Défaite</td>
                                     {% endif %}
                                     {% if renc.fichier is defined and renc.fichier != null %} 
-                                        <td><a href="{{ path('resultat_rencontre', { 'id': renc.id}) }}" class="btn btn-primary" target="_blank">Consulter</a></td>
+                                        <td><a href="{{ path('resultat_rencontre', { 'id': renc.id}) }}" class="btn btn-primary btn-sm" target="_blank">Consulter</a></td>
                                     {% else %}
                                         <td>indisponible</td>
                                     {% endif %}

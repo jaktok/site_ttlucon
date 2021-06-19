@@ -25,6 +25,7 @@ class ResultatController extends AbstractController
                 break;
             case "Jeune":
                 $this->categorie = "Jeune";
+                break;
             default :
                 $this->categorie = "Adulte";
         }

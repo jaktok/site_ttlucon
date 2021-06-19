@@ -1,111 +1,103 @@
-{% extends 'parametrage/base_parametrage.html.twig' %} 
-{% block title %}Hello IndexController!{% endblock %} {% block body %}
+{% extends 'parametrage/base_parametrage.html.twig' %} {% block title
+%}Hello IndexController!{% endblock %} {% block body %}
 
 <!-- Insérer cette balise "link" après celle de Bootstrap -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
 <!-- Insérer cette balise "script" après celle de Bootstrap -->
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
 
 <meta charset="UTF-8" />
 <div class="container">
-  <div class="row">
-		<div class="col-sm-6" >
-     {% if equipes is defined %}
-        {% for equipe in equipes %}
-          <table class="table table-striped">
-            <tr bordercolor="red" bgcolor= '#DAF7A6' >
-              <td>{{ equipe.nom }}</td>
-              <td>Phase 1</td>
-              <td>Capitaine : {{ equipe.capitaine }}</td>
-              <td>{{ equipe.division }}</td>
-            </tr>
-				</table>
-			  <table class="table table-striped" data-toggle="table" data-pagination="false">
-			    <thead>
-			      <tr class="align-middle">
-			        <th>Date</th>
-			        <th>Adversaire</th>
-			        <th>Victoire</th>
-			        <th>Resultat</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    {% if calendrierPhase1 is defined %}
-			        {% for rencontre in calendrierPhase1 %}
-			                {% if rencontre.equipeType.id == equipe.id %}
-			                    <tr>
-			                        <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
-			                        <td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
-			                        {% if rencontre.victoire == 1  %}
-                                <td>Victoire</td>
-                              {% elseif rencontre.scoreA == null and rencontre.scoreB == null %}
-                                <td>Match à venir</td>
-                              {% elseif rencontre.scoreA == rencontre.scoreB %}
-                                        <td>Egalité</td>
-                              {% else  %}
-                              <td>Défaite</td>
-                              {% endif %}
-					                    <td><a href="{{ path('modifier_resultat_param', { 'id': rencontre.id}) }}" class="btn btn-primary">Saisir</a></td>
-					                </tr>
-					            {% endif %}
-					    {% endfor %}
-				  {% endif %}
-				{% endfor %}
-			{% endif %}
+	<div class="row">
+		<div class="col-sm-6">
+			{% if equipes is defined %} {% for equipe in equipes %}
+			<table class="table table-striped table-sm">
+				<tr bordercolor="red" bgcolor='#DAF7A6'>
+					<td>{{ equipe.nom }}</td>
+					<td>Phase 1</td>
+					<td>Capitaine : {{ equipe.capitaine }}</td>
+					<td>{{ equipe.division }}</td>
+				</tr>
+			</table>
+			<table class="table table-striped" data-toggle="table"
+				data-pagination="false">
+				<thead>
+					<tr class="align-middle">
+						<th>Date</th>
+						<th>Adversaire</th>
+						<th>Victoire</th>
+						<th>Resultat</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if calendrierPhase1 is defined %} {% for rencontre in
+					calendrierPhase1 %} {% if rencontre.equipeType.id == equipe.id %}
+					<tr>
+						<td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
+						<td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td> {% if
+						rencontre.victoire == 1 %}
+						<td>Victoire</td> {% elseif rencontre.scoreA == null and
+						rencontre.scoreB == null %}
+						<td>Match à venir</td> {% elseif rencontre.scoreA ==
+						rencontre.scoreB %}
+						<td>Egalité</td> {% else %}
+						<td>Défaite</td> {% endif %}
+						<td><a
+							href="{{ path('modifier_resultat_param', { 'id': rencontre.id}) }}"
+							class="btn btn-primary btn-sm">Saisir</a></td>
+					</tr>
+					{% endif %} {% endfor %} {% endif %} {% endfor %} {% endif %}
 				</tbody>
 			</table>
 		</div>
-		<div class="col-sm-6" >
-		{% if equipes is defined and calendrierPhase2 is defined and calendrierPhase2 is not empty %}
-		    {% for equipe in equipes %}
-		            <table class="table table-striped">
-	
-		            <tr bordercolor="red" bgcolor= '#DAF7A6' >
-		                <td>{{ equipe.nom }}</td>
-		                <td>Phase 2</td>
-		                <td>Capitaine : {{ equipe.capitaine }}</td>
-		                <td>{{ equipe.division }}</td>
-		            </tr>
+		<div class="col-sm-6">
+			{% if equipes is defined and calendrierPhase2 is defined and
+			calendrierPhase2 is not empty %} {% for equipe in equipes %}
+			<table class="table table-striped">
+
+				<tr bordercolor="red" bgcolor='#DAF7A6'>
+					<td>{{ equipe.nom }}</td>
+					<td>Phase 2</td>
+					<td>Capitaine : {{ equipe.capitaine }}</td>
+					<td>{{ equipe.division }}</td>
+				</tr>
 			</table>
-		    <table class="table table-striped" data-toggle="table" data-pagination="false">
-		      <thead>
-		        <tr class="align-middle">
-		          <th>Date</th>
-		          <th>Adversaire</th>
-		          <th>Victoire</th>
-		          <th>Resultat</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		      {% if calendrierPhase2 is defined %}
-		          {% for renc in calendrierPhase2 %}
-		                  {% if renc.equipeType.id == equipe.id %}
-		                      <tr>
-		                          <td>{{ renc.dateRencontre|date('d/m/Y') }}</td>
-		                          <td>{{ renc.equipeA }} / {{ renc.equipeB }}</td>
-		                          {% if renc.victoire == 1  %}
-                                <td>Victoire</td>
-                              {% elseif renc.scoreA == null and renc.scoreB == null %}
-                                <td>Match à venir</td>
-                              {% elseif renc.scoreA == renc.scoreB %}
-                                <td>Egalité</td>
-                              {% else  %}
-                              <td>Défaite</td>
-                              {% endif %}
-		                          <td><a href="{{ path('modifier_resultat_param', { 'id': renc.id}) }}" class="btn btn-primary">Saisir</a></td>
-		                      </tr>
-		                  {% endif %}
-		          {% endfor %}
-      {% endif %}
-		      {% endfor %}
-			{% endif %}
-		      </tbody>
-		    </table>
-			</div>
-		
+			<table class="table table-striped table-sm" data-toggle="table"
+				data-pagination="false">
+				<thead>
+					<tr class="align-middle">
+						<th>Date</th>
+						<th>Adversaire</th>
+						<th>Victoire</th>
+						<th>Resultat</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if calendrierPhase2 is defined %} {% for renc in
+					calendrierPhase2 %} {% if renc.equipeType.id == equipe.id %}
+					<tr>
+						<td>{{ renc.dateRencontre|date('d/m/Y') }}</td>
+						<td>{{ renc.equipeA }} / {{ renc.equipeB }}</td> {% if
+						renc.victoire == 1 %}
+						<td>Victoire</td> {% elseif renc.scoreA == null and renc.scoreB ==
+						null %}
+						<td>Match à venir</td> {% elseif renc.scoreA == renc.scoreB %}
+						<td>Egalité</td> {% else %}
+						<td>Défaite</td> {% endif %}
+						<td><a
+							href="{{ path('modifier_resultat_param', { 'id': renc.id}) }}"
+							class="btn btn-primary ">Saisir</a></td>
+					</tr>
+					{% endif %} {% endfor %} {% endif %} {% endfor %} {% endif %}
+				</tbody>
+			</table>
 		</div>
-		
-    </div>
+
+	</div>
+
+</div>
 {% endblock %}
