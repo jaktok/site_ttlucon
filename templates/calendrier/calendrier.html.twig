@@ -1,147 +1,186 @@
-{% extends 'base.html.twig' %} {% block title %}Calendrier{%
-endblock %} {% block body %}
+{% extends 'base.html.twig' %} {% block title %}Calendrier{% endblock %}
+{% block body %}
 <meta charset="UTF-8" />
 
 
 <!-- Insérer cette balise "link" après celle de Bootstrap -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
 <!-- Insérer cette balise "script" après celle de Bootstrap -->
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script
+	src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
-   <div class="container">
-        {% if categorie == 'Adulte'  %}
-        	<h1 style="color: black" align="center">Calendrier Adultes</h1>
-        {% endif %}
-		{% if categorie == 'Jeune'  %}
-			<h1 style="color: black" align="center">Calendrier Jeunes</h1>
-		{% endif %}
-		{% if categorie == 'Adapte'  %}
-			<h1 style="color: black" align="center">Calendrier Sport Adapté</h1>
-		{% endif %}
+<div class="container">
+	{% if categorie == 'Adulte' %}
+	<h1 style="color: black" align="center">Calendrier Adultes</h1>
+	{% endif %} {% if categorie == 'Jeune' %}
+	<h1 style="color: black" align="center">Calendrier Jeunes</h1>
+	{% endif %} {% if categorie == 'Adapte' %}
+	<h1 style="color: black" align="center">Calendrier Sport Adapté</h1>
+	{% endif %}
 
 
-	        {% if compets is defined %}
-	        {% for compet in compets %}
-	        {% if compet.categories.libelle == categorie %}
-	          <table class="table table-striped" data-toggle="table" data-pagination="false">
+	{% if categorie == 'Adapte' %}
+	<ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+		<li class="nav-item"><a class="nav-link active" id="profile-tab"
+			data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+			aria-selected="false">Calendrier Individuelles</a></li>
+
+		<li class="nav-item"><a class="nav-link" id="home-tab"
+			data-toggle="tab" href="#home" role="tab" aria-controls="home"
+			aria-selected="true">Calendrier équipes</a></li>
+
+	</ul>
+	{% else %}
+	<ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+		<li class="nav-item"><a class="nav-link active" id="home-tab"
+			data-toggle="tab" href="#home" role="tab" aria-controls="home"
+			aria-selected="true">Calendrier équipes</a></li>
+		<li class="nav-item"><a class="nav-link" id="profile-tab"
+			data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+			aria-selected="false">Calendrier Individuelles</a></li>
+	</ul>
 	
-	        <tbody>
-	          <tr bordercolor="red" bgcolor= '#DAF7A6' >
-	           	<td>{{ compet.nom }}</td>
-	           	<td>Numéro de journée :&nbsp; {{ compet.numJournee }}</td>
-	           	<td>{{ compet.date|date('d-m-Y')  }}</td>
-	        </tr>
-	       </tbody>
-		<div class="row" >
-	    <div class="col" ><hr color="red"></div>
-	   </div>
-	
+	{% endif %}
+	<div class="tab-content" id="myTabContent">
+		{% if categorie == 'Adapte' %}
+		<div class="tab-pane fade" id="home" role="tabpanel"aria-labelledby="home-tab">
+		{% else %} 
+		<div class="tab-pane fade show active" id="home" role="tabpanel"aria-labelledby="home-tab">
+		{% endif %}
+			
+			<div class="row">
+				<div class="col-sm-6">
+					{% if equipes is defined %} {% for equipe in equipes %} {% if
+					equipe.categories.libelle == categorie %}
+					<table class="table table-striped">
+
+						<tr bordercolor="red" bgcolor='#DAF7A6'>
+							<td>{{ equipe.nom }}</td>
+							<td>Phase 1</td>
+							<td>Capitaine : {{ equipe.capitaine }}</td>
+							<td>{{ equipe.division }}</td>
+						</tr>
+					</table>
+					<table class="table table-striped" data-toggle="table"
+						data-pagination="false">
+						<thead>
+							<tr class="align-middle">
+								<th>Date</th>
+								<th>Adversaire</th>
+								<th>Domicile</th>
+								<th>Phase</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if calendrierPhase1 is defined %} {% for rencontre in
+							calendrierPhase1 %} {% if rencontre.equipeType.categories.libelle
+							== categorie %} {% if rencontre.equipeType.id == equipe.id %}
+							<tr>
+								<td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
+								<td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td> {% if
+								rencontre.domicile == 1 %}
+								<td>Domicile</td> {% else %}
+								<td>Exterieur</td> {% endif %}
+								<td>{{ rencontre.phase }}</td>
+							</tr>
+							{% endif %} {% endif %} {% endfor %} {% endif %} {% endif %} {%
+							endfor %} {% endif %}
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-6">
+					{% if equipes is defined and calendrierPhase2 is defined and
+					calendrierPhase2 is not empty %} {% for equipe in equipes %} {% if
+					equipe.categories.libelle == categorie %}
+					<table class="table table-striped">
+
+						<tr bordercolor="red" bgcolor='#DAF7A6'>
+							<td>{{ equipe.nom }}</td>
+							<td>Phase 2</td>
+							<td>Capitaine : {{ equipe.capitaine }}</td>
+							<td>{{ equipe.division }}</td>
+						</tr>
+					</table>
+					<table class="table table-striped" data-toggle="table"
+						data-pagination="false">
+						<thead>
+							<tr class="align-middle">
+								<th>Date</th>
+								<th>Adversaire</th>
+								<th>Domicile</th>
+								<th>Phase</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if calendrierPhase2 is defined %} {% for renc in
+							calendrierPhase2 %} {% if renc.equipeType.categories.libelle ==
+							categorie %} {% if renc.equipeType.id == equipe.id %}
+							<tr>
+								<td>{{ renc.dateRencontre|date('d/m/Y') }}</td>
+								<td>{{ renc.equipeA }} / {{ renc.equipeB }}</td> {% if
+								renc.domicile == 1 %}
+								<td>Domicile</td> {% else %}
+								<td>Exterieur</td> {% endif %}
+								<td>{{ renc.phase }}</td>
+							</tr>
+							{% endif %} {% endif %} {% endfor %} {% endif %} {% endif %} {%
+							endfor %} {% endif %}
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+		{% if categorie == 'Adapte' %}
+		<div class="tab-pane fade show active" id="profile" role="tabpanel"	aria-labelledby="profile-tab">
+		{% else %} 
+		<div class="tab-pane fade" id="profile" role="tabpanel"	aria-labelledby="profile-tab">
+		{% endif %}
+			{% if categorie == 'Adulte' %}
+			<h4 style="color: black">Liste des Compétitions individuelles
+				Adulte</h4>
+			{% elseif categorie == 'Jeune' %}
+			<h4 style="color: black">Liste des Compétitions individuelles
+				jeunes</h4>
+			{% elseif categorie == 'Adapte' %}
+			<h4 style="color: black">Liste des Compétitions individuelles
+				sport Adapté</h4>
+			{% else %}
+			<h4 style="color: black">Liste des Compétitions individuelles</h4>
 			{% endif %}
-	         {% endfor %}
-			{% endif %}
-	      </table>
+
+			
+				{% if compets is defined %} {% for compet in compets
+				%} {% if compet.categories.libelle == categorie %}
+				<div class="row" style="background-color: #DAF7A6">
+					<div class="col-sm-4">
+						{{ compet.nom }}
+					</div>
+					<div class="col-sm-3">	
+						Numéro de journée : &nbsp;{{ compet.numJournee }}
+					</div>	
+					<div class="col-sm-3">	
+						{{ compet.date|date('d-m-Y') }}
+					</div>	
+					<div class="col-sm-2">	
+						{{ compet.categories.libelle }}
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col">
+						<hr color="red">
+					</div>
+				</div>
+				{% endif %} {% endfor %} {% endif %}
+			</table>
 
 
+		</div>
+	</div>
 
-       <div class="row">
-       		<div class="col-sm-6" >
-		        {% if equipes is defined %}
-		            {% for equipe in equipes %}
-		                {% if equipe.categories.libelle == categorie %}
-		                    <table class="table table-striped">
-		
-		                    <tr bordercolor="red" bgcolor= '#DAF7A6' >
-		                        <td>{{ equipe.nom }}</td>
-		                        <td>Phase 1</td>
-		                        <td>Capitaine : {{ equipe.capitaine }}</td>
-		                        <td>{{ equipe.division }}</td>
-		                    </tr>
-							</table>
-					      <table class="table table-striped" data-toggle="table" data-pagination="false">
-					        <thead>
-					          <tr class="align-middle">
-					            <th>Date</th>
-					            <th>Adversaire</th>
-					            <th>Domicile</th>
-					            <th>Phase</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					        {% if calendrierPhase1 is defined %}
-					            {% for rencontre in calendrierPhase1 %}
-					                {% if rencontre.equipeType.categories.libelle == categorie %}
-					                    {% if rencontre.equipeType.id == equipe.id %}
-					                        <tr>
-					                            <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
-					                            <td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
-					                            {% if rencontre.domicile == 1  %}
-					                                <td>Domicile</td>
-					                            {% else %}
-					                                    <td>Exterieur</td>
-					                            {% endif %}
-					                            <td>{{ rencontre.phase }}</td>
-					                        </tr>
-					                    {% endif %}
-					                {% endif %}
-					            {% endfor %}
-							{% endif %}
-					        {% endif %} 
-					        {% endfor %}
-							{% endif %}
-					        </tbody>
-					      </table>
-			      	</div>
-			      <div class="col-sm-6" >
-		        {% if equipes is defined and calendrierPhase2 is defined and calendrierPhase2 is not empty %}
-		            {% for equipe in equipes %}
-		                {% if equipe.categories.libelle == categorie %}
-		                    <table class="table table-striped">
-		
-		                    <tr bordercolor="red" bgcolor= '#DAF7A6' >
-		                        <td>{{ equipe.nom }}</td>
-		                        <td>Phase 2</td>
-		                        <td>Capitaine : {{ equipe.capitaine }}</td>
-		                        <td>{{ equipe.division }}</td>
-		                    </tr>
-							</table>
-					      <table class="table table-striped" data-toggle="table" data-pagination="false">
-					        <thead>
-					          <tr class="align-middle">
-					            <th>Date</th>
-					            <th>Adversaire</th>
-					            <th>Domicile</th>
-					            <th>Phase</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					        {% if calendrierPhase2 is defined %}
-					            {% for renc in calendrierPhase2 %}
-					                {% if renc.equipeType.categories.libelle == categorie %}
-					                    {% if renc.equipeType.id == equipe.id %}
-					                        <tr>
-					                            <td>{{ renc.dateRencontre|date('d/m/Y') }}</td>
-					                            <td>{{ renc.equipeA }} / {{ renc.equipeB }}</td>
-					                            {% if renc.domicile == 1  %}
-					                                <td>Domicile</td>
-					                            {% else %}
-					                                    <td>Exterieur</td>
-					                            {% endif %}
-					                            <td>{{ renc.phase }}</td>
-					                        </tr>
-					                    {% endif %}
-					                {% endif %}
-					            {% endfor %}
-							{% endif %}
-					        {% endif %} 
-					        {% endfor %}
-							{% endif %}
-					        </tbody>
-					      </table>
-			      	</div>
-			      
-			      </div>
-			      
-    </div>
+</div>
 
 {% endblock %}
