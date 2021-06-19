@@ -9,13 +9,14 @@ use App\Repository\EntrainementRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\EntrainementType;
 use App\Entity\Entrainement;
+use App\Repository\InfosClubRepository;
 
 class EntrainementParamController extends AbstractController
 {
     /**
      * @Route("/dirigeant/param/entrainement", name="entrainement_param")
      */
-    public function index(Request $request,EntrainementRepository $entraineRepo): Response
+    public function index(Request $request,InfosClubRepository $infosClubRepo,EntrainementRepository $entraineRepo): Response
     {
         // recuperation de tout les entrainements
         $listeEntraine = $entraineRepo->findByOrder();
@@ -23,9 +24,26 @@ class EntrainementParamController extends AbstractController
         $form = $this->createFormBuilder($listeEntraine)
         ->getForm();
 
+        $entraineurs = '';
+        // recuperation de tous les enregistrements infoclub
+        $listeInfosClub = $infosClubRepo->findAll();
+        // recuperation du resultat dans un tableau infclub a passer a la vue
+        $dateVacances = "";
+        foreach($listeInfosClub as $infosClub)
+        {
+            if ($infosClub->getLibelle() == 'entraineurs'){
+                $entraineurs = $infosClub->getContenu();
+            }
+            if($infosClub->getLibelle() =='date_arret_entrainement' ){
+                $dateVacances  = $infosClub->getContenu();
+            }
+        }
+        
         return $this->render('parametrage/entrainement_param/entrainement_param.html.twig', [
             'formEntrainements' => $form->createView(),
-            'entrainements' => $listeEntraine
+            'entrainements' => $listeEntraine,
+            'entraineurs' => $entraineurs,
+            'dateVacances' => $dateVacances,
         ]);
     }
     
