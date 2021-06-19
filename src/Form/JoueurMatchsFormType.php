@@ -23,7 +23,9 @@ class JoueurMatchType extends AbstractType
             ))
             ->add('victoires',TextType::class)
             ->add('defaites',TextType::class)
-            ->add('position',TextType::class)
+            ->add('position',TextType::class,[
+                'required'      => false,
+            ])
         ;
     }
 

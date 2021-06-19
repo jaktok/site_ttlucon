@@ -86,6 +86,17 @@ class RencontresRepository extends ServiceEntityRepository
         ;
     }
     
+    public function findOneFichierByIdRencontre($value): ?Rencontres
+    {
+        return $this->createQueryBuilder('r')
+        ->andWhere('r.id = :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getOneOrNullResult()
+        ;
+    }
+    
+    
     
     public function findByPhase($value)
     {

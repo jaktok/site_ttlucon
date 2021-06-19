@@ -42,7 +42,6 @@ class PrevisionEquipeType extends AbstractType
         }
         
         $tabJoueurs = $options["tabJoueurs"];
-        //dd($tabJoueurs);
         
         $builder
         

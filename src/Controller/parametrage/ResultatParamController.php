@@ -17,6 +17,8 @@ use App\Entity\Fichiers;
 use App\Form\ResultatsType;
 use App\Form\MatchsType;
 use FFTTApi\FFTTApi;
+use App\Entity\Joueurs;
+use App\Form\JoueurMatchType;
 
 class ResultatParamController extends AbstractController
 {
@@ -51,7 +53,7 @@ class ResultatParamController extends AbstractController
     /**
      * @Route("/capitaine/param/resultat/modifier/{id}", name="modifier_resultat_param")
      */
-    public function Resultat(Request $request,FichiersRepository $ficRepo,MatchsRepository $matchRepo,RencontresRepository $rencontreRepo,Rencontres $rencontre): Response
+    public function Resultat(Request $request,FichiersRepository $ficRepo,JoueursRepository $joueursRepo, MatchsRepository $matchRepo,RencontresRepository $rencontreRepo,Rencontres $rencontre): Response
     {
         if(!$rencontre)
         {
@@ -63,6 +65,34 @@ class ResultatParamController extends AbstractController
         $form->handleRequest($request);
 
         $matchs = $matchRepo->findByIdRencontre($rencontre->getId());
+        
+        $matchsDouble  =array();
+        $i = 0;
+        // onparcours l etableau pour la gestion des doubles
+        foreach ($matchs as $match){
+            if ($match->getMatchDouble()){
+               $player = $joueursRepo->find($match->getIdJoueur1());
+                $match->setJoueur($player);
+                $player2 = $joueursRepo->find($match->getIdJoueur2());
+                $match->setScore($player2->getNom()." ".$player2->getPrenom());
+                $matchsDouble[$i]["joueur1"] = $player;
+                $matchsDouble[$i]["joueur2"] = $player2;
+                $matchsDouble[$i]["victoire"] = $match->getVictoire();
+                if ($match->getDouble1() =="1"){
+                    $matchsDouble[$i]["numDouble"] = "1";
+                }
+                else{
+                    $matchsDouble[$i]["numDouble"] = "2";
+                }
+                $matchsDouble[$i]["id"] = $match->getId();
+                
+                $i++;
+                unset($matchs[array_search($match, $matchs)]);
+            }
+            $numDouble = array_column($matchsDouble, 'numDouble');
+            array_multisort($numDouble, SORT_ASC, $matchsDouble);
+        }
+        
         $idRencontre = $rencontre->getId();
         // Formatage des noms d'equipe pour le nom du fichier pdf
         $equipeA = $rencontre->getEquipeA();
@@ -72,12 +102,14 @@ class ResultatParamController extends AbstractController
         $nomEquipeA = $nomA[0] . '-' . $nomA[1];
         $nomEquipeB = $nomB[0] . '-' . $nomB[1];
 
-        //dd($matchs);
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
-            //dd($images);
+            
+            $dt = new \DateTime();
+            $nmImgDate =$dt->getTimestamp();
+            
             if ($images){
-                $fichier = $rencontre->getDateRencontre()->format('d-m-y').'-'.$nomEquipeA.'-'.$nomEquipeB.'.'.$images->guessExtension();
+                $fichier = $rencontre->getDateRencontre()->format('d-m-y').'-'.$nmImgDate.'.'.$images->guessExtension();
                 // On copie le fichier dans le dossier uploads
                 $images->move(
                     $this->getParameter('resultats_destination'),
@@ -132,60 +164,100 @@ class ResultatParamController extends AbstractController
             $entityManager->persist($rencontre);
             $entityManager->flush();
 
-            return $this->redirectToRoute('resultat_param');
+            return $this->redirectToRoute('modifier_resultat_param',array('id' => $rencontre->getId()));
         }
-
-        
+        $nomFicheRencontre = "";
+        if ($rencontre->getFichier()){
+            $nomFicheRencontre = $rencontre->getFichier()->getNom();
+        }
+        //dd($matchs);
         return $this->render('parametrage/resultat_param/fiche_resultat_param.html.twig', [
             'formResultat' => $form->createView(),
             'rencontre' => $rencontre,
             'matchs' => $matchs,
-            'idRencontre' => $idRencontre
+            'matchsDouble' => $matchsDouble,
+            'idRencontre' => $idRencontre,
+            'nomFicheResultat' => $nomFicheRencontre,
         ]);
     }
 
 
     /**
-     * @Route("/capitaine/param/resultat/match/new/{idRencontre}/{cat}", name="new_match_resultat_param")
-     * @Route("/capitaine/param/resultat/match/modifer/{id}", name="modifier_double_resultat_param")
+     * @Route("/capitaine/param/resultat/match/new/{idRencontre}", name="new_match_resultat_param")
      */
-    public function doublemodifResultat(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null, $cat = null): Response
+    public function doublemodifResultat(Request $request,JoueursRepository $joueursRepo, RencontresRepository $rencontreRepo,MatchsRepository $matchRepo, Matchs $match = null,int $idRencontre = null, int $id = null): Response
     {
-        switch ($cat) {
-            case "simple":
-                $cat = "simple";
-                break;
-            case "double":
-                $cat = "double";
-                break;
+       $match = new Matchs();
+      
+        $matchsDouble  =array();
+        if($idRencontre){
+            $matchs = $matchRepo->findByIdRencontre($idRencontre);
+            $i = 0;
+            // onparcours l etableau pour la gestion des doubles
+            foreach ($matchs as $matchDouble){
+                if ($matchDouble->getMatchDouble()){
+                    $player = $joueursRepo->find($matchDouble->getIdJoueur1());
+                    $player2 = $joueursRepo->find($matchDouble->getIdJoueur2());
+                    $matchsDouble[$i]["joueur1"] = $player;
+                    $matchsDouble[$i]["joueur2"] = $player2;
+                    $matchsDouble[$i]["victoire"] = $matchDouble->getVictoire();
+                    if ($matchDouble->getDouble1() =="1"){
+                        $matchsDouble[$i]["numDouble"] = "1";
+                    }
+                    else{
+                        $matchsDouble[$i]["numDouble"] = "2";
+                    }
+                    $matchsDouble[$i]["id"] = $matchDouble->getId();
+                    
+                    $i++;
+                }
+            }
+            $numDouble = array_column($matchsDouble, 'numDouble');
+            array_multisort($numDouble, SORT_ASC, $matchsDouble);
         }
-        $cat = 'double';
-        // dd($cat);
-        $idMatch = $idRencontre;
-        if(!$match){
-            $match = new Matchs();
+        // recuperation de tous les joueurs actifs pour liste capitaine
+        $listeJoueurs = $joueursRepo->findBy(array(), array('nom' => 'ASC'));
+        $tabJoueurs= array();
+        foreach ($listeJoueurs as $joueur){
+            $tabJoueurs[$joueur->getNom()." ".$joueur->getPrenom()] = $joueur->getId();
         }
-        $form = $this->createForm(MatchsType::class, $match);
         
+        $form = $this->createForm(MatchsType::class, $match, array('tabJoueurs' => $tabJoueurs));
         $form->handleRequest($request);
-        $idMatch = $_GET['id'];
-        $rencontre = $rencontreRepo->find($idMatch);
+
+        if ($idRencontre){
+            $rencontre = $rencontreRepo->find($idRencontre);
+        }
         if($form->isSubmitted() && $form->isValid()){
-            
+            $joueurUn = $joueursRepo->find($form->getData()->getIdJoueur1());
+            $match->setJoueur($joueurUn);
             $match->setRencontre($rencontre);
+            if ($form->getData()->getDouble1() == "1"){
+                $match->setDouble1("1");
+                $match->setDouble2("0");
+            }
+            else{
+                $match->setDouble1("0");
+                $match->setDouble2("1");
+            }
+            $match->setMatchDouble(true);
+            $match->setIdJoueur1($form->getData()->getIdJoueur1());
+            $match->setIdJoueur2($form->getData()->getIdJoueur2());
+            $match->setVictoire($form->getData()->getVictoire());
+            
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($match);
             $entityManager->flush();
 
-            return $this->redirectToRoute('resultat_param');
+            return $this->redirectToRoute('modifier_resultat_param',array('id' => $rencontre->getId()));  
         }
-
-        return $this->render('parametrage/resultat_param/fiche_double_param.html.twig', [
+        return $this->render('parametrage/resultat_param/fiche_resultat_double_param.html.twig', [
             'formMatch' => $form->createView(),
-            'idRencontre' => $idMatch,
-            'type' => $cat,
+            'idRencontre' => $idRencontre,
+            'matchsDouble' => $matchsDouble,
         ]);
     }
+    
     /**
      * @Route("/capitaine/param/resultat/auto/{id}", name="auto_resultat_param")
      */
@@ -299,10 +371,10 @@ class ResultatParamController extends AbstractController
           
     }
 
-    /**
+/*     /**
      * @Route("/capitaine/param/resultat/double/{id}", name="double_resultat_param")
      */
-    public function doubleResultat(Request $request,int $id = null,MatchsRepository $matchRepo): Response
+  /*  public function doubleResultat(Request $request,int $id = null,MatchsRepository $matchRepo): Response
     {
         $matchs = $matchRepo->findByIdRencontre($id);
         //dd($matchs);
@@ -312,7 +384,7 @@ class ResultatParamController extends AbstractController
             'matchs' => $matchs,
             'idRencontre' =>$id
         ]);
-    }
+    } */
 
     /**
      * @Route("/supprime/match/{id}", name="supprime_match")
@@ -335,4 +407,239 @@ class ResultatParamController extends AbstractController
         return $this->redirectToRoute('modifier_resultat_param',array('id' => $idRencontre));
         
     }
+    
+    /**
+     * @Route("/ajoute/joueursimple/{idRencontre}", name="ajoute_joueursimple")
+     * @Route("/modifie/joueursimple/{idJoueur}", name="modifie_joueursimple")
+     */
+    public function ajouterJoueurMatch(Request $request,RencontresRepository $rencontreRepo, MatchsRepository $matchsRepo , JoueursRepository $joueursRepo, int $idRencontre = null,int $idJoueur = null): Response
+    {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $tabMatchs = array();
+        
+        if (!$idRencontre && $request->get('idRencontre')){
+            $idRencontre = $request->get('idRencontre');
+        }
+        
+        
+        if ($idRencontre){
+            // recuperation de l enregistrements selectionne
+            $rencontre = $rencontreRepo->find($idRencontre);
+        }
+        $tableauMatchs = array();
+        
+        if ($idRencontre) {
+            $j = 0;
+            // rechercher les matchs liés à l id competition
+            $matchsCompet = $matchsRepo->findByIdRencontre($idRencontre);
+            if ($matchsCompet){
+                // recup nbjoueurs
+                $tabJoueurs = array();
+                $nbJoueur = 0;
+                foreach ($matchsCompet as $match){
+                    if (!in_array($match->getJoueur()->getId(),$tabJoueurs)){
+                        $tabJoueurs[$nbJoueur]= $match->getJoueur()->getId();
+                        $nbJoueur++;
+                    }
+                }
+                foreach ($tabJoueurs as $idPlayer){
+                    $nbVic = 0;
+                    $nbDef = 0;
+                    $joueur = $joueursRepo->find($idPlayer);
+                    foreach ($matchsCompet as $match){
+                        // recuperation de l enregistrements selectionne
+                        if($match->getJoueur()->getId()==$idPlayer){
+                            
+                            if ($match->getVictoire()){
+                                $nbVic++;
+                            }
+                            else{
+                                $nbDef++;
+                            }
+                            $tableauMatchs[$j]["position"] =  $match->getPosition();
+                        }
+                    }
+                    $tableauMatchs[$j]['nom'] = $joueur->getNom();
+                    $tableauMatchs[$j]['prenom'] = $joueur->getPrenom();
+                    $tableauMatchs[$j]["victoires"] =  trim($nbVic);
+                    $tableauMatchs[$j]["defaites"] =  trim($nbDef);
+                    $tableauMatchs[$j]["joueur"] =  $joueur;
+                    $tableauMatchs[$j]['idJoueur'] = $joueur->getId();
+                    $tableauMatchs[$j]['id'] = $idRencontre;
+                    $j++;
+                    
+                }
+            }
+            
+        }
+        
+        
+        
+        
+        $renc = new Rencontres();
+        if ($idRencontre){
+            // recuperation de l enregistrements selectionne
+            $renc = $rencontreRepo->find($idRencontre);
+        }
+        $joueur = new Joueurs();
+        if ($idJoueur){
+            $idRencontre = $request->query->get('idRencontre');
+            $renc = $rencontreRepo->find($idRencontre);
+            $joueur = $joueursRepo->find($idJoueur);
+            
+            // rechercher les matchs liés à l id competition
+            $matchsCompet = $matchsRepo->findByIdCompet($idRencontre);
+            if ($matchsCompet){
+                $nbVic = 0;
+                $nbDef = 0;
+                foreach ($matchsCompet as $match){
+                    // recuperation de l enregistrements selectionne
+                    if($match->getJoueur()->getId()==$idJoueur){
+                        
+                        if ($match->getVictoire()){
+                            $nbVic++;
+                        }
+                        else{
+                            $nbDef++;
+                        }
+                        $tabMatchs["position"] =  $match->getPosition();
+                    }
+                }
+                $tabMatchs["victoires"] =  trim($nbVic);
+                $tabMatchs["defaites"] =  trim($nbDef);
+                $tabMatchs["joueur_compet"] =  $joueur;
+            }
+            
+            $form = $this->createForm(JoueurMatchType::class,$tabMatchs);
+            $form->handleRequest($request);
+        }
+        else {
+            $form = $this->createForm(JoueurMatchType::class);
+            $form->handleRequest($request);
+        }
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $nbVictoires = (int) $data["victoires"];
+            $nbDefaites = (int) $data["defaites"];
+            
+            // recup de la lidte des matchs pour suppression
+            $player = new Joueurs();
+            $player = $data["joueur_compet"];//dd($player,$data,$idJoueur);
+            if($player){
+                $idPlayer = $player->getId();
+            }
+            else{
+                $idPlayer = $idJoueur;
+                $player = $joueursRepo->find($idJoueur);
+            }
+            $listeMatchs = $matchsRepo->findByIdCompetJoueur($idRencontre,$idPlayer);
+            foreach ($listeMatchs as $matche){
+                $entityManager->remove($matche);
+                $entityManager->flush();
+            }
+            
+            for ($i = 0; $i < $nbVictoires;$i++ ){
+                $match = new Matchs();
+                $match->setVictoire(true);
+                $match->setJoueur($player);
+                $match->setRencontre($rencontre);
+                $entityManager->persist($match);
+                $entityManager->flush();
+            }
+            for ($i = 0; $i < $nbDefaites;$i++ ){
+                $match = new Matchs();
+                $match->setVictoire(false);
+                $match->setJoueur($player);
+                $match->setRencontre($rencontre);
+                $match->setPosition($data["position"]);
+                $entityManager->persist($match);
+                $entityManager->flush();
+            }
+            
+            return $this->redirectToRoute('modifier_resultat_param',array('id' => $rencontre->getId()));
+        }
+        //dd($idRencontre);
+        return $this->render('parametrage/resultat_param/fiche_simple_param.html.twig', [
+            'formJoueurMatch' => $form->createView(),
+            'idRencontre'=> $idRencontre,
+            'tabMatchs' => $tabMatchs,
+            'tableauMatchs' => $tableauMatchs,
+            'rencontre'  =>  $renc,
+        ]);
+        
+    }
+    
+    /**
+     * @Route("/dirigeant/supprime/fiche/{id}", name="supprime_fiche")
+     */
+    public function supprimeImage(Request $request,RencontresRepository $rencontreRepo, FichiersRepository $fichierRepo, int $id = null): Response{
+        $img = new Fichiers();
+        $entityManager = $this->getDoctrine()->getManager();
+        $rencontre = $rencontreRepo->find($id);
+        if ($rencontre->getFichier()){
+            $img = $fichierRepo->find($rencontre->getFichier()->getId());
+        }
+        if ($img != null && $img->getId()!=null ){
+            $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
+            
+            if ($image) {
+                
+                // on va chercher le chemin defini dans services yaml
+                if ($rencontre->getFichier()!=null){
+                    $nomImage = $this->getParameter('resultats_destination').'/'.$rencontre->getFichier()->getNom();
+                    // on verifie si image existe
+                    if (file_exists($nomImage)){
+                        // si elle existe on la supprime physiquement du rep public
+                        unlink($nomImage);
+                    }
+                }
+                
+                // On supprimer l image
+                $rencontre->setFichier(null);
+                $idRencontre = $rencontre->getId();
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($rencontre);
+                $entityManager->flush();
+                
+                $rencontre = $rencontreRepo->find($idRencontre);
+                $entityManager->clear();
+                $imageSupp = $fichierRepo->find($image);
+                if($imageSupp){
+                    $entityManager->remove($imageSupp);
+                    $entityManager->flush();
+                }
+            }
+        }
+        return $this->redirectToRoute('modifier_resultat_param',array('id' => $rencontre->getId()));
+        
+    }
+    
+    
+    /**
+     * @Route("/dirigeant/supprime/matchs/{id}", name="supprime_matchs")
+     */
+    public function supprimeMatchRencontre(Request $request,RencontresRepository $rencontreRepo,MatchsRepository $matchsRepo,int $id = null): Response{
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($id) {
+            // rechercher les matchs liés à l id competition
+            $matchsCompet = $matchsRepo->findByIdRencontre($id);
+            if ($matchsCompet){
+                 foreach ($matchsCompet as $match){
+                    if (!$match->getMatchDouble()){
+                        $entityManager->remove($match);
+                        $entityManager->flush();
+                    }
+                }
+        
+            }
+            return $this->redirectToRoute('modifier_resultat_param',array('id' => $id));
+        }
+                
+        return $this->redirectToRoute('resultat_param');
+        
+    }
+    
+    
 }

@@ -91,7 +91,7 @@ class PartenaireParamController extends AbstractController
             }
             if ($images && $img!=null&&$img->getId()!=null) {
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
-                $image->setNom($fichier);//dd($image,$images);
+                $image->setNom($fichier);
                 $image->setUrl($this->getParameter('partenaires_destination'));
                 $entityManager->flush();
             }

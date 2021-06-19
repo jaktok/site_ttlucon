@@ -4,10 +4,10 @@
 {% block body %}
 <meta charset="UTF-8" />
 
-<div class="container">
+<div class="container" style="background-color: #BABABA">
 			<div class="row" align="center">
 				<div class="col-sm-12">
-					<h1>Statistiques Doubles {{categorie}} </h1>
+					<h2>Doubles {{categorie}} </h2>
 				</div>
 			</div>
 			
@@ -67,10 +67,10 @@
 
 </div>
 <br><br>
-<div class="container">
+<div class="container" style="background-color: #EFEFEF">
 			<div class="row" align="center">
 				<div class="col-sm-12">
-					<h1>Statistiques Doubles {{categorie}} par Joueur </h1>
+					<h2>Doubles {{categorie}} par Joueur </h2>
 				</div>
 			</div>
 			
@@ -95,7 +95,7 @@
 						<img src="{{ asset('/images/defautP.jpg') }}" alt="" width="50">
 					</div>
 					{% endif %}
-					<div class="col-sm-3" align="left">
+					<div class="col-sm-4" align="left">
 						<h2>{{ joueur.joueur.prenom }} {{ joueur.joueur.nom }}</h2>
 					</div>
 				</div>	

@@ -19,9 +19,22 @@
 {{ form_start(formResultat) }}
 
 <div class="container">
-	<h1>Fiche Resultat</h1>
+	
+		<div class="row mt-3">
+	        <div class="col-sm-12">
+				<h1 align="center">Fiche Resultat</h1>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-sm-2">
+				<button type="submit" class="btn btn-success">Enregistrer</button>
+			</div>
+			<div class="col-sm-2">
+	        	<a href="{{ path('resultat_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
+	        </div>
+		</div>
 
-	<div class="row">
+	<div class="row mt-5">
 		<div class="col-sm-4">
 			{{ form_row(formResultat.equipeA) }}
 		</div>
@@ -38,51 +51,8 @@
 		</div>
 	</div>
 	<br>
-	<div class="row">
-		<div class="col-sm-4">
-		{% set cat = 'simple' %}
-			<a href="{{ path('new_match_resultat_param', { 'id': idRencontre }) }}" class="btn btn-primary">Ajouter un match</a>
-		</div>
-		<div class="col-sm-4">
-		{% set cat = 'double' %}
-			<a href="{{ path('new_match_resultat_param', { 'id': idRencontre }) }}" class="btn btn-primary">Ajouter un double</a>
-		</div>
-		<div class="col-sm-4">
-			<a href="{{ path('auto_resultat_param') }}" class="btn btn-primary">Maj auto</a>
-		</div>
-	</div>
 	
-	<br>
-	<table class="table table-striped" data-toggle="table" data-pagination="false">
-        <thead>
-          <tr>
-            <th data-sortable="true">Victoire</th>
-            <th data-sortable="true">Score</th>
-            <th>Joueur</th>
-			<th>Modif.</th>
-			<th>Suppr.</th>
-          </tr>
-        </thead>
-        <tbody>
-		{% if matchs is defined %}
-        {% for match in matchs %}
-        <tr>
-            {% if match.victoire == 1  %}
-           		<td>Victoire</td>
-            {% else %}
-              <td>Défaite</td>
-           	{% endif %}
-           	<td> {{ match.score }}</td>
-            <td> {{ match.joueur.nom }} {{ match.joueur.prenom }} </td>
-            <td><a href="{{ path('modifier_double_resultat_param', { 'id': match.id}) }}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('supprime_match', { 'id': match.id}) }}" class="btn btn-primary">Supprimer</a></td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-    	</tbody>
-	</table>
-	<br>
-	<div class="row"  >
+		<div class="row"  >
 		<div class="col-sm-12">
 			<div class="row border border-primary mt-3"  >
 				<div class="col-sm-4">
@@ -94,26 +64,105 @@
 					<br><br><br>
 					<div class="row">
 						<div class="col-sm-4">
-							
+						<div class="col-sm-4">
+							<a href="{{ path('supprime_fiche', { 'id': idRencontre})}}"  class="btn btn-warning" aria-current="page" >Effacer</a>
+						</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
+				{% if nomFicheResultat %}
 					<div class="col-sm-8 h-auto">
+						<p>Fichier : {{nomFicheResultat}}</p>
+						<img src="{{ asset('/resultats/'~nomFicheResultat) }}" alt="" width="120">
 					</div>
+				{% else %}
+				<div class="col-sm-8 h-auto">
+						<p>Pas de fiche encore enregistrée</p>
+				</div>
+				
+				{% endif %}	
 				</div>
 			</div>
 		</div>
 	</div>
-	<br>
-	<div class="row">
-		<div class="col-sm-2">
-				<button type="submit" class="btn btn-success">Enregistrer</button>
+	
+	
+	<div class="row mt-4">
+		<div class="col-sm-4">
+			<a href="{{ path('new_match_resultat_param', { 'idRencontre': idRencontre }) }}" class="btn btn-primary">Ajouter un double</a>
 		</div>
-		<div class="col-sm-2">
-                <a href="{{ path('resultat_param') }}"  class="btn btn-primary" aria-current="page" >Retour</a>
-            </div>
 	</div>
+	
+	<table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+          <th>Joueur 1</th>
+            <th>Joueur 2</th>
+            <th>Numéro de double</th>
+            <th>Résultat</th>
+    		<th>Suppr.</th>
+          </tr>
+        </thead>
+        <tbody>
+		{% if matchsDouble is defined %}
+        {% for matchDouble in matchsDouble %}
+        <tr>
+        <td> {{ matchDouble.joueur1.nom }} {{ matchDouble.joueur1.prenom }} </td>
+        <td> {{ matchDouble.joueur2.nom }} {{ matchDouble.joueur2.prenom }} </td>
+        <td> {{ matchDouble.numDouble }}</td>
+            {% if matchDouble.victoire == 1  %}
+           		<td>Victoire</td>
+            {% else %}
+              <td>Défaite</td>
+           	{% endif %}
+            <td><a href="{{ path('supprime_match', { 'id': matchDouble.id}) }}" class="btn btn-primary">Supprimer</a></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    	</tbody>
+	</table>
+	<br>
+		<div class="row">
+		<div class="col-sm-4">
+			<a href="{{ path('ajoute_joueursimple', { 'idRencontre': idRencontre }) }}" class="btn btn-primary">Ajouter un match</a>
+		</div>
+		<div class="col-sm-4">
+			<a href="{{ path('auto_resultat_param', { 'id': idRencontre }) }}" class="btn btn-primary">Maj auto</a>
+		</div>
+		<div class="col-sm-4" align="right">
+			<a href="{{ path('supprime_matchs', { 'id': idRencontre})}}"  class="btn btn-danger" onclick="return confirm('Suppression de tous les simples ?');"  aria-current="page" >Supprimer les rencontres</a>
+		</div>
+	</div>
+	
+	<table class="table table-striped" data-toggle="table" data-pagination="false">
+        <thead>
+          <tr>
+          <th>Joueur</th>
+            <th data-sortable="true">Résultat</th>
+            <th data-sortable="true">Score</th>
+            
+			<th>Suppr.</th>
+          </tr>
+        </thead>
+        <tbody>
+		{% if matchs is defined %}
+        {% for match in matchs %}
+        <tr>
+        <td> {{ match.joueur.nom }} {{ match.joueur.prenom }} </td>
+            {% if match.victoire == 1  %}
+           		<td>Victoire</td>
+            {% else %}
+              <td>Défaite</td>
+           	{% endif %}
+           	<td> {{ match.score }}</td>
+            <td><a href="{{ path('supprime_match', { 'id': match.id}) }}" class="btn btn-primary">Supprimer</a></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    	</tbody>
+	</table>
+
 </div>
 
 

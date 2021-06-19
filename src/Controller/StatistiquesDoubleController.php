@@ -96,30 +96,42 @@ class StatistiquesDoubleController extends AbstractController
         $tabJoueurs = array_unique($tabJoueurs,SORT_REGULAR  );
         
         $tabJoueurDouble = array();
+        $tabIdJoueurs = array();
+        $j=0;
         $i=0;
         if($tabDoublesStat){
             if($tabDoublesStat[0]["categorie"]==$cat){
+                //dd($tabJoueurs);
                 foreach($tabJoueurs as $joueur){
-                    $tabJoueurDouble[$i]["joueur"]= $joueur;
-                    $tabJoueurDouble[$i]["categorie"]= $cat;
-                    $tabJoueurDouble[$i]["victoires"]= 0;
-                    $tabJoueurDouble[$i]["defaites"]= 0;
-                    foreach ($tabDoublesStat as $stat){
-                        if($stat["joueur1"]->getId() == $joueur->getId() || $stat["joueur2"]->getId() == $joueur->getId()){
-                            $tabJoueurDouble[$i]["victoires"]+= $stat["victoires"];
-                            $tabJoueurDouble[$i]["defaites"]+= $stat["defaites"];
+                    if (!in_array($joueur->getId(), $tabIdJoueurs)){
+                        $tabIdJoueurs[$j]= $joueur->getId();
+                        $j++;
+                    
+                        $tabJoueurDouble[$i]["joueur"]= $joueur;
+                        $tabJoueurDouble[$i]["categorie"]= $cat;
+                        $tabJoueurDouble[$i]["victoires"]= 0;
+                        $tabJoueurDouble[$i]["defaites"]= 0;
+                        foreach ($tabDoublesStat as $stat){
+                            if($stat["joueur1"]->getId() == $joueur->getId() || $stat["joueur2"]->getId() == $joueur->getId()){
+                                $tabJoueurDouble[$i]["victoires"]+= $stat["victoires"];
+                                $tabJoueurDouble[$i]["defaites"]+= $stat["defaites"];
+                            }
+                        }
+                        $pourcent = ($tabJoueurDouble[$i]['victoires']*100)/($tabJoueurDouble[$i]['victoires']+$tabJoueurDouble[$i]['defaites']);
+                        $pourcent = round($pourcent,0);
+                        $tabJoueurDouble[$i]['pourcent'] = $pourcent;
+                        $i++;
+                        if (!in_array($joueur->getId(), $tabIdJoueurs)){
+                            $tabIdJoueurs[$j]= $joueur->getId();
+                            $j++;
                         }
                     }
-                    $pourcent = ($tabJoueurDouble[$i]['victoires']*100)/($tabJoueurDouble[$i]['victoires']+$tabJoueurDouble[$i]['defaites']);
-                    $pourcent = round($pourcent,0);
-                    $tabJoueurDouble[$i]['pourcent'] = $pourcent;
-                    $i++;
                 }
-        }
+            }
         }
         $colPourcentJoueur = array_column($tabJoueurDouble, 'pourcent');
-        $colVicoiresJoueur = array_column($tabJoueurDouble, 'victoires');
-        array_multisort($colPourcentJoueur, SORT_DESC,$colVicoiresJoueur,SORT_DESC, $tabJoueurDouble);
+        $colVictoiresJoueur = array_column($tabJoueurDouble, 'victoires');
+        array_multisort($colPourcentJoueur, SORT_DESC,$colVictoiresJoueur,SORT_DESC, $tabJoueurDouble);
        // dd($tabDoublesStat,$tabIdDoubles,$tabJoueurDouble);
         
         return $this->render('statistiques_double/statistiques_double.html.twig', [

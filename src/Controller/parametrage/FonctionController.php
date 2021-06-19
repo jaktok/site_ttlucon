@@ -10,24 +10,23 @@ use App\Repository\FonctionRepository;
 use App\Entity\Fonction;
 use App\Repository\JoueursRepository;
 use App\Form\FonctionsType;
+use App\Repository\RencontresRepository;
+use App\Repository\MatchsRepository;
+use App\Repository\EquipeTypeRepository;
 
 class FonctionController extends AbstractController
 {
     
-    
     /**
      * @Route("dirigeant/param/fonctions", name="fonctions")
      */
-    public function index(Request $request,FonctionRepository $fonctionsRepo): Response
+    public function index(Request $request, EquipeTypeRepository $equipeRepo, FonctionRepository $fonctionsRepo,RencontresRepository $rencontreRepo, JoueursRepository $joueurRepo, MatchsRepository $matchRepo): Response
     {
         // recuperation de toutes les fonctions
-        $listeFonction = $fonctionsRepo->findAll();
+        $listeFonction = $fonctionsRepo->findBy(array(), array('position' => 'ASC'));
         
         $form = $this->createFormBuilder($listeFonction)
         ->getForm();
-      
- 
-        
         
         return $this->render('parametrage/fonction/fonction.html.twig', [
             'formFonctions' => $form->createView(),
@@ -44,7 +43,7 @@ class FonctionController extends AbstractController
     {
         
         // recuperation de toutes les fonctions
-        $listeFonction = $fonctionRepo->findAll();
+        $listeFonction = $fonctionRepo->findBy(array(), array('position' => 'ASC'));
         
         // recuperation de tous les joueurs tries sur le nom
         $listeJoueurs = $joueursRepo->findBy(array(),array('nom' => 'ASC'));
@@ -81,7 +80,7 @@ class FonctionController extends AbstractController
     }
     
     /**
-     * @Route("/supprime/fonction/{id}", name="supprime_fonction")
+     * @Route("/dirigeant/supprime/fonction/{id}", name="supprime_fonction")
      */
     public function supprimeCompet(Request $request, FonctionRepository $fonctionRepo, JoueursRepository $joueursRepo, int $id = null): Response
     {
