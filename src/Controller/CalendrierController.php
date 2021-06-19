@@ -42,16 +42,17 @@ class CalendrierController extends AbstractController
         // recuperation de la liste des Types competition
         $listeCategories = $categoriesRepo->findAll();
         
-        foreach ($listeCompet as $compet){
-            $competition = new Competition();
-            $competition = $compet;
-            foreach ($listeCategories as $categorie){
-                if ($competition->getCategories() == $categorie){
-                    $competition->setCategories($categorie);
+        if ($listeCompet){
+            foreach ($listeCompet as $compet){
+                $competition = new Competition();
+                $competition = $compet;
+                foreach ($listeCategories as $categorie){
+                    if ($competition->getCategories() == $categorie){
+                        $competition->setCategories($categorie);
+                    }
                 }
             }
         }
-        
         
         if( $this->categorie != "Adapte"){
         
