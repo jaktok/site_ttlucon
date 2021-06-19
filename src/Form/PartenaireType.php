@@ -24,7 +24,7 @@ class PartenaireType extends AbstractType
                 'label' => 'Image',
                 'multiple' => false,
                 'mapped' => false,
-                'required' => false
+                'required' => true
             ]);
     }
 
