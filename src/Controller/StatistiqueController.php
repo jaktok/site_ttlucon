@@ -95,6 +95,24 @@ class StatistiqueController extends AbstractController
         // tri du tableau par progression
         $progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
         array_multisort($progressionAnnuelle, SORT_DESC, $tabJoueursLucon);
+        
+        
+        $pos = 1;
+        for($i=0; $i < sizeof($tabJoueursLucon); $i++){
+            if($i==0){
+                $tabJoueursLucon[$i]['position'] = $pos;
+                $pos++;
+            }
+            if ($i!=0 && $tabJoueursLucon[$i]['progressionAnnuelle'] ==  $tabJoueursLucon[$i-1]['progressionAnnuelle']){
+                $tabJoueursLucon[$i]['position'] = $tabJoueursLucon[$i-1]['position'];
+            }
+            else if ($i!=0 && $tabJoueursLucon[$i]['progressionAnnuelle'] !=  $tabJoueursLucon[$i-1]['progressionAnnuelle']){
+                $tabJoueursLucon[$i]['position'] = $pos;
+                $pos++;
+            }
+            
+        }
+
         $tabJoueursAdapte = array();
         if ($cat=="Adapte"){
             $listeIdCompetitionsAutreAdapte = $competitionRepo->findIdAdapte();
@@ -127,6 +145,24 @@ class StatistiqueController extends AbstractController
         } 
            $pourcent = array_column($tabJoueursAdapte, 'pourcent');
            array_multisort($pourcent, SORT_DESC, $tabJoueursAdapte);
+         
+           $pos = 1;
+           for($i=0; $i < sizeof($tabJoueursAdapte); $i++){
+               if($i==0){
+                   $tabJoueursAdapte[$i]['position'] = $pos;
+                   $pos++;
+               }
+               if ($i!=0 && $tabJoueursAdapte[$i]['pourcent'] ==  $tabJoueursAdapte[$i-1]['pourcent']){
+                   $tabJoueursAdapte[$i]['position'] = $tabJoueursAdapte[$i-1]['position'];
+               }
+               else if ($i!=0 && $tabJoueursAdapte[$i]['pourcent'] !=  $tabJoueursAdapte[$i-1]['pourcent']){
+                   $tabJoueursAdapte[$i]['position'] = $pos;
+                   $pos++;
+               }
+               
+           }
+         
+         
          //  dd ($tabJoueursAdapte);
         
         return $this->render('statistique/statistique.html.twig', [

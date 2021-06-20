@@ -132,7 +132,39 @@ class StatistiquesDoubleController extends AbstractController
         $colPourcentJoueur = array_column($tabJoueurDouble, 'pourcent');
         $colVictoiresJoueur = array_column($tabJoueurDouble, 'victoires');
         array_multisort($colPourcentJoueur, SORT_DESC,$colVictoiresJoueur,SORT_DESC, $tabJoueurDouble);
-       // dd($tabDoublesStat,$tabIdDoubles,$tabJoueurDouble);
+        $pos = 1;
+        for($i=0; $i < sizeof($tabJoueurDouble); $i++){
+            if($i==0){
+                $tabJoueurDouble[$i]['position'] = $pos;
+                $pos++;
+            }
+            if ($i!=0 && $tabJoueurDouble[$i]['pourcent'] ==  $tabJoueurDouble[$i-1]['pourcent']){
+                $tabJoueurDouble[$i]['position'] = $tabJoueurDouble[$i-1]['position'];
+            }
+            else if ($i!=0 && $tabJoueurDouble[$i]['pourcent'] !=  $tabJoueurDouble[$i-1]['pourcent']){
+                $tabJoueurDouble[$i]['position'] = $pos;
+                $pos++;
+            }
+            
+        }
+        
+        $pos = 1;
+        for($i=0; $i < sizeof($tabDoublesStat); $i++){
+            if($i==0){
+                $tabDoublesStat[$i]['position'] = $pos;
+                $pos++;
+            }
+            if ($i!=0 && $tabDoublesStat[$i]['pourcent'] ==  $tabDoublesStat[$i-1]['pourcent']){
+                $tabDoublesStat[$i]['position'] = $tabDoublesStat[$i-1]['position'];
+            }
+            else if ($i!=0 && $tabDoublesStat[$i]['pourcent'] !=  $tabDoublesStat[$i-1]['pourcent']){
+                $tabDoublesStat[$i]['position'] = $pos;
+                $pos++;
+            }
+            
+        }
+        
+       //dd($tabDoublesStat,$tabIdDoubles,$tabJoueurDouble);
         
         return $this->render('statistiques_double/statistiques_double.html.twig', [
             'tabDoubleStats' => $tabDoublesStat,
