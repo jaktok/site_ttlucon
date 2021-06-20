@@ -9,7 +9,21 @@ endblock %} {% block body %}
 
 <meta charset="UTF-8" />
 <div class="container">
-  <div class="row">
+
+	{% if tabClassement is defined %}
+		<div class="row mt-4">
+		<div class="col-sm-2 align-self-center">
+			Classement : &nbsp;
+		</div>
+		{% for classement in tabClassement %}
+		<div class="col-sm-1 align-self-center">
+			<a href="{{ classement['lien'] }}" target="_blank" >{{ classement['equipe'] }}</a> 
+		</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+		
+  <div class="row mt-4">
 		<div class="col-sm-6" >
      {% if equipes is defined %}
         {% for equipe in equipes %}

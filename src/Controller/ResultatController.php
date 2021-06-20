@@ -11,9 +11,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RencontresRepository;
 use App\Repository\FichiersRepository;
 use App\Repository\EquipeTypeRepository;
+use FFTTApi\FFTTApi;
 
 class ResultatController extends AbstractController
 {
+    private $ini_array;
+    private $api;
+    private $idClub;
+    private $racineLien;
+    
+    public function __construct()
+    {
+        // Recuperation infos config.ini
+        $this->ini_array = parse_ini_file("../config/config.ini");
+        $this->api = new FFTTApi();
+        $this->idClub = $this->ini_array['id_club_lucon'];
+        $this->racineLien = $this->ini_array['racine_lien_div'];
+    }
+    
     /**
      * @Route("/resultat/{cat}", name="resultat")
      */
@@ -30,16 +45,34 @@ class ResultatController extends AbstractController
                 $this->categorie = "Adulte";
         }
 
+        $equipes = $equipeRepo->findBy(array(),array('nom' => 'ASC'));
+        $tabClassement = array();
+        
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");
+        $i=0;
+        foreach ($equipes as $equipe){
+            foreach ($equipesByClub as $equipeFFTT){
+                $tabNomEquipeFFTT = explode(" ", $equipeFFTT->getLibelle());
+                $nomEquipe = $tabNomEquipeFFTT[0]." ".$tabNomEquipeFFTT[1];
+                if($nomEquipe == $equipe->getNom() && $equipe->getCategories()->getLibelle()==$this->categorie){
+                    $lien =  $this->racineLien.$equipeFFTT->getLienDivision();
+                   $tabClassement[$i]["lien"] = $lien;
+                   $tabClassement[$i]["equipe"] = $nomEquipe;
+                   $i++;
+                }
+            }
+        }
+        
         $calendrierPhase1 = $rencontreRepo->findByPhase(1);
 
         $calendrierPhase2 = $rencontreRepo->findByPhase(2);
-        
         return $this->render('resultat/resultat.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
             'categorie' => $this->categorie,
             'calendrierPhase1' => $calendrierPhase1,
             'calendrierPhase2' => $calendrierPhase2,
-            'equipes' => $equipeRepo->findBy(array(),array('nom' => 'ASC')),
+            'equipes' => $equipes,
+            'tabClassement' => $tabClassement,
         ]);
     }
 

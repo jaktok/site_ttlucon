@@ -63,11 +63,12 @@ class BruleController extends AbstractController
                                 $tabBrule[$numJoueur]['joueur'] = $joueur;
                                 $tabBrule[$numJoueur][$numEquipe]["joueur"] = $joueur;
                                 $tabBrule[$numJoueur][$numEquipe]["equipe"] = [$equipe];
+                                // on rajoute  id rencontre pour ne pas rajouter les autres matchs
                                 $tabBrule[$numJoueur][$numEquipe]["idRencontre"] = $joueurMatch->getRencontre()->getId();
                                 $idRencontre = $joueurMatch->getRencontre()->getId();
                                 
                             } else {
-                                    // si il est dans le tab rencontre 
+                                    // si il est dans le tab rencontre  et on verifie qu'on a pas deja renseilgne id rencontre plus haut
                                 if ($idRencontre == null || $idRencontre != $joueurMatch->getRencontre()->getId() && $tabBrule[$numJoueur][$numEquipe]["idRencontre"]!= $joueurMatch->getRencontre()->getId()  ) {
                                     $tabBrule[$numJoueur][$numEquipe]["nbMatchs"] += 1;
                                     $idRencontre = $joueurMatch->getRencontre()->getId();
