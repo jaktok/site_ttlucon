@@ -58,7 +58,6 @@ class EntrainementController extends AbstractController
             }
             $i++;
         }
-       // dd($tabEntrainements);
         $position = array_column($tabEntrainements, 'position');
         $heure = array_column($tabEntrainements, 'heure');
         array_multisort($position,$heure, SORT_ASC, $tabEntrainements);
