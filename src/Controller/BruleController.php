@@ -35,32 +35,40 @@ class BruleController extends AbstractController
         if (in_array($moisEncours, $tabPhase1)){
             $phase = 1;
         }
-        
+        $tabId = array();
         $listeJoueursMatchEquipe = $matchRepo->findIdJoueursMatchEquipeSimple();
         $numJoueur = 0;
+        //On parcours tout les joueurs
         foreach ($listeJoueurs as $joueur) {
+            // On parcours toutes les equipes
             foreach ($listeEquipes as $equipe) {
                 $idEquipe = $equipe->getId();
                 $listeRencontres = $rencontreRepo->findByIdEquipeAndPhaseAdultes($idEquipe,$phase);
                 $tabRencontres = array();
                 $cpt = 0;
+                // On recupere les id rencontre de l equipe en cours
                 foreach ($listeRencontres as $renc){
                     $tabRencontres[$cpt] = $renc["id"];
                     $cpt++;
-                }
-                $numEquipe = $equipe->getNumEquipe();
+                }//if($joueur->getId()=="53"){dd($tabRencontres);}
+                $numEquipe = $equipe->getNumEquipe();//dd($listeJoueursMatchEquipe);
                 foreach ($listeJoueursMatchEquipe as $joueurMatch) {
                     if ($joueur && $joueurMatch->getJoueur()) {
+                        // on regarde si le joueur qu on parcours = le joueur match et si il est dans l equipe qu on parcours (dans tab idrencontres)
                         if ($joueur->getId() == $joueurMatch->getJoueur()->getId() && in_array($joueurMatch->getRencontre()->getId(),$tabRencontres)) {
+                            // si oui et que c est le premier passage on renseigne le tabbrule
+                            if($joueur->getId()=="53"){array_push($tabId,$joueurMatch->getRencontre()->getId());}
                             if (empty($tabBrule[$numJoueur][$numEquipe]["nbMatchs"])) {
                                 $tabBrule[$numJoueur][$numEquipe]["nbMatchs"] = 1;
                                 $tabBrule[$numJoueur]['joueur'] = $joueur;
                                 $tabBrule[$numJoueur][$numEquipe]["joueur"] = $joueur;
                                 $tabBrule[$numJoueur][$numEquipe]["equipe"] = [$equipe];
-                                
+                                $tabBrule[$numJoueur][$numEquipe]["idRencontre"] = $joueurMatch->getRencontre()->getId();
                                 $idRencontre = $joueurMatch->getRencontre()->getId();
+                                
                             } else {
-                                if ($idRencontre == null || $idRencontre != $joueurMatch->getRencontre()->getId()) {
+                                    // si il est dans le tab rencontre 
+                                if ($idRencontre == null || $idRencontre != $joueurMatch->getRencontre()->getId() && $tabBrule[$numJoueur][$numEquipe]["idRencontre"]!= $joueurMatch->getRencontre()->getId()  ) {
                                     $tabBrule[$numJoueur][$numEquipe]["nbMatchs"] += 1;
                                     $idRencontre = $joueurMatch->getRencontre()->getId();
                                 }
@@ -87,7 +95,7 @@ class BruleController extends AbstractController
                 $cpt++;
             }
         }
-        
+       // dd($tabBruleTrie);
         return $this->render('brule/brule.html.twig', [
             'tabBrule' => $tabBruleTrie,
             'tabEquipes' => $listeEquipes,
