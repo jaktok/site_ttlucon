@@ -193,6 +193,7 @@ class ResultatParamController extends AbstractController
         if($idRencontre){
             $matchs = $matchRepo->findByIdRencontre($idRencontre);
             $i = 0;
+            $tabJoueurDoubleJoue = array();
             // onparcours l etableau pour la gestion des doubles
             foreach ($matchs as $matchDouble){
                 if ($matchDouble->getMatchDouble()){
@@ -208,18 +209,20 @@ class ResultatParamController extends AbstractController
                         $matchsDouble[$i]["numDouble"] = "2";
                     }
                     $matchsDouble[$i]["id"] = $matchDouble->getId();
-                    
+                    array_push($tabJoueurDoubleJoue,$player,$player2);
                     $i++;
                 }
             }
             $numDouble = array_column($matchsDouble, 'numDouble');
             array_multisort($numDouble, SORT_ASC, $matchsDouble);
         }
-        // recuperation de tous les joueurs actifs pour liste capitaine
-        $listeJoueurs = $joueursRepo->findBy(array(), array('nom' => 'ASC'));
+        // recuperation de tous les joueurs actifs pour listes doubles
+        $listeJoueurs = $joueursRepo->findByActif();
         $tabJoueurs= array();
         foreach ($listeJoueurs as $joueur){
-            $tabJoueurs[$joueur->getNom()." ".$joueur->getPrenom()] = $joueur->getId();
+            if (!in_array($joueur,$tabJoueurDoubleJoue))  {
+                $tabJoueurs[$joueur->getNom()." ".$joueur->getPrenom()] = $joueur->getId();
+            }
         }
         
         $form = $this->createForm(MatchsType::class, $match, array('tabJoueurs' => $tabJoueurs));
