@@ -29,6 +29,7 @@ class EntrainementType extends AbstractType
                     'Jeudi' => 'Jeudi',
                     'Vendredi' => 'Vendredi',
                     'Samedi' => 'Samedi',
+                    'Dimanche' => 'Dimanche',
             ]])
             ->add('heure_debut',TimeType::class)
             ->add('heure_fin',TimeType::class)

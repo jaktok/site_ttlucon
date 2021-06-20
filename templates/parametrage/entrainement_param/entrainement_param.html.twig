@@ -39,13 +39,13 @@ endblock %} {% block body %}
         {% if entrainements is defined %}
         {% for entrainement in entrainements %}
           <tr>
-           	<td>{{ entrainement.libelle }}</td>
-           	<td>{{ entrainement.jour }}</td>
-           	<td>{{ entrainement.heureDebut|date('H:i') }}</td>
-           	<td>{{ entrainement.heureFin|date('H:i') }}</td>
-           	<td>{{ entrainement.categorie.libelle }}</td>
-             <td><a href="{{ path('entrainement_param_modif', {'id': entrainement.id})}}" class="btn btn-primary">Modifier</a></td>
-     		<td><a href="{{ path('supprime_entrainement', {'id': entrainement.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ entrainement.libelle }} ?');">Supprimer</a></td>
+           	<td>{{ entrainement.entrainement.libelle }}</td>
+           	<td>{{ entrainement.entrainement.jour }}</td>
+           	<td>{{ entrainement.entrainement.heureDebut|date('H:i') }}</td>
+           	<td>{{ entrainement.entrainement.heureFin|date('H:i') }}</td>
+           	<td>{{ entrainement.entrainement.categorie.libelle }}</td>
+             <td><a href="{{ path('entrainement_param_modif', {'id': entrainement.entrainement.id})}}" class="btn btn-primary">Modifier</a></td>
+     		<td><a href="{{ path('supprime_entrainement', {'id': entrainement.entrainement.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ entrainement.entrainement.libelle }} ?');">Supprimer</a></td>
      
           </tr>
         {% endfor %}

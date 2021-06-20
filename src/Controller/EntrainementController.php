@@ -28,10 +28,40 @@ class EntrainementController extends AbstractController
         // recuperation du resultat dans un tableau
         foreach($listeEntrainements as $entrainement)
         {
-            $tabEntrainements[$i] = $entrainement;
+            $tabEntrainements[$i]["entrainement"] = $entrainement;
+            $tabEntrainements[$i]["heure"] = $entrainement->getHeureDebut();
+            
+            switch ($entrainement->getJour()) {
+                case "Lundi":
+                    $tabEntrainements[$i]["position"] = 1;
+                    break;
+                case "Mardi":
+                    $tabEntrainements[$i]["position"] = 2;
+                    break;
+                case "Mercredi":
+                    $tabEntrainements[$i]["position"] = 3;
+                    break;
+                case "Jeudi":
+                    $tabEntrainements[$i]["position"] = 4;
+                    break;
+                case "Vendredi":
+                    $tabEntrainements[$i]["position"] = 5;
+                    break;
+                case "Samedi":
+                    $tabEntrainements[$i]["position"] = 6;
+                    break;
+                case "Dimanche":
+                    $tabEntrainements[$i]["position"] = 7;
+                    break;
+                 default:
+                     $tabEntrainements[$i]["position"] = 1;
+            }
             $i++;
         }
-        
+       // dd($tabEntrainements);
+        $position = array_column($tabEntrainements, 'position');
+        $heure = array_column($tabEntrainements, 'heure');
+        array_multisort($position,$heure, SORT_ASC, $tabEntrainements);
         $form = $this->createFormBuilder($entrainement)
         ->getForm();
       

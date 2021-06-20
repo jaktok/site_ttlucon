@@ -36,11 +36,11 @@ endblock %} {% block body %}
         {% if entrainements is defined %}
         {% for entrainement in entrainements %}
           <tr>
-           	<td>{{ entrainement.libelle }}</td>
-           	<td>{{ entrainement.jour }}</td>
-           	<td>{{ entrainement.heureDebut|date('H:i') }}</td>
-           	<td>{{ entrainement.heureFin|date('H:i') }}</td>
-           	<td>{{ entrainement.categorie.libelle }}</td>
+           	<td>{{ entrainement.entrainement.libelle }}</td>
+           	<td>{{ entrainement.entrainement.jour }}</td>
+           	<td>{{ entrainement.entrainement.heureDebut|date('H:i') }}</td>
+           	<td>{{ entrainement.entrainement.heureFin|date('H:i') }}</td>
+           	<td>{{ entrainement.entrainement.categorie.libelle }}</td>
           </tr>
         {% endfor %}
         {% endif %} 

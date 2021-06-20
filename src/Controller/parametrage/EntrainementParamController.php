@@ -18,10 +18,51 @@ class EntrainementParamController extends AbstractController
      */
     public function index(Request $request,InfosClubRepository $infosClubRepo,EntrainementRepository $entraineRepo): Response
     {
-        // recuperation de tout les entrainements
-        $listeEntraine = $entraineRepo->findByOrder();
+        // recuperation de la liste des entrainements trié par jour heure debut
+        // heure fin en priant qu on en fasse pas le dimanche :)
+        $listeEntrainements = $entraineRepo->findBy(array(),array('jour' => 'ASC','heure_debut' => 'ASC','heure_fin' => 'ASC'));
         
-        $form = $this->createFormBuilder($listeEntraine)
+        $tabEntrainements = array();
+        $i=0;
+        $entrainement = new Entrainement();
+        // recuperation du resultat dans un tableau
+        foreach($listeEntrainements as $entrainement)
+        {
+            $tabEntrainements[$i]["entrainement"] = $entrainement;
+            $tabEntrainements[$i]["heure"] = $entrainement->getHeureDebut();
+            
+            switch ($entrainement->getJour()) {
+                case "Lundi":
+                    $tabEntrainements[$i]["position"] = 1;
+                    break;
+                case "Mardi":
+                    $tabEntrainements[$i]["position"] = 2;
+                    break;
+                case "Mercredi":
+                    $tabEntrainements[$i]["position"] = 3;
+                    break;
+                case "Jeudi":
+                    $tabEntrainements[$i]["position"] = 4;
+                    break;
+                case "Vendredi":
+                    $tabEntrainements[$i]["position"] = 5;
+                    break;
+                case "Samedi":
+                    $tabEntrainements[$i]["position"] = 6;
+                    break;
+                case "Dimanche":
+                    $tabEntrainements[$i]["position"] = 7;
+                    break;
+                default:
+                    $tabEntrainements[$i]["position"] = 1;
+            }
+            $i++;
+        }
+        $position = array_column($tabEntrainements, 'position');
+        $heure = array_column($tabEntrainements, 'heure');
+        array_multisort($position,$heure, SORT_ASC, $tabEntrainements);
+        
+        $form = $this->createFormBuilder($listeEntrainements)
         ->getForm();
 
         $entraineurs = '';
@@ -41,7 +82,7 @@ class EntrainementParamController extends AbstractController
         
         return $this->render('parametrage/entrainement_param/entrainement_param.html.twig', [
             'formEntrainements' => $form->createView(),
-            'entrainements' => $listeEntraine,
+            'entrainements' => $tabEntrainements,
             'entraineurs' => $entraineurs,
             'dateVacances' => $dateVacances,
         ]);
@@ -55,8 +96,49 @@ class EntrainementParamController extends AbstractController
     public function gerer(Request $request, EntrainementRepository $entraineRepo, int $id = null): Response
     {
         
-        // recuperation de tout les entrainements
-        $listeEntraine = $entraineRepo->findBy(array(),array('jour' => 'ASC','heure_debut' => 'ASC','heure_fin' => 'ASC'));
+        // recuperation de la liste des entrainements trié par jour heure debut
+        // heure fin en priant qu on en fasse pas le dimanche :)
+        $listeEntrainements = $entraineRepo->findBy(array(),array('jour' => 'ASC','heure_debut' => 'ASC','heure_fin' => 'ASC'));
+        
+        $tabEntrainements = array();
+        $i=0;
+        $entrainement = new Entrainement();
+        // recuperation du resultat dans un tableau
+        foreach($listeEntrainements as $entrainement)
+        {
+            $tabEntrainements[$i]["entrainement"] = $entrainement;
+            $tabEntrainements[$i]["heure"] = $entrainement->getHeureDebut();
+            
+            switch ($entrainement->getJour()) {
+                case "Lundi":
+                    $tabEntrainements[$i]["position"] = 1;
+                    break;
+                case "Mardi":
+                    $tabEntrainements[$i]["position"] = 2;
+                    break;
+                case "Mercredi":
+                    $tabEntrainements[$i]["position"] = 3;
+                    break;
+                case "Jeudi":
+                    $tabEntrainements[$i]["position"] = 4;
+                    break;
+                case "Vendredi":
+                    $tabEntrainements[$i]["position"] = 5;
+                    break;
+                case "Samedi":
+                    $tabEntrainements[$i]["position"] = 6;
+                    break;
+                case "Dimanche":
+                    $tabEntrainements[$i]["position"] = 7;
+                    break;
+                default:
+                    $tabEntrainements[$i]["position"] = 1;
+            }
+            $i++;
+        }
+        $position = array_column($tabEntrainements, 'position');
+        $heure = array_column($tabEntrainements, 'heure');
+        array_multisort($position,$heure, SORT_ASC, $tabEntrainements);
         
           if ($id){
             // recuperation de l enregistrements selectionne
@@ -80,7 +162,7 @@ class EntrainementParamController extends AbstractController
         return $this->render('parametrage/entrainement_param/fiche_entrainement.html.twig', [
             'formEntrainements' =>  $form->createView(),
             'idEntrainement' => $id,
-            'entrainements' => $listeEntraine
+            'entrainements' => $tabEntrainements
         ]);
         
     }
