@@ -8,13 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\JoueursRepository;
 use App\Repository\MatchsRepository;
 use App\Repository\RencontresRepository;
+use App\Repository\EquipeTypeRepository;
 
 class StatistiquesDoubleController extends AbstractController
 {
     /**
      * @Route("/statistiques/double/{cat}", name="statistiques_double")
      */
-    public function index(JoueursRepository $joueursRepo,RencontresRepository $rencontreRepo, MatchsRepository $matchsRepo, $cat=null): Response
+    public function index(JoueursRepository $joueursRepo,EquipeTypeRepository $equipeRepo, RencontresRepository $rencontreRepo, MatchsRepository $matchsRepo, $cat=null): Response
     {
         
         $tabDoubles = $matchsRepo->findDoubles();
@@ -27,6 +28,14 @@ class StatistiquesDoubleController extends AbstractController
             if ($double->getRencontre()){
             $idRencontre = $double->getRencontre()->getId();  
             $rencontre = $rencontreRepo->findBy(['id'=>$idRencontre]);
+            if($rencontre){
+                $idEquipe = $rencontre[0]->getEquipeType()->getId();
+                $equipe = $equipeRepo->find($idEquipe);
+            }
+            if($equipe!= null){
+                $categorie = $equipe->getCategories()->getLibelle();
+            }
+            
             if($rencontre[0]->getScoreA() != null && $rencontre[0]->getScoreB() != null ){
                 if($rencontre[0]->getScoreA()+$rencontre[0]->getScoreB()<=10){
                     $categorie  = "Jeune";
@@ -136,35 +145,29 @@ class StatistiquesDoubleController extends AbstractController
         for($i=0; $i < sizeof($tabJoueurDouble); $i++){
             if($i==0){
                 $tabJoueurDouble[$i]['position'] = $pos;
-                $pos++;
             }
             if ($i!=0 && $tabJoueurDouble[$i]['pourcent'] ==  $tabJoueurDouble[$i-1]['pourcent']){
                 $tabJoueurDouble[$i]['position'] = $tabJoueurDouble[$i-1]['position'];
             }
             else if ($i!=0 && $tabJoueurDouble[$i]['pourcent'] !=  $tabJoueurDouble[$i-1]['pourcent']){
                 $tabJoueurDouble[$i]['position'] = $pos;
-                $pos++;
             }
-            
+            $pos++;
         }
         
         $pos = 1;
         for($i=0; $i < sizeof($tabDoublesStat); $i++){
             if($i==0){
                 $tabDoublesStat[$i]['position'] = $pos;
-                $pos++;
             }
             if ($i!=0 && $tabDoublesStat[$i]['pourcent'] ==  $tabDoublesStat[$i-1]['pourcent']){
                 $tabDoublesStat[$i]['position'] = $tabDoublesStat[$i-1]['position'];
             }
             else if ($i!=0 && $tabDoublesStat[$i]['pourcent'] !=  $tabDoublesStat[$i-1]['pourcent']){
                 $tabDoublesStat[$i]['position'] = $pos;
-                $pos++;
             }
-            
+            $pos++;
         }
-        
-       //dd($tabDoublesStat,$tabIdDoubles,$tabJoueurDouble);
         
         return $this->render('statistiques_double/statistiques_double.html.twig', [
             'tabDoubleStats' => $tabDoublesStat,

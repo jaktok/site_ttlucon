@@ -101,16 +101,14 @@ class StatistiqueController extends AbstractController
         for($i=0; $i < sizeof($tabJoueursLucon); $i++){
             if($i==0){
                 $tabJoueursLucon[$i]['position'] = $pos;
-                $pos++;
             }
             if ($i!=0 && $tabJoueursLucon[$i]['progressionAnnuelle'] ==  $tabJoueursLucon[$i-1]['progressionAnnuelle']){
                 $tabJoueursLucon[$i]['position'] = $tabJoueursLucon[$i-1]['position'];
             }
             else if ($i!=0 && $tabJoueursLucon[$i]['progressionAnnuelle'] !=  $tabJoueursLucon[$i-1]['progressionAnnuelle']){
                 $tabJoueursLucon[$i]['position'] = $pos;
-                $pos++;
             }
-            
+            $pos++;
         }
 
         $tabJoueursAdapte = array();
@@ -150,16 +148,14 @@ class StatistiqueController extends AbstractController
            for($i=0; $i < sizeof($tabJoueursAdapte); $i++){
                if($i==0){
                    $tabJoueursAdapte[$i]['position'] = $pos;
-                   $pos++;
                }
                if ($i!=0 && $tabJoueursAdapte[$i]['pourcent'] ==  $tabJoueursAdapte[$i-1]['pourcent']){
                    $tabJoueursAdapte[$i]['position'] = $tabJoueursAdapte[$i-1]['position'];
                }
                else if ($i!=0 && $tabJoueursAdapte[$i]['pourcent'] !=  $tabJoueursAdapte[$i-1]['pourcent']){
                    $tabJoueursAdapte[$i]['position'] = $pos;
-                   $pos++;
                }
-               
+               $pos++;
            }
          
          
