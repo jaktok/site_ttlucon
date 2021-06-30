@@ -44,6 +44,7 @@ class Licencie
     private $categories;
     private $libelleCat;
     private $photo;
+    private $nbJoursCertif;
     
 
     
@@ -360,6 +361,22 @@ class Licencie
     {
         $this->actif = $actif;
     }
+    /**
+     * @return mixed
+     */
+    public function getNbJoursCertif()
+    {
+        return $this->nbJoursCertif;
+    }
+
+    /**
+     * @param mixed $nbJoursCertif
+     */
+    public function setNbJoursCertif($nbJoursCertif)
+    {
+        $this->nbJoursCertif = $nbJoursCertif;
+    }
+
 
 
 }

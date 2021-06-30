@@ -60,6 +60,7 @@
             <th>Licence</th>
             <th data-sortable="true">Catégorie</th>
             <th data-sortable="true">Certif</th>
+            <th data-sortable="true">jours reste Certif</th>
             <th data-sortable="true">Cotis.</th>
             <th>Classement</th>
             <th>Actif</th>
@@ -80,6 +81,13 @@
            		<td>oui</td>
            	{% else %}
            			<td>non</td>
+           	{% endif %}
+           	{% if joueur.nbJoursCertif > 30 and joueur.nbJoursCertif matches '/^\\d+$/' %}
+           			<td class="table-success">{{ joueur.nbJoursCertif }}</td>
+           	{% elseif joueur.nbJoursCertif > 0 and joueur.nbJoursCertif < 30  and joueur.nbJoursCertif matches '/^\\d+$/' %}
+           			<td class="table-warning">{{ joueur.nbJoursCertif }}</td>
+           	{% else %}
+           			<td class="table-danger">{{ joueur.nbJoursCertif }}</td>
            	{% endif %}
            	{% if joueur.cotisation == 1  %}
            		<td>oui</td>
@@ -112,6 +120,7 @@
 		            <th>Licence</th>
 		            <th data-sortable="true">Catégorie</th>
 		            <th data-sortable="true">Certif</th>
+		            <th data-sortable="true">jours reste Certif</th>
 		            <th data-sortable="true">Cotis.</th>
 		            <th>Classement</th>
 		            <th>Actif</th>
@@ -132,6 +141,13 @@
 		           		<td>oui</td>
 		           	{% else %}
 		           			<td>non</td>
+		           	{% endif %}
+		           	{% if joueurInactif.nbJoursCertif > 30 and joueurInactif.nbJoursCertif matches '/^\\d+$/' %}
+		           			<td class="table-success">{{ joueurInactif.nbJoursCertif }}</td>
+		           	{% elseif joueurInactif.nbJoursCertif > 0 and joueurInactif.nbJoursCertif < 30  and joueurInactif.nbJoursCertif matches '/^\\d+$/' %}
+		           			<td class="table-warning">{{ joueurInactif.nbJoursCertif }}</td>
+		           	{% else %}
+		           			<td class="table-danger">{{ joueurInactif.nbJoursCertif }}</td>
 		           	{% endif %}
 		           	{% if joueurInactif.cotisation == 1  %}
 		           		<td>oui</td>

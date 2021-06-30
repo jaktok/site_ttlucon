@@ -21,6 +21,7 @@ use FFTTApi\Model\Joueur;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use App\Entity\Categories;
 use App\Repository\MatchsRepository;
+use Symfony\Component\Validator\Constraints\Date;
 
 class JoueursParamController extends AbstractController
 {
@@ -82,10 +83,25 @@ class JoueursParamController extends AbstractController
             }
             // mappage de l entite joueur vers objet licencier
             $licencie = $this->mapperJoueurLicencie($joueur, $classementRepo);
+            $dtjour = new \DateTime();
+            $interval = new \DateInterval('P3Y');
+            $dtCertif = $licencie->getDateCertificat();
+            if ($dtCertif){
+                $dtCertif->add($interval);
+                $nbJourCertificat = $dtjour->diff($dtCertif)->format("%a");
+                if ($dtCertif < $dtjour){
+                    $nbJourCertificat = $nbJourCertificat * -1;
+                }
+                $licencie->setNbJoursCertif($nbJourCertificat);
+            }
+            else{
+                $licencie->setNbJoursCertif("dt certif non saisie");
+            }
+            
+            
             $licencie->setLibelleCat($libCat);
             $this->licencies[]=$licencie;
         }
-       // dd($listeJoueursInactifs);
         foreach($listeJoueursInactifs as $player)
         {
             $licencieInactif = new Licencie();
@@ -101,6 +117,20 @@ class JoueursParamController extends AbstractController
             }
             // mappage de l entite joueur vers objet licencier
             $licencieInactif = $this->mapperJoueurLicencie($joueurInactif, $classementRepo);
+            $dtjour = new \DateTime();
+            $interval = new \DateInterval('P3Y');
+            $dtCertif = $licencieInactif->getDateCertificat();
+            if ($dtCertif){
+                $dtCertif->add($interval);
+                $nbJourCertificat = $dtjour->diff($dtCertif)->format("%a");
+                if ($dtCertif < $dtjour){
+                    $nbJourCertificat = $nbJourCertificat * -1;
+                }
+                $licencieInactif->setNbJoursCertif($nbJourCertificat);
+            }
+            else{
+                $licencieInactif->setNbJoursCertif("dt certif non saisie");
+            }
             $licencieInactif->setLibelleCat($libCat);
             $this->licenciesInactifs[]=$licencieInactif;
         }
