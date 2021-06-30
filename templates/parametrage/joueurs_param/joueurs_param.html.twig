@@ -58,11 +58,11 @@
             <th>Prénom</th>
             <th>telephone</th>
             <th>Licence</th>
-            <th data-sortable="true">Catégorie</th>
+            <th data-sortable="true">Catég.</th>
             <th data-sortable="true">Certif</th>
-            <th data-sortable="true">jours reste Certif</th>
+            <th data-sortable="true">Jr reste Certif</th>
             <th data-sortable="true">Cotis.</th>
-            <th>Classement</th>
+            <th>Class.</th>
             <th>Actif</th>
             <th>Modif.</th>
             <th>Supp.</th>
@@ -78,30 +78,30 @@
            	<td>{{ joueur.numLicence }}</td>
            	<td>{{ joueur.libelleCat }}</td>
            	{% if joueur.certificat == 1  %}
-           		<td  class="table-success">oui</td>
+           		<td  class="table-success text-center">oui</td>
            	{% else %}
-           			<td class="table-danger">non</td>
+           			<td class="table-danger text-center">non</td>
            	{% endif %}
            	{% if joueur.nbJoursCertif > 30 and joueur.nbJoursCertif matches '/^\\d+$/' %}
-           			<td class="table-success">{{ joueur.nbJoursCertif }}</td>
+           			<td class="table-success text-center">{{ joueur.nbJoursCertif }}</td>
            	{% elseif joueur.nbJoursCertif > 0 and joueur.nbJoursCertif < 30  and joueur.nbJoursCertif matches '/^\\d+$/' %}
-           			<td class="table-warning">{{ joueur.nbJoursCertif }}</td>
+           			<td class="table-warning text-center">{{ joueur.nbJoursCertif }}</td>
            	{% else %}
-           			<td class="table-danger">{{ joueur.nbJoursCertif }}</td>
+           			<td class="table-danger text-center">{{ joueur.nbJoursCertif }}</td>
            	{% endif %}
            	{% if joueur.cotisation == 1  %}
-           		<td  class="table-success">oui</td>
+           		<td  class="table-success text-center">oui</td>
            	{% else %}
-           			<td>non</td>
+           			<td class="text-center">non</td>
            	{% endif %}
            	<td>{{ joueur.classement }}</td>
            	{% if joueur.actif == 1  %}
-		    	<td>oui</td>
+		    	<td class="text-center">oui</td>
 		    {% else %}
-		    	<td>non</td>
+		    	<td class="text-center">non</td>
 		    {% endif %}
-             <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modifier</a></td>
-             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supprimer</a></td>
+             <td><a href="{{ path('joueur_param_modif', { 'id': joueur.id})}}" class="btn btn-primary">Modif</a></td>
+             <td><a href="{{ path('supprime_joueur', { 'id': joueur.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueur.nom }} ?');">Supp.</a></td>
           </tr>
         {% endfor %}
 		{% endif %}
@@ -118,11 +118,11 @@
 		            <th>Prénom</th>
 		            <th>telephone</th>
 		            <th>Licence</th>
-		            <th data-sortable="true">Catégorie</th>
+		            <th data-sortable="true">Catég.</th>
 		            <th data-sortable="true">Certif</th>
-		            <th data-sortable="true">jours reste Certif</th>
+		            <th data-sortable="true">Jr reste Certif</th>
 		            <th data-sortable="true">Cotis.</th>
-		            <th>Classement</th>
+		            <th>Class.</th>
 		            <th>Actif</th>
 		            <th>Modif.</th>
 		            <th>Supp.</th>
@@ -138,30 +138,30 @@
 		           	<td>{{ joueurInactif.numLicence }}</td>
 		           	<td>{{ joueurInactif.libelleCat }}</td>
 		           	{% if joueurInactif.certificat == 1  %}
-		           		<td  class="table-success">oui</td>
+		           		<td  class="table-success text-center">oui</td>
 		           	{% else %}
-		           			<td class="table-danger">non</td>
+		           			<td class="table-danger text-center">non</td>
 		           	{% endif %}
 		           	{% if joueurInactif.nbJoursCertif > 30 and joueurInactif.nbJoursCertif matches '/^\\d+$/' %}
-		           			<td class="table-success">{{ joueurInactif.nbJoursCertif }}</td>
+		           			<td class="table-success text-center">{{ joueurInactif.nbJoursCertif }}</td>
 		           	{% elseif joueurInactif.nbJoursCertif > 0 and joueurInactif.nbJoursCertif < 30  and joueurInactif.nbJoursCertif matches '/^\\d+$/' %}
-		           			<td class="table-warning">{{ joueurInactif.nbJoursCertif }}</td>
+		           			<td class="table-warning text-center">{{ joueurInactif.nbJoursCertif }}</td>
 		           	{% else %}
-		           			<td class="table-danger">{{ joueurInactif.nbJoursCertif }}</td>
+		           			<td class="table-danger text-center">{{ joueurInactif.nbJoursCertif }}</td>
 		           	{% endif %}
 		           	{% if joueurInactif.cotisation == 1  %}
-		           		<td  class="table-success">oui</td>
+		           		<td  class="table-success text-center">oui</td>
 		           	{% else %}
-		           			<td>non</td>
+		           			<td class="text-center">non</td>
 		           	{% endif %}
 		           	<td>{{ joueurInactif.classement }}</td>
 		           	{% if joueurInactif.actif == 1  %}
-		           		<td>oui</td>
+		           		<td class="text-center">oui</td>
 		           	{% else %}
-		           			<td>non</td>
+		           			<td class="text-center">non</td>
 		           	{% endif %}
-		             <td><a href="{{ path('joueur_param_modif', { 'id': joueurInactif.id})}}" class="btn btn-primary">Modifier</a></td>
-		             <td><a href="{{ path('supprime_joueur', { 'id': joueurInactif.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueurInactif.nom }} ?');">Supprimer</a></td>
+		             <td><a href="{{ path('joueur_param_modif', { 'id': joueurInactif.id})}}" class="btn btn-primary">Modif</a></td>
+		             <td><a href="{{ path('supprime_joueur', { 'id': joueurInactif.id})}}" class="btn btn-danger" onclick="return confirm('Suppression de {{ joueurInactif.nom }} ?');">Supp.</a></td>
 		          </tr>
 		        {% endfor %}
 				{% endif %}
