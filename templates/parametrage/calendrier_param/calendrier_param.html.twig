@@ -30,36 +30,74 @@ endblock %} {% block body %}
  	      </div>
     </div>
 </div>
+	<div class="row">
+		<div class="col-sm-6">
+			<table class="table table-striped" data-toggle="table" data-pagination="false">
+			        <thead>
+			          <tr>
+			            <th data-sortable="true">Date Rencontre</th>
+			            <th>Adversaire</th>
+			            <th data-sortable="true">Domicile</th>
+			            <th data-sortable="true">Phase</th>
+			            <th>Modif.</th>
+			            <th>Supp.</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			        {% if rencontres is defined %}
+			        {% for rencontre in rencontres %}
+			        <tr>
+			            <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
+			           	<td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
+			            {% if rencontre.domicile == 1  %}
+			           		<td>Domicile</td>
+			           	{% else %}
+			           			<td>Exterieur</td>
+			           	{% endif %}
+			            <td>{{ rencontre.phase }}</td> 
+			            <td><a href="{{ path('calendrier_param_modif', { 'id': rencontre.id}) }}" class="btn btn-primary">Modifier</a></td>
+			            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre.id}) }}" class="btn btn-danger" onclick="return confirm('Suppression de {{ rencontre.dateRencontre|date('d/m/Y') }} ?');">Supprimer</a></td>
+			        </tr>
+			        {% endfor %}
+			        {% endif %}
+			    </tbody>
+			</table>
+		</div>
+		<div class="col-sm-6">
+		
+					<table class="table table-striped" data-toggle="table" data-pagination="false">
+			        <thead>
+			          <tr>
+			            <th data-sortable="true">Date Rencontre</th>
+			            <th>Adversaire</th>
+			            <th data-sortable="true">Domicile</th>
+			            <th data-sortable="true">Phase</th>
+			            <th>Modif.</th>
+			            <th>Supp.</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			        {% if rencontres2 is defined %}
+			        {% for rencontre2 in rencontres2 %}
+			        <tr>
+			            <td>{{ rencontre2.dateRencontre|date('d/m/Y') }}</td>
+			           	<td>{{ rencontre2.equipeA }} / {{ rencontre2.equipeB }}</td>
+			            {% if rencontre2.domicile == 1  %}
+			           		<td>Domicile</td>
+			           	{% else %}
+			           			<td>Exterieur</td>
+			           	{% endif %}
+			            <td>{{ rencontre2.phase }}</td> 
+			            <td><a href="{{ path('calendrier_param_modif', { 'id': rencontre2.id}) }}" class="btn btn-primary">Modifier</a></td>
+			            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre2.id}) }}" class="btn btn-danger" onclick="return confirm('Suppression de {{ rencontre2.dateRencontre|date('d/m/Y') }} ?');">Supprimer</a></td>
+			        </tr>
+			        {% endfor %}
+			        {% endif %}
+			    </tbody>
+			</table>
+		
+		
+		</div>
 
-<table class="table table-striped" data-toggle="table" data-pagination="false">
-        <thead>
-          <tr>
-            <th data-sortable="true">Date Rencontre</th>
-            <th>Adversaire</th>
-            <th data-sortable="true">Domicile</th>
-            <th data-sortable="true">Phase</th>
-            <th>Modif.</th>
-            <th>Supp.</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% if rencontres is defined %}
-        {% for rencontre in rencontres %}
-        <tr>
-            <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
-           	<td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
-            {% if rencontre.domicile == 1  %}
-           		<td>Domicile</td>
-           	{% else %}
-           			<td>Exterieur</td>
-           	{% endif %}
-            <td>{{ rencontre.phase }}</td> 
-            <td><a href="{{ path('calendrier_param_modif', { 'id': rencontre.id}) }}" class="btn btn-primary">Modifier</a></td>
-            <td><a href="{{ path('supprime_calendrier', { 'id': rencontre.id}) }}" class="btn btn-danger" onclick="return confirm('Suppression de {{ rencontre.dateRencontre|date('d/m/Y') }} ?');">Supprimer</a></td>
-        </tr>
-        {% endfor %}
-        {% endif %}
-    </tbody>
-</table>
-
+	</div>
 {% endblock %}

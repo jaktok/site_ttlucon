@@ -34,6 +34,19 @@ class RencontresRepository extends ServiceEntityRepository
         ;
     }
     
+    public function findByEquipeByPhase($id,$phase)
+    {
+        return $this->createQueryBuilder('r')
+        ->andWhere('r.equipeType = :val')
+        ->andWhere('r.phase = :val2')
+        ->setParameter('val', $id)
+        ->setParameter('val2', $phase)
+        ->orderBy('r.date_rencontre', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    
     public function findByIdEquipe($value)
     {
         return $this->createQueryBuilder('r')

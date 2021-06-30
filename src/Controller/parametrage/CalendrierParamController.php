@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 //use Doctrine\Common\Persistence\ObjectManager;
 use FFTTApi\FFTTApi;
 use App\Entity\Rencontres;
-use App\Entity\EquipeType;
 use App\Form\RencontreType;
-use phpDocumentor\Reflection\Types\String_;
 use App\Repository\RencontresRepository;
 use App\Repository\EquipeTypeRepository;
 use App\Repository\MatchsRepository;
@@ -43,10 +41,8 @@ class CalendrierParamController extends AbstractController
             $rencontre = $rencontreRepo->find($id);
             $idEquipe = $rencontre->getEquipeType()->getId();
             $dateRencontre = $rencontre->getDateRencontre();
-            //dd($rencontre->getNoJournee());
         }
         $dateRencontre = null;
-//dd($rencontre);
         $form = $this->createForm(RencontreType::class, $rencontre);
 
         $form->handleRequest($request);
@@ -61,7 +57,6 @@ class CalendrierParamController extends AbstractController
 
             return $this->redirectToRoute('calendrier_param',array('id' => $idEquipe));
         }
-       // dd($idEquipe);
         return $this->render('parametrage/calendrier_param/fiche_calendrier_param.html.twig', [
             'formRencontre' => $form->createView(),
             'idEquipe' => $idEquipe,
@@ -121,7 +116,6 @@ class CalendrierParamController extends AbstractController
             $equipeLucon = $equipeTypeRepo->findOneByNom($nomFinal);
 
             if($equipeLucon){
-                //dd($equipesByClub);
                 if($equipeLucon->getId() == $idTeam){
                     $rencontrePouleByLienDivR = $this->api->getRencontrePouleByLienDivision($equipeClub->getLienDivision());
                     $noJournee = 1;
@@ -194,11 +188,14 @@ class CalendrierParamController extends AbstractController
      */ 
     public function index(RencontresRepository $rencontres, int $id = null): Response
     {
-
-        //dd($rencontres->findByEquipe($id));
-        //dd($id);
+        
+        $rencontre = $rencontres->findByEquipeByPhase($id,1);
+        
+        $rencontre2 = $rencontres->findByEquipeByPhase($id,2);
+        
         return $this->render('parametrage/calendrier_param/calendrier_param.html.twig', [
-            'rencontres' => $rencontres->findByEquipe($id),
+            'rencontres' => $rencontre,
+            'rencontres2' => $rencontre2,
             'idTeam' => $id,
         ]);
     }
