@@ -97,10 +97,15 @@ class ResultatParamController extends AbstractController
         // Formatage des noms d'equipe pour le nom du fichier pdf
         $equipeA = $rencontre->getEquipeA();
         $equipeB = $rencontre->getEquipeB();
-        $nomA = explode(" ",$equipeA);
-        $nomB = explode(" ",$equipeB);
-        $nomEquipeA = $nomA[0] . '-' . $nomA[1];
-        $nomEquipeB = $nomB[0] . '-' . $nomB[1];
+        if ($equipeA != "Exempt") {
+            $nomA = explode(" ",$equipeA);
+            $nomEquipeA = $nomA[0] . '-' . $nomA[1];
+        }
+        if ($equipeB != "Exempt") {
+            $nomB = explode(" ",$equipeB);
+            $nomEquipeB = $nomB[0] . '-' . $nomB[1];
+        }
+        
 
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
@@ -434,7 +439,7 @@ class ResultatParamController extends AbstractController
         
         if ($idRencontre) {
             $j = 0;
-            // rechercher les matchs liés à l id competition
+            // rechercher les matchs liï¿½s ï¿½ l id competition
             $matchsCompet = $matchsRepo->findByIdRencontre($idRencontre);
             if ($matchsCompet){
                 // recup nbjoueurs
@@ -491,7 +496,7 @@ class ResultatParamController extends AbstractController
             $renc = $rencontreRepo->find($idRencontre);
             $joueur = $joueursRepo->find($idJoueur);
             
-            // rechercher les matchs liés à l id competition
+            // rechercher les matchs liï¿½s ï¿½ l id competition
             $matchsCompet = $matchsRepo->findByIdCompet($idRencontre);
             if ($matchsCompet){
                 $nbVic = 0;
@@ -626,7 +631,7 @@ class ResultatParamController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         if ($id) {
-            // rechercher les matchs liés à l id competition
+            // rechercher les matchs liï¿½s ï¿½ l id competition
             $matchsCompet = $matchsRepo->findByIdRencontre($id);
             if ($matchsCompet){
                  foreach ($matchsCompet as $match){
