@@ -215,7 +215,6 @@ class JoueursParamController extends AbstractController
                $image->setUrl($this->getParameter('images_destination'));
                $entityManager->flush();
            }
-           //dd($this->licencie->getNomPhoto());
             $joueur->setAdresse($this->licencie->getAdresse());
             $joueur->setBureau($this->licencie->getBureau());
             $joueur->setActif($this->licencie->getActif());
@@ -246,7 +245,6 @@ class JoueursParamController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($joueur);
             $entityManager->flush();
-            //dd($img);
             if (($img==null || $img->getId()==null) && isset($fichier)) {
                 // On crée l'image dans la base de données
                 $img = new Fichiers();
@@ -327,7 +325,6 @@ class JoueursParamController extends AbstractController
             $licencier->setNomPhoto($joueur->getPhoto()->getNom());
             $licencier->setPhoto($joueur->getPhoto()->getNom());
        }
-       //dd($joueur->getPhoto()->getNom());
        
        return $licencier;
     }

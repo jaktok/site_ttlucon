@@ -39,6 +39,7 @@ class PartenaireParamController extends AbstractController
     public function gerer(Request $request,  PartenaireRepository $partenaireRepo,FichiersRepository $ficRepo, int $id = null): Response
     {
         
+        $fichier = new Fichiers();
         
         // recuperation de tout les partenairess
         $listePartenaires = $partenaireRepo->findBy(array(),array('nom' => 'ASC'));
@@ -49,7 +50,7 @@ class PartenaireParamController extends AbstractController
             
             $fichier = $ficRepo->find($partenaire->getFichier()->getId());
             $partenaire->setFichier($fichier);
-           // dd($fichier);
+            //dd($fichier->getNom());
             if ($partenaire) {
                 $form = $this->createForm(PartenaireType::class,$partenaire);
                 $form->handleRequest($request);
@@ -128,6 +129,7 @@ class PartenaireParamController extends AbstractController
             'partenaires' => $listePartenaires,
             'nomFichier' => $nmPhoto,
             'idImage' => $idImage,
+            'fiche' => $fichier,
         ]);
         
     }

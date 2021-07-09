@@ -66,12 +66,12 @@
 				{% set extention = doc.extention %}  
 				<div class="row overflow-auto mt-3" align="center">
 					<div class="col-sm-12">
-						<p>{{ doc.libelle }}</p>
+						<p style="font-size: 0.9em;">{{ doc.libelle }}</p>
 						{% if extention == 'jpg' %}
 							<img alt="" src="{{ asset('docaccueil/'~nomFichier) }}"
 						alt="" class="img-thumbnail" >
 						{% else %}
-						<a href="{{ asset('docaccueil/'~nomFichier) }}" target="_blank"> <img src="{{ asset('docaccueil/'~extention) }}" alt="" class="img-thumbnail" width="30%"> 
+						<a href="{{ asset('docaccueil/'~nomFichier) }}" target="_blank"> <img src="{{ asset('docaccueil/'~extention) }}" alt="" class="img-thumbnail" width="25%"> 
 						{% endif %}
 						</a>
 					</div>
