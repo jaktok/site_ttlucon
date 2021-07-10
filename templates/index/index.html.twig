@@ -16,15 +16,9 @@
 						class="img-thumbnail" alt="Responsive image" align="top">
 				</div>
 			</div>
-			<br>
-			<div class="row mt-4">
-				<div class="col">
-					<hr color="black">
-				</div>
-			</div>
-			<div class="row overflow-auto align-items-center" align="center">
+			<div class="row overflow-auto align-items-center mt-1" align="center">
 				<div class="col-sm-12">
-				<p>Nos partenaires</p>
+				<p style="font-size: 1em;font-weight :bolder;text-decoration: underline;  ">Nos partenaires</p>
 					<div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade"
 						data-ride="carousel" data-interval="7000">
 						<div class="carousel-inner">
@@ -54,30 +48,35 @@
 					</div>
 				</div>
 			</div>
-			<div class="row mt-3">
+<!-- 			<div class="row mt-3">
 				<div class="col">
 					<hr color="black">
 				</div>
-			</div>
+			</div> -->
+			<div class="row mt-5" align="center">
+					<div class="col-sm-12">
+						<p style="font-size: 1em;font-weight :bolder;text-decoration: underline;">Documents</p>
+					</div>
+			</div>	
 				{% if tabDocs is defined %}
 				{% set compt = 0 %}
 				{% for doc in tabDocs %}
 				{% set nomFichier = doc.nomFichier %}
 				{% set extention = doc.extention %}  
-				<div class="row overflow-auto mt-3" align="center">
+				<div class="row overflow-auto" align="center">
 					<div class="col-sm-12">
-						<p style="font-size: 0.9em;">{{ doc.libelle }}</p>
+						<p style="font-size: 0.8em;">{{ doc.libelle }}</p>
 						{% if extention == 'jpg' %}
 							<img alt="" src="{{ asset('docaccueil/'~nomFichier) }}"
 						alt="" class="img-thumbnail" >
 						{% else %}
-						<a href="{{ asset('docaccueil/'~nomFichier) }}" target="_blank"> <img src="{{ asset('docaccueil/'~extention) }}" alt="" class="img-thumbnail" width="25%"> 
+						<a href="{{ asset('docaccueil/'~nomFichier) }}" target="_blank"> <img src="{{ asset('docaccueil/'~extention) }}" alt="" class="img-thumbnail" width="20%"> 
 						{% endif %}
 						</a>
 					</div>
 				</div>
 				{% set compt = compt + 1 %}
-				<div class="row mt-3">
+				<div class="row mt-1">
 					<div class="col">
 						<hr color="black">
 					</div>
