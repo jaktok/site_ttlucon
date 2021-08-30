@@ -119,7 +119,8 @@ class IndexController extends AbstractController
         //dd($tabTabArticles);
         
         $clubDetail = $this->api->getClubDetails($this->ini_array['id_club_lucon']);
-        $actualites = $this->api->getActualites();
+        $actualites = array();
+        //$actualites = $this->api->getActualites();
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'detail_club' => $clubDetail,
