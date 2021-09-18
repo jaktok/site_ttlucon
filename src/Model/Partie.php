@@ -22,7 +22,8 @@ class Partie
     public function __construct(
         bool $isVictoire,
         int $journee,
-        \DateTime $date,
+        string $date,
+        //\DateTime $date,
         float $pointsObtenus,
         float $coefficient,
         string $adversaireLicence,
@@ -54,7 +55,12 @@ class Partie
         return $this->journee;
     }
 
-    public function getDate(): \DateTime
+    /*public function getDate(): \DateTime
+    {
+        return $this->date;
+    }*/
+    
+    public function getDate(): string
     {
         return $this->date;
     }
