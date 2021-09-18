@@ -29,6 +29,7 @@ use FFTTApi\Service\PointCalculator;
 use FFTTApi\Service\RencontreDetailsFactory;
 use FFTTApi\Model\UnvalidatedPartie;
 use FFTTApi\Service\Utils;
+use phpDocumentor\Reflection\Types\Null_;
 
 class FFTTApi
 {
@@ -58,7 +59,7 @@ class FFTTApi
 
         if (!$response) {
             throw new InvalidCredidentials();
-        }
+        }//dd($response);
         return $response;
     }
 
@@ -105,7 +106,6 @@ class FFTTApi
         $data = $this->apiRequest->get('xml_club_dep2', [
             'dep' => $departementId,
         ])['club'];
-
         $clubFactory = new ClubFactory();
         return $clubFactory->createFromArray($data);
     }
@@ -122,7 +122,7 @@ class FFTTApi
             ])['club'];
 
             $data = $this->wrappedArrayIfUnique($data);
-
+//dd($data);
             $clubFactory = new ClubFactory();
             return $clubFactory->createFromArray($data);
         } catch (\Exception $e) {
@@ -186,13 +186,14 @@ class FFTTApi
         $result = [];
 
         foreach ($arrayJoueurs['joueur'] as $joueur) {
+            //dd($joueur);
             $realJoueur = new Joueur(
                 $joueur['licence'],
                 $joueur['nclub'],
                 $joueur['club'],
                 $joueur['nom'],
                 $joueur['prenom'],
-                $joueur['point']);
+                $joueur['points']);
             $result[] = $realJoueur;
         }
         return $result;
@@ -382,7 +383,6 @@ class FFTTApi
             $parties = $this->apiRequest->getPartiesParLicence('xml_partie_mysql', [
                 'licence' => $joueurId,
             ]);
-            
             $tabVide = array();
             if ($parties==null){
                 return $tabVide;
@@ -396,13 +396,17 @@ class FFTTApi
             $parties = [];
         }
         $res = [];
-
+       // dd($parties);
         foreach ($parties as $partie) {
             list($nom, $prenom) = Utils::returnNomPrenom($partie['advnompre']);
+            $date= $partie['date']." 00:00:00";
+            $dateTime = str_replace("/", "-", $date);
+            $dt = \DateTime::createFromFormat("d-m-y H:i:s", $dateTime);
             $realPartie = new Partie(
                 $partie["vd"] === "V" ? true : false,
                 intval($partie['numjourn']),
-                \DateTime::createFromFormat('d/m/y', $partie['date']),
+                //\DateTime::createFromFormat('d/m/y', $partie['date']),
+                $partie['date'],
                 floatval($partie['pointres']),
                 floatval($partie['coefchamp']),
                 $partie['advlic'],
@@ -410,7 +414,7 @@ class FFTTApi
                 $nom,
                 $prenom,
                 intval($partie['advclaof'])
-            );
+                );
             $res[] = $realPartie;
         }
         return $res;
@@ -454,7 +458,7 @@ class FFTTApi
     {
         $validatedParties = $this->getPartiesJoueurByLicence($joueurId);
         try {
-            $allParties = $this->apiRequest->get('xml_partie', [
+            $allParties = $this->apiRequest->getUnvalidatedPartiesJoueurByLicence('xml_partie', [
                 'numlic' => $joueurId,
             ])["resultat"];
         } catch (NoFFTTResponseException $e) {
@@ -575,18 +579,31 @@ class FFTTApi
         if ($type) {
             $params['type'] = $type;
         }
-
-        $data = $this->apiRequest->get('xml_equipe', $params
+        
+        $result = [];
+        
+        if ($data = $this->apiRequest->getEquipeByClub('xml_equipe', $params
+            )!= null){
+        
+                $data = $this->apiRequest->getEquipeByClub('xml_equipe', $params
         )['equipe'];
         $data = $this->wrappedArrayIfUnique($data);
 
         $result = [];
-        foreach ($data as $dataEquipe) {
-            $result[] = new Equipe(
-                $dataEquipe['libequipe'],
-                $dataEquipe['libdivision'],
-                $dataEquipe['liendivision']
-            );
+        
+            foreach ($data as $dataEquipe) {
+                //dd($dataEquipe['liendivision']);
+                $lienDivision = "";
+                if ($dataEquipe['liendivision']!=null){
+                    $lienDivision = $dataEquipe['liendivision'][0];
+                }
+                
+                $result[] = new Equipe(
+                    $dataEquipe['libequipe'],
+                    $dataEquipe['libdivision'],
+                    $lienDivision
+                );
+            }
         }
         return $result;
     }
@@ -734,14 +751,21 @@ class FFTTApi
      */
     public function getActualites(): array
     {
-        $data = $this->apiRequest->get('xml_new_actu')['news'];
+        $data = array();
+        if ($this->apiRequest->getActualites('xml_new_actu') != null)
+        {
+        $data = $this->apiRequest->getActualites('xml_new_actu')['news'];
         $data = $this->wrappedArrayIfUnique($data);
-
+        }
+        else{
+            return $data;
+        }
+  
         $result = [];
         foreach ($data as $dataActualite) {
             $result[] = new Actualite(
                 \DateTime::createFromFormat('Y-m-d', $dataActualite["date"]),
-                $dataActualite['titre'],
+                utf8_decode($dataActualite['titre']),
                 $dataActualite['description'],
                 $dataActualite['url'],
                 $dataActualite['photo'],
