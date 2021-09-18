@@ -124,7 +124,7 @@ class IndexController extends AbstractController
         $actualites = $this->api->getActualites();
         
         
-        
+        // test des apis laisse la en attente d autres dev merdiques chez fftt ....
         
         /*$actualites = $this->api->getActualites();
          $joueurByLicence = $this->api->getClassementJoueurByLicence("852112");
@@ -173,10 +173,10 @@ class IndexController extends AbstractController
        // $actualites = $this->api->getActualites(); ok 
         //$joueurByLicence = $this->api->getClassementJoueurByLicence("852112"); ok
         // $joueurByClub = $this->api->getJoueursByClub("12850097"); OK
-        $lienDivision = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6489&D1=3714&virtuel=0";
+        //$lienDivision = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6489&D1=3714&virtuel=0";
        // $pouleByLien = $this->api->getClassementPouleByLienDivision($lienDivision); ko avec ce lien
         //$clubDetail = $this->api->getClubDetails("12850097"); ok
-        $equipe = new Equipe("LUCON TT", "D1", $lienDivision);
+       //$equipe = new Equipe("LUCON TT", "D1", $lienDivision);
        // $clubEquipe = $this->api->getClubEquipe($equipe);
         //$clubByDepartement = $this->api->getClubsByDepartement(85);ok
         //$equipesByClub = $this->api->getEquipesByClub("12850097","M");ok
