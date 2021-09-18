@@ -39,12 +39,23 @@ class ApiRequest
 
     public function send(string $uri){
         $client = new Client();
-        $response = $client->request('GET', $uri);
+        try{
+           // dd("avant send".$uri);
+            $response = $client->request('GET', $uri);
+            //dd("APRES send ".$uri." ".$response->getBody()->getContents());
+        }
+        catch (ClientException $ce){
+            //dd("exception send");
+            return null;
+        }
+        
         if($response->getStatusCode() !== 200){
             throw new \DomainException("Request ".$uri." returns an error");
         }
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $response->getBody()->getContents());
-
+        
+        $contenu = $response->getBody()->getContents();
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        //dd($content);
         $xml = simplexml_load_string($content);
 
         return json_decode(json_encode($xml), true);
@@ -68,6 +79,26 @@ class ApiRequest
         return $result;
     }
     
+    
+    public function getActualites(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (\Exception $e){
+            return null;
+        }
+        
+        if(!$result){
+            //dd("!$result");
+            return null;
+        }
+        if(array_key_exists('0', $result)){
+            //dd("notffttresponse");
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
     
     public function getLicencesParClub(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
@@ -201,4 +232,45 @@ class ApiRequest
         }
         return $result;
     }
+    
+    public function getEquipeByClub(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+           // dd($chaine);
+        }
+        catch (ClientException $ce){dd($ce);
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){//dd("dont result");
+        return null;    
+        throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
+    public function getUnvalidatedPartiesJoueurByLicence(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
 }
