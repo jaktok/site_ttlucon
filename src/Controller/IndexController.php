@@ -119,8 +119,77 @@ class IndexController extends AbstractController
         //dd($tabTabArticles);
         
         $clubDetail = $this->api->getClubDetails($this->ini_array['id_club_lucon']);
+       // dd($clubDetail);
         $actualites = array();
-        //$actualites = $this->api->getActualites();
+        $actualites = $this->api->getActualites();
+        
+        
+        
+        
+        /*$actualites = $this->api->getActualites();
+         $joueurByLicence = $this->api->getClassementJoueurByLicence("852112");
+         $lienDivision = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6489&D1=3714&virtuel=0";
+         $lienDivisionR = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=1012&cx_poule=3123&D1=3013&virtuel=0";
+         $pouleByLien = $this->api->getClassementPouleByLienDivision($lienDivision);
+         $pouleByLienR = $this->api->getClassementPouleByLienDivision($lienDivisionR);
+         $rencontrePouleByLienDiv = $this->api->getRencontrePouleByLienDivision($lienDivision);
+         $rencontrePouleByLienDivR = $this->api->getRencontrePouleByLienDivision($lienDivisionR);
+         $clubDetail = $this->api->getClubDetails("12850097");
+         $equipe = new Equipe("LUCON TT", "D1", $lienDivision);
+         $clubEquipe = $this->api->getClubEquipe($equipe);
+         $clubByDepartement = $this->api->getClubsByDepartement(85);
+         $clubByName = $this->api->getClubsByName("LUCON TT");
+         
+         // on doit passer en parametre le lien renvoye par le resultat de $rencontrePouleByLienDiv + id club 1 + id club 2
+         $lienRencontre = "is_retour=0&phase=1&res_1=11&res_2=9&renc_id=3785251&equip_1=COEX+1&equip_2=LUCON+2&equip_id1=478822&equip_id2=478827";
+         // exemple departement
+         $detailRencontreByLien = $this->api->getDetailsRencontreByLien($lienRencontre,"12850097","12850030");
+         // exemple pour region 4 joueurs
+         $lienRencontreR = "is_retour=0&phase=1&res_1=3&res_2=11&renc_id=3764848&equip_1=MONTAGNE+%28LA%29++1&equip_2=CHALLANS+2&equip_id1=473709&equip_id2=473716";
+         $detailRencontreByLienR = $this->api->getDetailsRencontreByLien($lienRencontreR,"12440094","12850026");
+         $equipesByClub = $this->api->getEquipesByClub("12850097","M");
+         $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence("852112");
+         $detailJoueurByLicence = $this->api->getJoueurDetailsByLicence("852112");*/
+        //$joueurByClub = $this->api->getJoueursByClub("12850097");
+        /*$joueurByNom = this->$this->api->getJoueursByNom("pupin","Jean-marie");
+         $organismes = $this->api->getOrganismes();
+         $partieJoueurByLicence = $this->api->getPartiesJoueurByLicence("852112");
+         $lienDivision2 = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6433&D1=3703&virtuel=0";
+         $equipe2 = new Equipe("LUCON 1", "PR", $lienDivision2);
+         $prochaineRencontreEquipe = $this->api->getProchainesRencontresEquipe($equipe2);
+         
+         $unvalidatePartiesByJoueur = $this->api->getUnvalidatedPartiesJoueurByLicence("267813");
+         $virtualPoints = $this->api->getVirtualPoints("267813");
+         
+         dd($actualites, $joueurByLicence, $pouleByLien, $pouleByLienR, $rencontrePouleByLienDiv, $rencontrePouleByLienDivR , $clubDetail, $clubEquipe, $clubByDepartement, $clubByName, $detailRencontreByLien , $detailRencontreByLienR ,$equipesByClub, $histoJoueurByLicence, $detailJoueurByLicence, $joueurByClub, $joueurByNom,$organismes,$partieJoueurByLicence, $prochaineRencontreEquipe, $unvalidatePartiesByJoueur,$virtualPoints);
+         */
+        //dd($detailRencontreByLien);
+        
+        /* return $this->render('index/index.html.twig', [
+         'controller_name' => 'IndexController',
+         ]);*/
+        
+       // $clubDetail = $this->api->getClubDetails($this->ini_array['id_club_lucon']); ok
+       // $actualites = $this->api->getActualites(); ok 
+        //$joueurByLicence = $this->api->getClassementJoueurByLicence("852112"); ok
+        // $joueurByClub = $this->api->getJoueursByClub("12850097"); OK
+        $lienDivision = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6489&D1=3714&virtuel=0";
+       // $pouleByLien = $this->api->getClassementPouleByLienDivision($lienDivision); ko avec ce lien
+        //$clubDetail = $this->api->getClubDetails("12850097"); ok
+        $equipe = new Equipe("LUCON TT", "D1", $lienDivision);
+       // $clubEquipe = $this->api->getClubEquipe($equipe);
+        //$clubByDepartement = $this->api->getClubsByDepartement(85);ok
+        //$equipesByClub = $this->api->getEquipesByClub("12850097","M");ok
+       // $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence("852112");ok
+        //$partieJoueurByLicence = $this->api->getPartiesJoueurByLicence("852112"); ok apres modif partie
+       //  $unvalidatePartiesByJoueur = $this->api->getUnvalidatedPartiesJoueurByLicence("267813"); ko mais non utilisee ....
+       // $virtualPoints = $this->api->getVirtualPoints("267813"); ko (appelle la fonction du dessus ) mais non utilisee ....
+        //dd($virtualPoints);
+        
+        
+        
+        
+        
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'detail_club' => $clubDetail,
