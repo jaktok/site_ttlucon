@@ -17,11 +17,13 @@ class ClubFactory
     public function createFromArray(array $data) : array {
         $result = [];
         foreach ($data as $clubData){
+            if ($clubData['validation']!=null){
             $result[] = new Club(
                 $clubData['numero'],
                 $clubData['nom'],
-                is_array($clubData['validation']) ? null : \DateTime::createFromFormat('d/m/y', $clubData['validation'])
-            );
+                $clubData['validation']
+                );
+            }
         }
         return $result;
     }
