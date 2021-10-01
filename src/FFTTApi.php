@@ -30,6 +30,7 @@ use FFTTApi\Service\RencontreDetailsFactory;
 use FFTTApi\Model\UnvalidatedPartie;
 use FFTTApi\Service\Utils;
 use phpDocumentor\Reflection\Types\Null_;
+use function Symfony\Component\DependencyInjection\Exception\__toString;
 
 class FFTTApi
 {
@@ -267,22 +268,24 @@ class FFTTApi
                 'licence' => $licenceId,
             ]
                 );
-            
             if ($data==null){
                 return new JoueurDetails($licenceId, "", "", "", "", "", "", "500", "500", "500", "500");
             }
-            
-            $data = $this->apiRequest->getJoueurDetail('xml_licence_b', [
-                    'licence' => $licenceId,
-                ]
-            )['licence'];
-           
-            
+ 
         } catch (NoFFTTResponseException $e) {
            
             throw new JoueurNotFound($licenceId);
         }
-
+        $pointsInit = "500";
+        $pointsMensuel = "500";
+        if($data['initm'] == ""){
+            $pointsInit = floatval($data['point']);
+            $pointsMensuel = floatval($data['point']);
+        }
+        else{
+            $pointsInit = floatval($data['initm']);
+            $pointsMensuel = floatval($data['point']);
+        }
         $joueurDetails = new JoueurDetails(
             $licenceId,
             $data['nom'],
@@ -291,9 +294,9 @@ class FFTTApi
             $data['nomclub'],
             $data['sexe'] === 'M' ? true : false,
             $data['cat'],
-            floatval($data['initm'] ?? floatval($data['point'])),
+            $pointsInit,
             floatval($data['point']),
-            floatval($data['pointm'] ?? floatval($data['point'])),
+            $pointsMensuel,
             floatval($data['apointm'] ?? floatval($data['point']))
         );
         return $joueurDetails;
@@ -396,7 +399,6 @@ class FFTTApi
             $parties = [];
         }
         $res = [];
-       // dd($parties);
         foreach ($parties as $partie) {
             list($nom, $prenom) = Utils::returnNomPrenom($partie['advnompre']);
             $date= $partie['date']." 00:00:00";
@@ -586,16 +588,16 @@ class FFTTApi
             )!= null){
         
                 $data = $this->apiRequest->getEquipeByClub('xml_equipe', $params
-        )['equipe'];
+        );
+                
         $data = $this->wrappedArrayIfUnique($data);
-
+        
         $result = [];
         
             foreach ($data as $dataEquipe) {
-                //dd($dataEquipe['liendivision']);
                 $lienDivision = "";
                 if ($dataEquipe['liendivision']!=null){
-                    $lienDivision = $dataEquipe['liendivision'][0];
+                    $lienDivision = str_replace("&amp;","&",$dataEquipe['liendivision']);
                 }
                 
                 $result[] = new Equipe(
@@ -605,6 +607,7 @@ class FFTTApi
                 );
             }
         }
+       // dd($data);
         return $result;
     }
 
@@ -651,21 +654,25 @@ class FFTTApi
      */
     public function getRencontrePouleByLienDivision(string $lienDivision): array
     {
-        $data = $this->apiRequest->get('xml_result_equ', [], $lienDivision)['tour'];
-
+        //$data = $this->apiRequest->getRencontrePouleByLienDivision('xml_result_equ', [], $lienDivision)['tour'];
+        $data = $this->apiRequest->getRencontrePouleByLienDivision('xml_result_equ', [], $lienDivision);
         $result = [];
         foreach ($data as $dataRencontre) {
-            $result[] = new Rencontre(
+           //dd($dataRencontre,$lienDivision);
+            
+             $result[] = new Rencontre(
                 $dataRencontre['libelle'],
                 $dataRencontre['equa'],
                 $dataRencontre['equb'],
                 intval($dataRencontre['scorea']),
                 intval($dataRencontre['scoreb']),
                 $dataRencontre['lien'],
-                \DateTime::createFromFormat('d/m/y', $dataRencontre['dateprevue']),
-                empty($dataRencontre['datereelle']) ? null : \DateTime::createFromFormat('d/m/y', $dataRencontre['datereelle'])
+                //\DateTime::createFromFormat('d/m/y', $dataRencontre['dateprevue']),
+                $dataRencontre['dateprevue'],
+                //empty($dataRencontre['datereelle']) ? null : \DateTime::createFromFormat('d/m/y', $dataRencontre['datereelle'])
+                $dataRencontre['datereelle']
             );
-        }
+        }//dd($result);
         return $result;
     }
 

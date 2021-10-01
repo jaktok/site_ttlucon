@@ -10,6 +10,7 @@ use FFTTApi\Exception\NoFFTTResponseException;
 use FFTTApi\Exception\URIPartNotValidException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Symfony\Component\Validator\Constraints\Length;
 
 const FFTTURL = 'http://www.fftt.com/mobile/pxml/';
 
@@ -40,12 +41,30 @@ class ApiRequest
     public function send(string $uri){
         $client = new Client();
         try{
-           // dd("avant send".$uri);
             $response = $client->request('GET', $uri);
-            //dd("APRES send ".$uri." ".$response->getBody()->getContents());
         }
         catch (ClientException $ce){
-            //dd("exception send");
+            return null;
+        }
+        
+        if($response->getStatusCode() !== 200){
+            throw new \DomainException("Request ".$uri." returns an error");
+        }
+       
+        $contenu = $response->getBody()->getContents();
+        $contenu = str_replace("&ugrave;", "ù", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        
+        $xml = simplexml_load_string($content);
+        return json_decode(json_encode($xml), true);
+    }
+    
+    public function sendEquipesByClub(string $uri){
+        $client = new Client();
+        try{
+            $response = $client->request('GET', $uri);
+        }
+        catch (ClientException $ce){
             return null;
         }
         
@@ -55,12 +74,22 @@ class ApiRequest
         
         $contenu = $response->getBody()->getContents();
         $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
-        //dd($content);
         $xml = simplexml_load_string($content);
-
-        return json_decode(json_encode($xml), true);
+        $tabEquipes = array();
+        for ($i = 0; $i < sizeof($xml); $i++) {
+            $tabEquipes[$i]["libequipe"] =  (string) $xml->equipe[$i]->libequipe;
+            $tabEquipes[$i]["libdivision"] =  (string) $xml->equipe[$i]->libdivision;
+            $tabEquipes[$i]["liendivision"] =  (string) $xml->equipe[$i]->liendivision;
+            $tabEquipes[$i]["idepr"] =  (string) $xml->equipe[$i]->idepr;
+            $tabEquipes[$i]["libepr"] =  (string) $xml->equipe[$i]->libepr;
+        }
+        
+       // return json_decode(json_encode($xml), true);
+        return $tabEquipes ;      
     }
+    
 
+    
     public function get(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
@@ -79,6 +108,59 @@ class ApiRequest
         return $result;
     }
     
+    public function getRencontrePouleByLienDivision(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->sendRencontrePouleByLienDivision($chaine);//dd($result);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            throw new InvalidURIParametersException($request, $params);
+        }
+       /* if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }*/
+        return $result;
+    }
+    
+    
+    public function sendRencontrePouleByLienDivision(string $uri){
+        $client = new Client();
+        try{
+            $response = $client->request('GET', $uri);
+        }
+        catch (ClientException $ce){
+            return null;
+        }
+        
+        if($response->getStatusCode() !== 200){
+            throw new \DomainException("Request ".$uri." returns an error");
+        }
+        
+        $contenu = $response->getBody()->getContents();
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        //dd($content);
+        $xml = simplexml_load_string($content);
+        //dd($xml);
+        $tabRencontres = array();
+        for ($i = 0; $i < sizeof($xml); $i++) {
+            $tabRencontres[$i]["libelle"] =  (string) $xml->tour[$i]->libelle;
+            $tabRencontres[$i]["equa"] =  (string) $xml->tour[$i]->equa;
+            $tabRencontres[$i]["equb"] =  (string) $xml->tour[$i]->equb;
+            $tabRencontres[$i]["scorea"] =  (string) $xml->tour[$i]->scorea;
+            $tabRencontres[$i]["scoreb"] =  (string) $xml->tour[$i]->scoreb;
+            $tabRencontres[$i]["lien"] =  (string) $xml->tour[$i]->lien;
+            $tabRencontres[$i]["dateprevue"] =  (string) $xml->tour[$i]->dateprevue;
+            $tabRencontres[$i]["datereelle"] =  (string) $xml->tour[$i]->datereelle;
+        }
+        
+        // return json_decode(json_encode($xml), true);
+        return $tabRencontres ; 
+     //   return json_decode(json_encode($xml), true);
+    }
     
     public function getActualites(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
@@ -217,7 +299,7 @@ class ApiRequest
     public function getJoueurDetail(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
-            $result =  $this->send($chaine);
+            $result =  $this->sendJoueurDetail($chaine);
         }
         catch (ClientException $ce){
             throw new URIPartNotValidException($request);
@@ -225,21 +307,66 @@ class ApiRequest
         
         if(!$result){
             return null;
-         //   throw new InvalidURIParametersException($request, $params);
         }
-        if(array_key_exists('0', $result)){
-            throw new NoFFTTResponseException($chaine);
-        }
+
         return $result;
     }
+    
+    public function sendJoueurDetail(string $uri){
+        $client = new Client();
+        try{
+            $response = $client->request('GET', $uri);
+        }
+        catch (ClientException $ce){
+            return null;
+        }
+        
+        if($response->getStatusCode() !== 200){
+            throw new \DomainException("Request ".$uri." returns an error");
+        }
+        
+        $contenu = $response->getBody()->getContents();
+        $contenu = str_replace("&ugrave;", "ù", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        
+        $xml = simplexml_load_string($content);
+        $tabJoueur = array();
+            $tabJoueur["idLicence"] =  (string) $xml[0]->licence->idlicence;
+            $tabJoueur["licence"] =  (string) $xml[0]->licence->licence;
+            $tabJoueur["nom"] =  (string) $xml[0]->licence->nom;
+            $tabJoueur["prenom"] =  (string) $xml[0]->licence->prenom;
+            $tabJoueur["numclub"] =  (string) $xml[0]->licence->numclub;
+            $tabJoueur["nomclub"] =  (string) $xml[0]->licence->nomclub;
+            $tabJoueur["sexe"] =  (string) $xml[0]->licence->sexe;
+            $tabJoueur["type"] =  (string) $xml[0]->licence->type;
+            $tabJoueur["certif"] =  (string) $xml[0]->licence->certif;
+            $tabJoueur["validation"] =  (string) $xml[0]->licence->validation;
+            $tabJoueur["echelon"] =  (string) $xml[0]->licence->echelon;
+            $tabJoueur["place"] =  (string) $xml[0]->licence->place;
+            $tabJoueur["point"] =  (string) $xml[0]->licence->point;
+            $tabJoueur["cat"] =  (string) $xml[0]->licence->cat;
+            $tabJoueur["pointm"] =  (string) $xml[0]->licence->pointm;
+            $tabJoueur["apointm"] =  (string) $xml[0]->licence->apointm;
+            $tabJoueur["initm"] =  (string) $xml[0]->licence->initm;
+            $tabJoueur["mutation"] =  (string) $xml[0]->licence->mutation;
+            $tabJoueur["natio"] =  (string) $xml[0]->licence->natio;
+            $tabJoueur["arb"] =  (string) $xml[0]->licence->arb;
+            $tabJoueur["ja"] =  (string) $xml[0]->licence->ja;
+            $tabJoueur["tech"] =  (string) $xml[0]->licence->tech;
+        
+            return $tabJoueur ;
+    }
+    
+    
+    
     
     public function getEquipeByClub(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
-            $result =  $this->send($chaine);
-           // dd($chaine);
+            $result =  $this->sendEquipesByClub($chaine);
+            //dd($result);
         }
-        catch (ClientException $ce){dd($ce);
+        catch (ClientException $ce){
             throw new URIPartNotValidException($request);
         }
         
@@ -247,9 +374,9 @@ class ApiRequest
         return null;    
         throw new InvalidURIParametersException($request, $params);
         }
-        if(array_key_exists('0', $result)){
+        /*if(array_key_exists('0', $result)){
             throw new NoFFTTResponseException($chaine);
-        }
+        }*/
         return $result;
     }
     
