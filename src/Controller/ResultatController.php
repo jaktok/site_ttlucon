@@ -12,6 +12,7 @@ use App\Repository\RencontresRepository;
 use App\Repository\FichiersRepository;
 use App\Repository\EquipeTypeRepository;
 use FFTTApi\FFTTApi;
+use phpDocumentor\Reflection\Types\Array_;
 
 class ResultatController extends AbstractController
 {
@@ -48,17 +49,19 @@ class ResultatController extends AbstractController
         $equipes = $equipeRepo->findBy(array(),array('nom' => 'ASC'));
         $tabClassement = array();
         
-        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipes);
         $i=0;
         foreach ($equipes as $equipe){
             foreach ($equipesByClub as $equipeFFTT){
-                $tabNomEquipeFFTT = explode(" ", $equipeFFTT->getLibelle());
-                $nomEquipe = $tabNomEquipeFFTT[0]." ".$tabNomEquipeFFTT[1];
-                if($nomEquipe == $equipe->getNom() && $equipe->getCategories()->getLibelle()==$this->categorie){
-                    $lien =  $this->racineLien.$equipeFFTT->getLienDivision();
-                   $tabClassement[$i]["lien"] = $lien;
-                   $tabClassement[$i]["equipe"] = $nomEquipe;
-                   $i++;
+                    $tabNomEquipeFFTT = explode(" ", $equipeFFTT->getLibelle());
+                    if(isset($tabNomEquipeFFTT[1])){
+                    $nomEquipe = $tabNomEquipeFFTT[0]." ".$tabNomEquipeFFTT[1];//dd($nomEquipe);
+                    if($nomEquipe == $equipe->getNom() && $equipe->getCategories()->getLibelle()==$this->categorie){
+                        $lien =  $this->racineLien.$equipeFFTT->getLienDivision();
+                       $tabClassement[$i]["lien"] = $lien;
+                       $tabClassement[$i]["equipe"] = $nomEquipe;
+                       $i++;
+                    }
                 }
             }
         }

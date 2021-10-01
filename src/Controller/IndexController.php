@@ -186,10 +186,16 @@ class IndexController extends AbstractController
        // $virtualPoints = $this->api->getVirtualPoints("267813"); ko (appelle la fonction du dessus ) mais non utilisee ....
         //dd($virtualPoints);
         
-        
-        
-        
-        
+      //  $clubDetail = $this->api->getClubDetails("12850039");
+       // $equipesByClub = $this->api->getEquipesByClub("12850039","M");
+       // $lienDivision = $equipesByClub[0]->lienDivision;
+      //  $lienDivision =  "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&".$equipesByClub[0]->getLienDivision();
+       // $rencontrePouleByLienDiv = $this->api->getRencontrePouleByLienDivision($lienDivision);
+       // dd($rencontrePouleByLienDiv);
+        //$lienDivision = "http://www.fftt.com/sportif/chpt_equipe/chp_div.php?organisme_pere=85&cx_poule=6489&D1=3714&virtuel=0";
+        //$joueurByLicence = $this->api->getClassementJoueurByLicence("8527905");
+       // $partieJoueurByLicence = $this->api->getPartiesJoueurByLicence("8527905");
+        //dd($partieJoueurByLicence);
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'detail_club' => $clubDetail,
