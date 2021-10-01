@@ -52,6 +52,7 @@ class ArticlesController extends AbstractController
             
             $listFichier = $ficRepo->findByArticle($id);
             
+            
             foreach ($listFichier as $fiche){
                 $article->addFichier($fiche);
             }
@@ -66,12 +67,13 @@ class ArticlesController extends AbstractController
             $form = $this->createForm(ArticlesType::class,($article));
             $form->handleRequest($request);
         }
-        // dd($form);
+        //dd($form->get('fichier')->getData());
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('fichier')->getData();
-            
+          //dd($images);  
             if ($images){
                 $fichier = $article->getTitre().$article->getDate()->format('dmy').'.'.$images->guessExtension();
+               //dd($fichier);
                 // On copie le fichier dans le dossier uploads
                 $images->move(
                     $this->getParameter('articles_destination'),
@@ -87,16 +89,16 @@ class ArticlesController extends AbstractController
                 $image = $entityManager->getRepository(Fichiers::class)->find($img->getId());
                 $image->setNom($fichier);
                 $image->setUrl($this->getParameter('articles_destination'));
+                //dd($image);
                 $entityManager->flush();
             }
-            
+            //dd($fichier);
             if (($img==null || $img->getId()==null) && isset($fichier)) {
                 // On crée l'image dans la base de données
                 $img = new Fichiers();
                 $img->setNom($fichier);
                 $img->setArticles($article);
                 $img->setUrl($this->getParameter('articles_destination'));
-                //dd($img);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($img);
                 $entityManager->flush();

@@ -13,6 +13,7 @@ use App\Form\RencontreType;
 use App\Repository\RencontresRepository;
 use App\Repository\EquipeTypeRepository;
 use App\Repository\MatchsRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
 class CalendrierParamController extends AbstractController
 {
     private $ini_array;
@@ -105,28 +106,40 @@ class CalendrierParamController extends AbstractController
      */
     public function majAutoCalendrier(Request $request,RencontresRepository  $rencontreRepo, EquipeTypeRepository $equipeTypeRepo, int $id = null, int $idTeam=null): Response
     {
-        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipesByClub);
         $entityManager = $this->getDoctrine()->getManager();
         foreach ($equipesByClub as $equipeClub) {
             $nom = $equipeClub->getLibelle();
             $tabNom = explode(" ",$nom);
+            if ($tabNom[0]!=""){
             $nomFinal = $tabNom[0] . " " . $tabNom[1];
             $phase =  $tabNom[4];
-
+            }
+            else{
+                $nomFinal = "EXEMPT";
+                $phase = 1;
+            }
             $equipeLucon = $equipeTypeRepo->findOneByNom($nomFinal);
-
-            if($equipeLucon){
+            //dd($equipeLucon);
+            if($equipeLucon && $equipeClub->getLienDivision()!=""){
                 if($equipeLucon->getId() == $idTeam){
+                    //dd($equipeClub->getLienDivision());
                     $rencontrePouleByLienDivR = $this->api->getRencontrePouleByLienDivision($equipeClub->getLienDivision());
+                    //dd($rencontrePouleByLienDivR);
                     $noJournee = 1;
                     foreach($rencontrePouleByLienDivR as $rencontre) {
-                        $date = substr($rencontre->getLibelle(),-8 );
+                        //dd($rencontre,$nomFinal);
+                       // if($rencontre->getNomEquipeA() == "LUCON 1" || $rencontre->getNomEquipeB() == "LUCON 1"){ dd($rencontre,$nomFinal);}
+                        //$date = substr($rencontre->getLibelle(),-10);
                         // formatage d ela date pour pouvoir comparer si elle existe
-                        $date.=" 00:00:00";
+                        $date = $rencontre->getDateReelle()." 00:00:00";
                         $dateTime = str_replace("/", "-", $date);
-                        $dt = \DateTime::createFromFormat("d-m-y H:i:s", $dateTime);
-
+                        $dt = new \DateTime($dateTime, new \DateTimeZone('Europe/Paris'));//dd($dateee->format("d-m-y H:i:s"));
+                        $dt->format("d-m-y H:i:s");
+                        //$date = new DateTime("2012-09-01 12:00:00");
+                        //$dt = \DateTime::createFromFormat("d-m-y H:i:s", $dateTime);
                         if($rencontre->getNomEquipeA() == $nomFinal || $rencontre->getNomEquipeB() == $nomFinal){
+                           // dd($rencontre->getNomEquipeA(),$rencontre->getNomEquipeB(), $nomFinal);
                             $Newrencontre = new Rencontres();
                             if($nomFinal == $rencontre->getNomEquipeA()){
                                 $Newrencontre->setDomicile(true);
@@ -134,15 +147,26 @@ class CalendrierParamController extends AbstractController
                             else{
                                 $Newrencontre->setDomicile(false);
                             }
-                            $Newrencontre->setequipeA($rencontre->getNomEquipeA());
-                            $Newrencontre->setequipeB($rencontre->getNomEquipeB());
+                            if ($rencontre->getNomEquipeA()!=""){
+                                $Newrencontre->setequipeA($rencontre->getNomEquipeA());
+                            }
+                            else{
+                                $Newrencontre->setequipeA("EXEMPT");
+                            }
+                            if ($rencontre->getNomEquipeB()!=""){
+                                $Newrencontre->setequipeB($rencontre->getNomEquipeB());
+                            }
+                            else{
+                                $Newrencontre->setequipeB("EXEMPT");
+                            }
+                            
                             $Newrencontre->setDateRencontre($dt);
                             $Newrencontre->setNoJournee($noJournee);
                             $Newrencontre->setIsRetour($rencontre->getLien());
                             $Newrencontre->setPhase($phase);
                             $Newrencontre->setEquipeType($equipeLucon);
-                            
-                            $existeRencontre = $rencontreRepo->findByNomEquipeDate($Newrencontre->getEquipeA(),$dt->format("yy-m-d")." 00:00:00");
+                            $existeRencontre = $rencontreRepo->findByNomEquipeDate($Newrencontre->getEquipeA(),$dt->format("Y-m-d")." 00:00:00");
+                            //dd($existeRencontre,$Newrencontre->getEquipeA(),$dt->format("Y-m-d")." 00:00:00",$dt);
                             if ($existeRencontre == null){
                             $entityManager->persist($Newrencontre);
                             $entityManager->flush();
