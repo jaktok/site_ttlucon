@@ -26,8 +26,10 @@ class Rencontre
         int $scoreEquipeA,
         int $scoreEquipeB,
         string $lien,
-        \DateTime $datePrevue,
-        ?\DateTime $dateReelle)
+        string $datePrevue,
+        string $dateReelle)
+      /*  \DateTime $datePrevue,
+        ?\DateTime $dateReelle)*/
     {
         $this->libelle = $libelle;
         $this->nomEquipeA = $nomEquipeA;
@@ -69,7 +71,7 @@ class Rencontre
         return $this->lien;
     }
 
-    public function getDatePrevue(): \DateTime
+/*     public function getDatePrevue(): \DateTime
     {
         return $this->datePrevue;
     }
@@ -77,8 +79,18 @@ class Rencontre
     public function getDateReelle(): ?\DateTime
     {
         return $this->dateReelle;
-    }
+    } */
 
+    public function getDatePrevue(): string
+    {
+        return $this->datePrevue;
+    }
+    
+    public function getDateReelle(): string
+    {
+        return $this->dateReelle;
+    }
+    
     public function getClubEquipeA()
     {
         return $this->clubEquipeA;
