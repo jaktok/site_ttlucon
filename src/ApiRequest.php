@@ -12,7 +12,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Validator\Constraints\Length;
 
-const FFTTURL = 'http://www.fftt.com/mobile/pxml/';
+//const FFTTURL = 'http://www.fftt.com/mobile/pxml/';
+const FFTTURL = 'http://apiv2.fftt.com/mobile/pxml/';
 
 class ApiRequest
 {
@@ -242,9 +243,10 @@ class ApiRequest
     
     // cree pour alleger les stats et ne retourner que les victoires defaites
     public function getPartiesParLicenceStats(string $request, array $params = [], string $queryParameter = null){
+        //$params['licence'] = '8525286';
         $chaine = $this->prepare($request, $params, $queryParameter);
-        try{
-            $result =  $this->send($chaine);if($result){
+        try{//dd($request, $params, $queryParameter,$chaine);
+            $result =  $this->send($chaine);if($result){//dd($result);
                 $vict = 0;
                 $def = 0;
                 foreach ($result["partie"] as $resultat){
