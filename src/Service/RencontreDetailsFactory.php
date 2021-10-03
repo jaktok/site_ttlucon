@@ -40,9 +40,13 @@ class RencontreDetailsFactory
             $scoreA = $array['resultat']['resa'] == "F0" ? 0 : $array['resultat']['resa'];
             $scoreB = $array['resultat']['resb'] == "F0" ? 0 : $array['resultat']['resb'];
         }
-        $joueursAFormatted = $this->formatJoueurs($joueursA, $clubEquipeA);
-        $joueursBFormatted = $this->formatJoueurs($joueursB, $clubEquipeB);
-
+        if(count($joueursA)>0){
+            $joueursAFormatted = $this->formatJoueurs($joueursA, $clubEquipeA);
+        }
+        
+        if(count($joueursA)>0){
+            $joueursBFormatted = $this->formatJoueurs($joueursB, $clubEquipeB);
+        }
         $expectedA = 0;
         $expectedB = 0;
 
@@ -98,35 +102,37 @@ class RencontreDetailsFactory
 
         $joueurs = [];
         foreach ($data as $joueurData) {
-            $nomPrenom = $joueurData[0];
-            [$nom, $prenom] = Utils::returnNomPrenom($nomPrenom);
-
-            try {
-                if ($nom === "" && $prenom === "Absent") {
-                    $joueurs[] = new Joueur($nom, $prenom, "", null, null);
-                } else {
-                    $playerFoundInClub = false;
-
-                    foreach ($joueursClub as $joueurClub){
-                        if($joueurClub->getNom() === Accentuation::remove($nom) && $joueurClub->getPrenom() === $prenom){
-                            list($sexe, $points) = !empty($joueurData[1]) ? explode(" ", $joueurData[1]) : [null, null];
-                            $joueurs[] = new Joueur(
-                                $joueurClub->getNom(),
-                                $joueurClub->getPrenom(),
-                                $joueurClub->getLicence(),
-                                intval(substr($points, 0, -3)),
-                                $sexe
-                            );
-                            $playerFoundInClub = true;
-                            break;
+        if(!empty($joueurData[0]) && !empty($joueurData[1])){
+                    $nomPrenom = $joueurData[0];
+                    [$nom, $prenom] = Utils::returnNomPrenom($nomPrenom);
+        
+                    try {
+                        if ($nom === "" && $prenom === "Absent") {
+                            $joueurs[] = new Joueur($nom, $prenom, "", null, null);
+                        } else {
+                            $playerFoundInClub = false;
+        
+                            foreach ($joueursClub as $joueurClub){
+                                if($joueurClub->getNom() === Accentuation::remove($nom) && $joueurClub->getPrenom() === $prenom){
+                                    list($sexe, $points) = !empty($joueurData[1]) ? explode(" ", $joueurData[1]) : [null, null];
+                                    $joueurs[] = new Joueur(
+                                        $joueurClub->getNom(),
+                                        $joueurClub->getPrenom(),
+                                        $joueurClub->getLicence(),
+                                        intval(substr($points, 0, -3)),
+                                        $sexe
+                                    );
+                                    $playerFoundInClub = true;
+                                    break;
+                                }
+                            }
+                            if(!$playerFoundInClub){
+                                $joueurs[] = new Joueur($nom, $prenom, "", null, null);
+                            }
                         }
-                    }
-                    if(!$playerFoundInClub){
+                    } catch (NoFFTTResponseException $e) {
                         $joueurs[] = new Joueur($nom, $prenom, "", null, null);
                     }
-                }
-            } catch (NoFFTTResponseException $e) {
-                $joueurs[] = new Joueur($nom, $prenom, "", null, null);
             }
         }
         return $joueurs;
