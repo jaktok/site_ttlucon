@@ -52,6 +52,7 @@ class FFTTApi
         $time = round(microtime(true) * 1000);
         $timeCrypted = hash_hmac("sha1", $time, $this->password);
         $uri = 'http://www.fftt.com/mobile/pxml/xml_initialisation.php?serie=' . $this->id
+       // $uri = 'http://apiv2.fftt.com/mobile/pxml/xml_initialisation.php?serie=' . $this->id
             . '&tm=' . $time
             . '&tmc=' . $timeCrypted
             . '&id=' . $this->id;
@@ -60,7 +61,7 @@ class FFTTApi
 
         if (!$response) {
             throw new InvalidCredidentials();
-        }//dd($response);
+        }
         return $response;
     }
 
@@ -123,7 +124,7 @@ class FFTTApi
             ])['club'];
 
             $data = $this->wrappedArrayIfUnique($data);
-//dd($data);
+
             $clubFactory = new ClubFactory();
             return $clubFactory->createFromArray($data);
         } catch (\Exception $e) {
@@ -187,7 +188,6 @@ class FFTTApi
         $result = [];
 
         foreach ($arrayJoueurs['joueur'] as $joueur) {
-            //dd($joueur);
             $realJoueur = new Joueur(
                 $joueur['licence'],
                 $joueur['nclub'],
@@ -607,7 +607,6 @@ class FFTTApi
                 );
             }
         }
-       // dd($data);
         return $result;
     }
 
@@ -654,11 +653,9 @@ class FFTTApi
      */
     public function getRencontrePouleByLienDivision(string $lienDivision): array
     {
-        //$data = $this->apiRequest->getRencontrePouleByLienDivision('xml_result_equ', [], $lienDivision)['tour'];
         $data = $this->apiRequest->getRencontrePouleByLienDivision('xml_result_equ', [], $lienDivision);
         $result = [];
         foreach ($data as $dataRencontre) {
-           //dd($dataRencontre,$lienDivision);
             
              $result[] = new Rencontre(
                 $dataRencontre['libelle'],
@@ -667,12 +664,10 @@ class FFTTApi
                 intval($dataRencontre['scorea']),
                 intval($dataRencontre['scoreb']),
                 $dataRencontre['lien'],
-                //\DateTime::createFromFormat('d/m/y', $dataRencontre['dateprevue']),
                 $dataRencontre['dateprevue'],
-                //empty($dataRencontre['datereelle']) ? null : \DateTime::createFromFormat('d/m/y', $dataRencontre['datereelle'])
                 $dataRencontre['datereelle']
             );
-        }//dd($result);
+        }
         return $result;
     }
 
@@ -733,6 +728,7 @@ class FFTTApi
         if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
             throw new InvalidLienRencontre($lienRencontre);
         }
+        //dd($data);
         $factory = new RencontreDetailsFactory($this);
         return $factory->createFromArray($data, $clubEquipeA, $clubEquipeB);
     }
