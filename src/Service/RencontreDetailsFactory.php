@@ -49,32 +49,48 @@ class RencontreDetailsFactory
         }
         $expectedA = 0;
         $expectedB = 0;
-
-        foreach ($joueursAFormatted as $joueurA) {
-            foreach ($joueursBFormatted as $joueurB) {
-                if($joueurA->getPoints() === $joueurB->getPoints()){
-                    $expectedA += 0.5;
-                    $expectedB += 0.5;
-                }
-                elseif ($joueurA->getPoints() > $joueurB->getPoints()) {
-                    $expectedA += 1;
-                } else {
-                    $expectedB += 1;
+        if(isset ($joueursAFormatted)){
+            foreach ($joueursAFormatted as $joueurA) {
+                foreach ($joueursBFormatted as $joueurB) {
+                    if($joueurA->getPoints() === $joueurB->getPoints()){
+                        $expectedA += 0.5;
+                        $expectedB += 0.5;
+                    }
+                    elseif ($joueurA->getPoints() > $joueurB->getPoints()) {
+                        $expectedA += 1;
+                    } else {
+                        $expectedB += 1;
+                    }
                 }
             }
         }
-
-        $rencontreDetails = new RencontreDetails(
-            $array['resultat']['equa'],
-            $array['resultat']['equb'],
-            $scoreA,
-            $scoreB,
-            $joueursAFormatted,
-            $joueursBFormatted,
-            $parties,
-            $expectedA,
-            $expectedB
-        );
+        //dd($array['resultat']['equb']);
+        if (isset($array['resultat']['equa']) && isset ($array['resultat']['equb']) && isset($joueursAFormatted) && isset($joueursBFormatted)){
+            $rencontreDetails = new RencontreDetails(
+                $array['resultat']['equa'],
+                $array['resultat']['equb'],
+                $scoreA,
+                $scoreB,
+                $joueursAFormatted,
+                $joueursBFormatted,
+                $parties,
+                $expectedA,
+                $expectedB
+            );
+        }
+        else{
+            $rencontreDetails = new RencontreDetails(
+               "",
+                "",
+                0,
+                0,
+                array(),
+                array(),
+                array(),
+                0,
+                0
+                );
+        }
 
         return $rencontreDetails;
     }
@@ -83,10 +99,11 @@ class RencontreDetailsFactory
     {
         $scoreA = 0;
         $scoreB = 0;
-
-        foreach ($parties as $partie) {
-            $scoreA += $partie->getScoreA();
-            $scoreB += $partie->getScoreB();
+        if (!empty($parties)){
+                foreach ($parties as $partie) {
+                    $scoreA += $partie->getScoreA();
+                    $scoreB += $partie->getScoreB();
+                }
         }
         return [$scoreA, $scoreB];
     }
