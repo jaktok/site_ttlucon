@@ -53,9 +53,8 @@ class ApiRequest
         }
        
         $contenu = $response->getBody()->getContents();
-        $contenu = str_replace("&ugrave;", "ù", $contenu);
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
-        
+        $contenu = str_replace("&ugrave;", "Ã¹", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
         return json_decode(json_encode($xml), true);
     }
@@ -74,7 +73,7 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
         $tabEquipes = array();
         for ($i = 0; $i < sizeof($xml); $i++) {
@@ -112,7 +111,7 @@ class ApiRequest
     public function getRencontrePouleByLienDivision(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
-            $result =  $this->sendRencontrePouleByLienDivision($chaine);//dd($result);
+            $result =  $this->sendRencontrePouleByLienDivision($chaine);
         }
         catch (ClientException $ce){
             throw new URIPartNotValidException($request);
@@ -142,10 +141,8 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
-        //dd($content);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
-        //dd($xml);
         $tabRencontres = array();
         for ($i = 0; $i < sizeof($xml); $i++) {
             $tabRencontres[$i]["libelle"] =  (string) $xml->tour[$i]->libelle;
@@ -166,21 +163,42 @@ class ApiRequest
     public function getActualites(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
-            $result =  $this->send($chaine);
+            $result =  $this->sendActualites($chaine);
         }
         catch (\Exception $e){
             return null;
         }
         
         if(!$result){
-            //dd("!$result");
             return null;
         }
         if(array_key_exists('0', $result)){
-            //dd("notffttresponse");
             throw new NoFFTTResponseException($chaine);
         }
         return $result;
+    }
+    
+    public function sendActualites(string $uri){
+        $client = new Client();
+        try{
+            $response = $client->request('GET', $uri);
+        }
+        catch (ClientException $ce){
+            return null;
+        }
+        
+        if($response->getStatusCode() !== 200){
+            throw new \DomainException("Request ".$uri." returns an error");
+        }
+        
+        $contenu = $response->getBody()->getContents();
+        $contenu = str_replace("&ugrave;", "Ã¹", $contenu);
+        $contenu = str_replace("&ocirc;", "Ã´", $contenu);
+        $contenu = str_replace("&acirc;", "Ã¢", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
+       // $content = preg_replace('/\r|\n/', '', $content);
+        $xml = simplexml_load_string($content);
+        return json_decode(json_encode($xml), true);
     }
     
     public function getLicencesParClub(string $request, array $params = [], string $queryParameter = null){
@@ -245,8 +263,8 @@ class ApiRequest
     public function getPartiesParLicenceStats(string $request, array $params = [], string $queryParameter = null){
         //$params['licence'] = '8525286';
         $chaine = $this->prepare($request, $params, $queryParameter);
-        try{//dd($request, $params, $queryParameter,$chaine);
-            $result =  $this->send($chaine);if($result){//dd($result);
+        try{
+            $result =  $this->send($chaine);if($result){
                 $vict = 0;
                 $def = 0;
                 foreach ($result["partie"] as $resultat){
@@ -296,7 +314,7 @@ class ApiRequest
     }
     
     
-    // creee pour gérer le cas de maj auto si on ne trouve pas avec le numéro de licence 
+    // creee pour gÃ©rer le cas de maj auto si on ne trouve pas avec le numÃ©ro de licence 
     // on renvoie null pour gerer le cas plutot qu une exception
     public function getJoueurDetail(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
@@ -328,8 +346,8 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $contenu = str_replace("&ugrave;", "ù", $contenu);
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $contenu = str_replace("&ugrave;", "Ã¹", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         
         $xml = simplexml_load_string($content);
         $tabJoueur = array();
@@ -366,13 +384,12 @@ class ApiRequest
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
             $result =  $this->sendEquipesByClub($chaine);
-            //dd($result);
         }
         catch (ClientException $ce){
             throw new URIPartNotValidException($request);
         }
         
-        if(!$result){//dd("dont result");
+        if(!$result){
         return null;    
         throw new InvalidURIParametersException($request, $params);
         }
