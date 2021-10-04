@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\PseudoTypes\False_;
 use App\Entity\Categories;
 use App\Repository\MatchsRepository;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class JoueursParamController extends AbstractController
 {
@@ -431,7 +432,16 @@ class JoueursParamController extends AbstractController
     public function majStats(Request $request, JoueursRepository $joueursRepo): Response
     {
         
-        $entityManager = $this->getDoctrine()->getManager();
+        // resuperation saison suite a gestion calamiteuse des parties fftt .... 
+        $annee = date("Y");
+        $year = date("Y");
+        $month = date("m");
+        if($month <= 8){
+            $annee = $year - 1;
+        }
+        $mois = "8";
+        
+       $entityManager = $this->getDoctrine()->getManager();
         
         // recup liste des joueurs du club
         $tabJoueurByClub = $this->api->getLicenceJoueursByClub($this->idClub);
@@ -442,7 +452,7 @@ class JoueursParamController extends AbstractController
             // on recupere le joueur chez nous
             $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
             if ($joueurTTL != null) {
-                $partieJoueurByLicence = $this->api->getPartiesParLicenceStats($noLicence);
+                $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
                 
                 $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
                 // on va chercher le classement du joueur
