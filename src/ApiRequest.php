@@ -293,6 +293,49 @@ class ApiRequest
         return $tabResult;
     }
     
+    // cree pour alleger les stats et ne retourner que les victoires defaites avec gestion des parties de la saison en cours
+    public function getPartiesParLicenceStatsSaison(string $request, array $params = [],string $annee,string $mois,string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);if($result){
+                $vict = 0;
+                $def = 0;
+                foreach ($result["partie"] as $resultat){
+                    if (strlen($resultat["date"])>6){
+                        $tabDate = explode("/" ,$resultat["date"]);
+                        if (sizeof($tabDate)==3){
+                            $moisDate = $tabDate[1];
+                            $anDate = $tabDate[2];
+                           // dd($moisDate,$anDate,$result);
+                            if(($anDate == $annee && $moisDate > $mois) || ($annee > $anDate && $moisDate < $mois) ){
+                                if($resultat["vd"]=="V"){
+                                    $vict += 1 ;
+                                }
+                                else{
+                                    $def += 1;
+                                }
+                                }
+                            }
+                    }
+                }
+                $tabResult = array();
+                $tabResult['vict'] = $vict;
+                $tabResult['def'] = $def;
+            }
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            return null;
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $tabResult;
+    }
+    
     // cree pour gerer les cas ou la licence n existe pas cote fftt
     public function getClassementDetail(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);

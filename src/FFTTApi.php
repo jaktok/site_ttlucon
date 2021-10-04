@@ -452,6 +452,33 @@ class FFTTApi
 
     /**
      * @param string $joueurId
+     * @return Partie[]
+     * @throws Exception\InvalidURIParametersException
+     * @throws Exception\URIPartNotValidException
+     */
+    public function getPartiesParLicenceStatsSaison(string $joueurId,string $annee,string $mois): array
+    {
+        
+        try {
+            
+            $parties = $this->apiRequest->getPartiesParLicenceStatsSaison('xml_partie_mysql', [
+                'licence' => $joueurId
+            ],$annee,$mois);
+            
+            $tabVide = array();
+            if ($parties==null){
+                return $tabVide;
+            }
+            else{
+                return $parties;
+            }
+        } catch (NoFFTTResponseException $e) {
+            $parties = [];
+        }
+    }
+    
+    /**
+     * @param string $joueurId
      * @return UnvalidatedPartie[]
      * @throws Exception\InvalidURIParametersException
      * @throws Exception\URIPartNotValidException
@@ -728,7 +755,6 @@ class FFTTApi
         if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
             throw new InvalidLienRencontre($lienRencontre);
         }
-        //dd($data);
         $factory = new RencontreDetailsFactory($this);
         return $factory->createFromArray($data, $clubEquipeA, $clubEquipeB);
     }
