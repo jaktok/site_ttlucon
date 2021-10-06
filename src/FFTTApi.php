@@ -31,6 +31,7 @@ use FFTTApi\Model\UnvalidatedPartie;
 use FFTTApi\Service\Utils;
 use phpDocumentor\Reflection\Types\Null_;
 use function Symfony\Component\DependencyInjection\Exception\__toString;
+use phpDocumentor\Reflection\Types\Array_;
 
 class FFTTApi
 {
@@ -230,15 +231,39 @@ class FFTTApi
      */
     public function getJoueursByNom(string $nom, string $prenom = ""): array
     {
-        $arrayJoueurs = $this->apiRequest->get('xml_liste_joueur', [
+        /*$arrayJoueurs = $this->apiRequest->getJoueurByNom('xml_liste_joueur', [
                 'nom' => addslashes(Accentuation::remove($nom)),
                 'prenom' => addslashes(Accentuation::remove($prenom)),
             ]
         )['joueur'];
-
-        $arrayJoueurs = $this->wrappedArrayIfUnique($arrayJoueurs);
-
+*/
         $result = [];
+        
+               $arrayJoueurs = $this->apiRequest->getJoueurByNom('xml_liste_joueur', [
+                'nom' => addslashes(Accentuation::remove($nom)),
+                'prenom' => addslashes(Accentuation::remove($prenom)),
+            ]
+                );
+            if ($arrayJoueurs==null){
+                $realJoueur = new Joueur(
+                    '',
+                   '',
+                    '',
+                    '',
+                    '',
+                    '');
+                $result[] = $realJoueur;
+                return array();
+            }
+            else{
+                $arrayJoueurs = $this->apiRequest->getJoueurByNom('xml_liste_joueur', [
+                    'nom' => addslashes(Accentuation::remove($nom)),
+                    'prenom' => addslashes(Accentuation::remove($prenom)),
+                ]
+                    )['joueur'];
+            }
+       
+       $arrayJoueurs = $this->wrappedArrayIfUnique($arrayJoueurs);
 
         foreach ($arrayJoueurs as $joueur) {
             $realJoueur = new Joueur(

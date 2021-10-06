@@ -295,9 +295,12 @@ class ApiRequest
     
     // cree pour alleger les stats et ne retourner que les victoires defaites avec gestion des parties de la saison en cours
     public function getPartiesParLicenceStatsSaison(string $request, array $params = [],string $annee,string $mois,string $queryParameter = null){
+        //$params['licence'] = '853451';
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
-            $result =  $this->send($chaine);if($result){
+            $result =  $this->send($chaine);
+          //  dd($result);
+            if($result){
                 $vict = 0;
                 $def = 0;
                 foreach ($result["partie"] as $resultat){
@@ -421,8 +424,6 @@ class ApiRequest
     }
     
     
-    
-    
     public function getEquipeByClub(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
@@ -433,12 +434,29 @@ class ApiRequest
         }
         
         if(!$result){
-        return null;    
-        throw new InvalidURIParametersException($request, $params);
+          return null;    
         }
         /*if(array_key_exists('0', $result)){
             throw new NoFFTTResponseException($chaine);
         }*/
+        return $result;
+    }
+    
+    public function getJoueurByNom(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            return null;
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
         return $result;
     }
     
