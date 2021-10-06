@@ -19,6 +19,7 @@ use App\Form\MatchsType;
 use FFTTApi\FFTTApi;
 use App\Entity\Joueurs;
 use App\Form\JoueurMatchType;
+use Doctrine\ORM\Query\AST\Functions\UpperFunction;
 
 class ResultatParamController extends AbstractController
 {
@@ -97,11 +98,11 @@ class ResultatParamController extends AbstractController
         // Formatage des noms d'equipe pour le nom du fichier pdf
         $equipeA = $rencontre->getEquipeA();
         $equipeB = $rencontre->getEquipeB();
-        if ($equipeA != "Exempt") {
+        if (strtoupper($equipeA) != "EXEMPT" ) {
             $nomA = explode(" ",$equipeA);
             $nomEquipeA = $nomA[0] . '-' . $nomA[1];
         }
-        if ($equipeB != "Exempt") {
+        if (strtoupper($equipeB) != "EXEMPT") {
             $nomB = explode(" ",$equipeB);
             $nomEquipeB = $nomB[0] . '-' . $nomB[1];
         }
@@ -332,36 +333,38 @@ class ResultatParamController extends AbstractController
                         if ($parties->getAdversaireA()!="Double"){
                             $match = new Matchs();
                             $nomJoueur = "";
-                            if($lettreTTL=="A"){
+                            if($lettreTTL=="A"){//dd($nomJoueur);
                                 $nomJoueur = $parties->getAdversaireA();
                             }
                             else{
                                 $nomJoueur = $parties->getAdversaireB();
                             }
                             $tabNom = explode(" ", $nomJoueur);
-                            
-                            $joueurByNom = $this->api->getJoueursByNom($tabNom[0],$tabNom[sizeof($tabNom)-1]);
-                            $licence = $joueurByNom[0]->getLicence();
-                            $joueurTTL = $joueursRepo->findOneByLicenceActif($licence);
-                            $match->setJoueur($joueurTTL);
-                            $match->setRencontre($rencontre);
-                            if($lettreTTL=="A"){
-                                $match->setVictoire($parties->getScoreA());
-                            }
-                            else{
-                                $match->setVictoire($parties->getScoreB());
-                            }
-                            $match->setScore($parties->getDetail());
-                            
-                            // on verifie si le joueur est actif (joueurTTL non null
-                            if ($joueurTTL != null){
-                                // verif si deja enregistre on efface les enregistrements sans id joueur
-                                $matchRepo->nettoieIdJoueurNull();
-                                $existeMatch = $matchRepo->findByIdRencontreJoueurScore($rencontre->getId(),$joueurTTL->getId(),$parties->getDetail());
-                                // on n enregistre que les nouveaux match
-                                if($existeMatch == null){
-                                    $entityManager->persist($match);
-                                    $entityManager->flush();
+                           if (sizeof($tabNom) == 2 ){
+                                $joueurByNom = $this->api->getJoueursByNom($tabNom[0],$tabNom[sizeof($tabNom)-1]);
+                                
+                                $licence = $joueurByNom[0]->getLicence();
+                                $joueurTTL = $joueursRepo->findOneByLicenceActif($licence);
+                                $match->setJoueur($joueurTTL);
+                                $match->setRencontre($rencontre);
+                                if($lettreTTL=="A"){
+                                    $match->setVictoire($parties->getScoreA());
+                                }
+                                else{
+                                    $match->setVictoire($parties->getScoreB());
+                                }
+                                $match->setScore($parties->getDetail());
+                                
+                                // on verifie si le joueur est actif (joueurTTL non null
+                                if ($joueurTTL != null){
+                                    // verif si deja enregistre on efface les enregistrements sans id joueur
+                                    $matchRepo->nettoieIdJoueurNull();
+                                    $existeMatch = $matchRepo->findByIdRencontreJoueurScore($rencontre->getId(),$joueurTTL->getId(),$parties->getDetail());
+                                    // on n enregistre que les nouveaux match
+                                    if($existeMatch == null){
+                                        $entityManager->persist($match);
+                                        $entityManager->flush();
+                                    }
                                 }
                             }
                         }
