@@ -47,17 +47,28 @@ endblock %} {% block body %}
 			    </thead>
 			    <tbody>
 			    {% if calendrierPhase1 is defined %}
+			    	{% set myVal = 1 %}
 			        {% for rencontre in calendrierPhase1 %}
 			                {% if rencontre.equipeType.id == equipe.id %}
 			                    <tr>
 			                        <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
 			                        <td>{{ rencontre.equipeA }} / {{ rencontre.equipeB }}</td>
-			                        {% if rencontre.victoire == 1  %}
+			                        {% if rencontre.victoire == 'true'  %}
                                     <td>Victoire</td>
-                                    {% elseif rencontre.scoreA == null and rencontre.scoreB == null %}
+                                    {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA != 'EXEMPT' and rencontre.equipeB != 'EXEMPT')   %}
                                     <td>Match à venir</td>
+                                    {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA == 'EXEMPT' or rencontre.equipeB == 'EXEMPT')   %}
+                                    <td>EXEMPT</td>
                                     {% elseif rencontre.scoreA == rencontre.scoreB %}
                                     <td>Egalité</td>
+                                    {% elseif (rencontre.equipeA == 'LUCON '~myVal and rencontre.scoreA > rencontre.scoreB)  %}
+                                    <td>Victoire</td>
+                                    {% elseif (rencontre.equipeA == 'LUCON '~myVal and rencontre.scoreA < rencontre.scoreB)  %}
+                                    <td>Défaite</td>
+                                    {% elseif (rencontre.equipeB == 'LUCON '~myVal and rencontre.scoreB > rencontre.scoreA)  %}
+                                    <td>Victoire</td>
+                                    {% elseif (rencontre.equipeB == 'LUCON '~myVal and rencontre.scoreB < rencontre.scoreA)  %}
+                                    <td>Défaite</td>
                                     {% else  %}
                                     <td>Défaite</td>
                                     {% endif %}
@@ -68,6 +79,7 @@ endblock %} {% block body %}
                                     {% endif %}
 					            </tr>
 					            {% endif %}
+					            {% set myVal = myVal + 1 %}
 					    {% endfor %}
 				  {% endif %}
 				  {% endif %}
