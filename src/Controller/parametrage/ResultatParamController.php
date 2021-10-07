@@ -277,6 +277,8 @@ class ResultatParamController extends AbstractController
         // recuperation de la rencontre selectionne
         $rencontre = $rencontreRepo->find($id);
         
+        $joueurByClub = $this->api->getJoueursByClub($this->idClub);
+        
         if ($rencontre) {
             if($rencontre->getDomicile()){
                 $nomAversaire = $rencontre->getEquipeB();
@@ -315,7 +317,6 @@ class ResultatParamController extends AbstractController
                 // on repasse le tableau avec le club vendeen remis dedans
                 $clubByName = $tabClubByName;
             }
-            
             $dateJour = new \DateTime();
             // la date du match doit etre inferieure a la date du jour sinon pas de resultat
             if (!empty($clubByName) && $rencontre->getDateRencontre()<=$dateJour){
@@ -327,31 +328,65 @@ class ResultatParamController extends AbstractController
                 if($isResultat){// si le resultat n existe pas on arrete
                     // on recupere le resultat fftt
                     $detailRencontreByLien = $this->api->getDetailsRencontreByLien($rencontre->getIsRetour(),$this->idClub,$idAversaire);
-                    
+                    $i = 0;
                     // on parcours la tableau des resultats
                     foreach ($detailRencontreByLien->getParties() as $parties){
+                        $i++;
                         if ($parties->getAdversaireA()!="Double"){
                             $match = new Matchs();
                             $nomJoueur = "";
+                            $adversaireA = false;
+                            $adversaireB = false;
                             if($lettreTTL=="A"){//dd($nomJoueur);
                                 $nomJoueur = $parties->getAdversaireA();
+                                $adversaireA = true;
                             }
                             else{
                                 $nomJoueur = $parties->getAdversaireB();
+                                $adversaireB = true;
                             }
-                            $tabNom = explode(" ", $nomJoueur);
+                            $joueurTTLExiste = false;
+                            foreach ($joueurByClub as $joueur){
+                                if ($joueur->getNom()." ".$joueur->getPrenom()==$nomJoueur){
+                                    $joueurTTLExiste = true;
+                                }
+                            }
+                            
+                            if(!$joueurTTLExiste){//dd($joueurTTLExiste,$adversaireA);
+                                if($adversaireA){
+                                    $nomJoueur =   $parties->getAdversaireB();
+                                }
+                                else{
+                                    $nomJoueur =   $parties->getAdversaireA();
+                                }
+                            }
+                            $tabNom = explode(" ", $nomJoueur);//dd($tabNom);
                            if (sizeof($tabNom) == 2 ){
                                 $joueurByNom = $this->api->getJoueursByNom($tabNom[0],$tabNom[sizeof($tabNom)-1]);
-                                
-                                $licence = $joueurByNom[0]->getLicence();
+                                if (null == $joueurByNom){
+                                    foreach ($joueurByClub as $joueur){
+                                        if ($joueur->getNom()==$tabNom[0] && $joueur->getPrenom()==$tabNom[1]){
+                                            $licence = $joueur->getLicence();
+                                        }
+                                    }
+                                }
+                                else{
+                                    $licence = $joueurByNom[0]->getLicence();
+                                }
                                 $joueurTTL = $joueursRepo->findOneByLicenceActif($licence);
                                 $match->setJoueur($joueurTTL);
                                 $match->setRencontre($rencontre);
-                                if($lettreTTL=="A"){
+                                if($lettreTTL=="A" && $joueurTTLExiste){
                                     $match->setVictoire($parties->getScoreA());
                                 }
-                                else{
+                                else if($lettreTTL=="A" && !$joueurTTLExiste){
+                                $match->setVictoire($parties->getScoreB());
+                                }
+                                else if($lettreTTL=="B" && $joueurTTLExiste){
                                     $match->setVictoire($parties->getScoreB());
+                                }
+                                else if($lettreTTL=="B" && !$joueurTTLExiste){
+                                    $match->setVictoire($parties->getScoreA());
                                 }
                                 $match->setScore($parties->getDetail());
                                 
