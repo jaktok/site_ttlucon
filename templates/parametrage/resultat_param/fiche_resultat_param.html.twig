@@ -139,6 +139,7 @@
         <thead>
           <tr>
           <th>Joueur</th>
+          <th>Adversaire</th>
             <th data-sortable="true">Résultat</th>
             <th data-sortable="true">Score</th>
             
@@ -150,6 +151,7 @@
         {% for match in matchs %}
         <tr>
         <td> {{ match.joueur.nom }} {{ match.joueur.prenom }} </td>
+        <td> {{ match.double1 }} </td>
             {% if match.victoire == 1  %}
            		<td>Victoire</td>
             {% else %}
