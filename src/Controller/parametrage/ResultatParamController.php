@@ -93,7 +93,7 @@ class ResultatParamController extends AbstractController
             $numDouble = array_column($matchsDouble, 'numDouble');
             array_multisort($numDouble, SORT_ASC, $matchsDouble);
         }
-        
+        //dd($matchsDouble);
         $idRencontre = $rencontre->getId();
         // Formatage des noms d'equipe pour le nom du fichier pdf
         $equipeA = $rencontre->getEquipeA();
@@ -335,14 +335,17 @@ class ResultatParamController extends AbstractController
                         if ($parties->getAdversaireA()!="Double"){
                             $match = new Matchs();
                             $nomJoueur = "";
+                            $nomAdversaire = "";
                             $adversaireA = false;
                             $adversaireB = false;
                             if($lettreTTL=="A"){//dd($nomJoueur);
                                 $nomJoueur = $parties->getAdversaireA();
+                                $nomAdversaire =  $parties->getAdversaireB();
                                 $adversaireA = true;
                             }
                             else{
                                 $nomJoueur = $parties->getAdversaireB();
+                                $nomAdversaire =  $parties->getAdversaireA();
                                 $adversaireB = true;
                             }
                             $joueurTTLExiste = false;
@@ -355,9 +358,11 @@ class ResultatParamController extends AbstractController
                             if(!$joueurTTLExiste){//dd($joueurTTLExiste,$adversaireA);
                                 if($adversaireA){
                                     $nomJoueur =   $parties->getAdversaireB();
+                                    $nomAdversaire =  $parties->getAdversaireA();
                                 }
                                 else{
                                     $nomJoueur =   $parties->getAdversaireA();
+                                    $nomAdversaire =  $parties->getAdversaireB();
                                 }
                             }
                             $tabNom = explode(" ", $nomJoueur);//dd($tabNom);
@@ -396,6 +401,7 @@ class ResultatParamController extends AbstractController
                                     $matchRepo->nettoieIdJoueurNull();
                                     $existeMatch = $matchRepo->findByIdRencontreJoueurScore($rencontre->getId(),$joueurTTL->getId(),$parties->getDetail());
                                     // on n enregistre que les nouveaux match
+                                    $match->setDouble1($nomAdversaire);
                                     if($existeMatch == null){
                                         $entityManager->persist($match);
                                         $entityManager->flush();
