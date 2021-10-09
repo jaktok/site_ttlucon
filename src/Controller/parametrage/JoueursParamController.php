@@ -429,10 +429,12 @@ class JoueursParamController extends AbstractController
     /**
      * @Route("/autostats/joueur/", name="maj_stats")
      */
-    public function majStats(Request $request, JoueursRepository $joueursRepo): Response
+    public function majStats(Request $request, JoueursRepository $joueursRepo, MatchsRepository $matchsRepo): Response
     {
         
-        // resuperation saison suite a gestion calamiteuse des parties fftt .... 
+        // tableau cree si fftt n est pas capable de ramener les resultats en cours ...
+        $tabResultLocal = array();
+        // recuperation saison suite a gestion calamiteuse des parties fftt .... 
         $annee = date("Y");
         $year = date("Y");
         $month = date("m");
@@ -452,9 +454,18 @@ class JoueursParamController extends AbstractController
             // on recupere le joueur chez nous
             $joueurTTL = $joueursRepo->findOneByLicenceActif($noLicence);
             if ($joueurTTL != null) {
+                $isResultLocal = false;
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
-                
+               // dd($partieJoueurByLicence,$joueurTTL);
+                //if($joueurTTL->getId()=="97"){dd($tabResultLocal,$joueurTTL->getId(),$partieJoueurByLicence);}
+                if( (!empty($partieJoueurByLicence) && ($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0)) || empty($partieJoueurByLicence)){
+                    $tabResultLocal["vict"] = $matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId());
+                    $tabResultLocal["def"] = $matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
+                    $isResultLocal = true;
+                   // if($joueurTTL->getId()=="97"){dd($tabResultLocal,$joueurTTL->getId());}
+                }
                 $tabJoueursLucon[$i]['joueur'] = $joueurTTL;
+
                 // on va chercher le classement du joueur
                 $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
                 $pointsDebutSaison = $joueurByLicence->getPointsInitials();
@@ -470,6 +481,10 @@ class JoueursParamController extends AbstractController
                     $joueurTTL->setVictoires($partieJoueurByLicence["vict"]);
                     $joueurTTL->setDefaites($partieJoueurByLicence["def"]);
                 } // fin if partiesjoueurbylicence
+                if($isResultLocal){
+                    $joueurTTL->setVictoires($tabResultLocal["vict"]);
+                    $joueurTTL->setDefaites($tabResultLocal["def"]);
+                }
                 $entityManager->persist($joueurTTL);
                 $entityManager->flush();
             } // fin if joueur
@@ -478,6 +493,7 @@ class JoueursParamController extends AbstractController
         }
         return $this->redirectToRoute('joueurs_param');
     }
+    
     
     /**
      * @Route("/dirigeant/purgeclassement/joueur/", name="purge_classements")
