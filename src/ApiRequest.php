@@ -299,7 +299,7 @@ class ApiRequest
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
             $result =  $this->send($chaine);
-          //  dd($result);
+            //if($params["licence"]=="188857"){ dd($result,$request, $params, $queryParameter,$chaine);}
             if($result){
                 $vict = 0;
                 $def = 0;
