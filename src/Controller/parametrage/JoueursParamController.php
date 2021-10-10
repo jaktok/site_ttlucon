@@ -443,6 +443,20 @@ class JoueursParamController extends AbstractController
         }
         $mois = "8";
         
+        $phase = 2;
+        $anneeEncours = date("Y");
+        $moisEncours = date("m");
+        $tabPhase1 = array("08","09","10","11","12");
+        $tabPhase2 = array("01","02","03","04","05","06","07");
+        if (in_array($moisEncours, $tabPhase1)){
+            $phase = 1;
+        }
+        if (in_array($moisEncours, $tabPhase2)){
+            $phase = 2;
+            $anneeEncours -= $anneeEncours;
+        }
+        
+        
        $entityManager = $this->getDoctrine()->getManager();
         
         // recup liste des joueurs du club
@@ -456,6 +470,16 @@ class JoueursParamController extends AbstractController
             if ($joueurTTL != null) {
                 $isResultLocal = false;
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
+                
+                // gestion du classement debut non gere a ce jour par fftt ...
+                $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence($noLicence);
+                $classementDebut = 0;
+                foreach ($histoJoueurByLicence as $histo){
+                    if($histo->getAnneeDebut() == $anneeEncours  && $histo->getPhase() == $phase){
+                        $classementDebut = $histo->getPoints();
+                    }
+                }
+                
                // dd($partieJoueurByLicence,$joueurTTL);
                 //if($joueurTTL->getId()=="97"){dd($tabResultLocal,$joueurTTL->getId(),$partieJoueurByLicence);}
                 if( (!empty($partieJoueurByLicence) && ($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0)) || empty($partieJoueurByLicence)){
@@ -471,7 +495,12 @@ class JoueursParamController extends AbstractController
                 $pointsDebutSaison = $joueurByLicence->getPointsInitials();
                 $pointsActuel = $joueurByLicence->getPoints();
                 $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
-                $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
+                if($classementDebut!=0){
+                    $joueurTTL->setPointsDebSaison(round($classementDebut));
+                }
+                else{
+                    $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
+                }
                 $joueurTTL->setPointsActuel( round($pointsActuel));
                 $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
                 $joueurTTL->setRangDep($joueurByLicence->getRangDepartemental());
