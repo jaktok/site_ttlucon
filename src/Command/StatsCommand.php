@@ -49,6 +49,19 @@ class StatsCommand extends Command
           }
           $mois = "8";
           
+          $phase = 2;
+          $anneeEncours = date("Y");
+          $moisEncours = date("m");
+          $tabPhase1 = array("08","09","10","11","12");
+          $tabPhase2 = array("01","02","03","04","05","06","07");
+          if (in_array($moisEncours, $tabPhase1)){
+              $phase = 1;
+          }
+          if (in_array($moisEncours, $tabPhase2)){
+              $phase = 2;
+              $anneeEncours -= $anneeEncours;
+          }
+          
         // recup liste des joueurs du club sur FFTT
         $tabJoueurByClub = $this->api->getLicenceJoueursByClub($this->idClub);
         // on parcourt le tableau pour associer avec les joueurs enregistrés 
@@ -57,6 +70,15 @@ class StatsCommand extends Command
             $joueurTTL = $this->joueurRepo->findOneByLicenceActif($noLicence);
             if ($joueurTTL != null) {
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
+                // gestion du classement debut non gere a ce jour par fftt ...
+                $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence($noLicence);
+                $classementDebut = 0;
+                foreach ($histoJoueurByLicence as $histo){
+                    if($histo->getAnneeDebut() == $anneeEncours  && $histo->getPhase() == $phase){
+                        $classementDebut = $histo->getPoints();
+                    }
+                }
+                
                 if( (!empty($partieJoueurByLicence) && ($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0)) || empty($partieJoueurByLicence)){
                     $tabResultLocal["vict"] = $this->matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId());
                     $tabResultLocal["def"] = $this->matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
@@ -68,6 +90,12 @@ class StatsCommand extends Command
                     $pointsDebutSaison = $joueurByLicence->getPointsInitials();
                     $pointsActuel = $joueurByLicence->getPoints();
                     $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
+                    if($classementDebut!=0){
+                        $joueurTTL->setPointsDebSaison(round($classementDebut));
+                    }
+                    else{
+                        $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
+                    }
                     $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
                     $joueurTTL->setPointsActuel( round($pointsActuel));
                     $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
