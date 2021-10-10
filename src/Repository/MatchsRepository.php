@@ -137,6 +137,43 @@ class MatchsRepository extends ServiceEntityRepository
     }
     
     
+    /*public function findVictoiresByIdJoueur($idJoueur)
+    {
+        return $this->createQueryBuilder('j')
+        ->andWhere('j.joueur = :val')
+        ->andWhere('j.matchDouble IS NULL')
+        ->andWhere('j.victoire = 1')
+        ->setParameter('val', $idJoueur)
+        ->getQuery()
+        ->getQuery()->getSingleScalarResult();
+        ;
+    }*/
+    
+    public function findVictoiresByIdJoueur($idJoueur)
+    {
+        return $this->createQueryBuilder('j')
+        ->select("count(j.joueur)")
+        ->andWhere('j.joueur = :val')
+        ->andWhere('j.matchDouble IS NULL')
+        ->andWhere('j.victoire = 1')
+        ->setParameter('val', $idJoueur)
+        ->getQuery()->getSingleScalarResult();
+        ;
+    }
+    
+    
+    public function findDefaitesByIdJoueur($idJoueur)
+    {
+        return $this->createQueryBuilder('j')
+        ->select("count(j.joueur)")
+        ->andWhere('j.joueur = :val')
+        ->andWhere('j.matchDouble IS NULL')
+        ->andWhere('j.victoire = 0')
+        ->setParameter('val', $idJoueur)
+        ->getQuery()->getSingleScalarResult();
+        ;
+    }
+    
     /*
     public function findOneBySomeField($value): ?Matchs
     {
