@@ -96,7 +96,6 @@ class StatsCommand extends Command
                     else{
                         $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
                     }
-                    $joueurTTL->setPointsDebSaison(round($pointsDebutSaison));
                     $joueurTTL->setPointsActuel( round($pointsActuel));
                     $joueurTTL->setPointsMoisDernier(round($pointsMoisDernier));
                     $joueurTTL->setRangDep($joueurByLicence->getRangDepartemental());
