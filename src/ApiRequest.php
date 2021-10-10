@@ -108,6 +108,25 @@ class ApiRequest
         return $result;
     }
     
+    public function getHistoriqueJoueurByLicence(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            return array();
+        }
+        
+        if(!$result){
+            return array();
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
     public function getRencontrePouleByLienDivision(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{

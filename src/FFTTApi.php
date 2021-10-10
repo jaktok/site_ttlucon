@@ -378,9 +378,18 @@ class FFTTApi
     public function getHistoriqueJoueurByLicence(string $licenceId): array
     {
         try {
-            $classements = $this->apiRequest->get('xml_histo_classement', [
+            $classements = $this->apiRequest->getHistoriqueJoueurByLicence('xml_histo_classement', [
+                'numlic' => $licenceId,
+            ]);
+            
+            if (empty($classements)){
+                return $classements;
+            }
+            
+            $classements = $this->apiRequest->getHistoriqueJoueurByLicence('xml_histo_classement', [
                 'numlic' => $licenceId,
             ])['histo'];
+            
         } catch (NoFFTTResponseException $e) {
             throw new JoueurNotFound($licenceId);
         }
