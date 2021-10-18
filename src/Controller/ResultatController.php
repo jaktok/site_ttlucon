@@ -50,6 +50,7 @@ class ResultatController extends AbstractController
         $tabClassement = array();
         
         $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipes);
+       // dd($equipesByClub);
         $i=0;
         foreach ($equipes as $equipe){
             foreach ($equipesByClub as $equipeFFTT){
@@ -60,13 +61,16 @@ class ResultatController extends AbstractController
                         $lien =  $this->racineLien.$equipeFFTT->getLienDivision();
                        $tabClassement[$i]["lien"] = $lien;
                        $tabClassement[$i]["equipe"] = $nomEquipe;
+                       $lienDivision = $equipeFFTT->getLienDivision();
+                       $pouleByLien = $this->api->getClassementPouleByLienDivision($lienDivision);
+                       $tabClassement[$i]["classement"] = $pouleByLien;
                        $i++;
                     }
                 }
             }
         }
         
-        $calendrierPhase1 = $rencontreRepo->findByPhase(1);
+        $calendrierPhase1 = $rencontreRepo->findByPhase(1);//dd($calendrierPhase1);
 
         $calendrierPhase2 = $rencontreRepo->findByPhase(2);
         return $this->render('resultat/resultat.html.twig', [
