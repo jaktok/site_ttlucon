@@ -30,9 +30,10 @@ endblock %} {% block body %}
 			  <table class="table table-striped table-sm" data-toggle="table" data-pagination="false">
 			    <thead>
 			      <tr class="align-middle">
-			        <th>Posit.</th>
+			        <th></th>
 			        <th>Equipe</th>
 			        <th>Pts</th>
+			        <th>Joué</th>
 			        <th>diff.</th>
 			      </tr>
 			    </thead>
@@ -44,6 +45,7 @@ endblock %} {% block body %}
 			                 <td>{{ myVal }}</td>
 			                 <td>{{ class.nomEquipe }} </td>
 			                 <td>{{ class.points }}</td>
+			                 <td>{{ class.matchJouees }}</td>
 			                 <td>{{ class.victoires - class.defaites}} </td>
 			                </tr>
 			                {% set myVal = myVal + 1 %}
