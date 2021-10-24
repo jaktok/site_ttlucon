@@ -25,16 +25,22 @@ endblock %} {% block body %}
 		
 		{% for classement in tabClassement %}
 		
-		<div class="col-sm-3 align-self-center">
+		<div class="col-sm-6 margin-top">
 			<div align="center">{{ classement['equipe'] }} </div>
 			  <table class="table table-striped table-sm">
 			    <thead>
 			      <tr class="align-middle">
 			        <th></th>
-			        <th>Equipe</th>
-			        <th>Pts</th>
-			        <th>Joué</th>
-			        <th>diff.</th>
+			        <th style="text-align: center;">Equipe</th>
+			        <th style="text-align: center;">Pts</th>
+			        <th style="text-align: center;">Joué</th>
+			        <th style="text-align: center;">V</th>
+			        <th style="text-align: center;">N</th>
+			        <th style="text-align: center;">D</th>
+			        <th style="text-align: center;">FF/P</th>
+			        <th style="text-align: center;">PG</th>
+			        <th style="text-align: center;">PP</th>
+			        <th style="text-align: center;">diff.</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -53,19 +59,57 @@ endblock %} {% block body %}
 			                 	<td>{{ class.nomEquipe }} </td>
 			                 {% endif %}
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="background-color:#73C2FB">{{ class.points }}</td>
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.points }}</td>
 			                 {% else %}
-			                 	<td>{{ class.points }}</td>
+			                 	<td style="text-align: center;">{{ class.points }}</td>
 			                 {% endif %}
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="background-color:#73C2FB">{{ class.matchJouees }}</td>
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.matchJouees }}</td>
 			                 {% else %}
-			                 	<td>{{ class.matchJouees }}</td>
+			                 	<td style="text-align: center;">{{ class.matchJouees }}</td>
 			                 {% endif %}
+			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="background-color:#73C2FB">{{ class.victoires - class.defaites}} </td>
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbVic }}</td>
 			                 {% else %}
-			                 	<td>{{ class.victoires - class.defaites}} </td>
+			                 	<td style="text-align: center;">{{ class.nbVic }}</td>
+			                 {% endif %}
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbNull }}</td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.nbNull }}</td>
+			                 {% endif %}
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbDef }}</td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.nbDef }}</td>
+			                 {% endif %}
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbForfaits }}</td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.nbForfaits }}</td>
+			                 {% endif %}
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.victoires }}</td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.victoires }}</td>
+			                 {% endif %}
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.defaites }}</td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.defaites }}</td>
+			                 {% endif %}
+			                 
+			                 
+			                 {% if classement['equipe'] == class.nomEquipe %}
+			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.victoires - class.defaites}} </td>
+			                 {% else %}
+			                 	<td style="text-align: center;">{{ class.victoires - class.defaites}} </td>
 			                 {% endif %}
 			                </tr>
 			                {% set myVal = myVal + 1 %}
