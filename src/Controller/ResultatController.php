@@ -50,7 +50,7 @@ class ResultatController extends AbstractController
         $tabClassement = array();
         
         $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipes);
-       // dd($equipesByClub);
+       //dd($equipesByClub);
         $i=0;
         foreach ($equipes as $equipe){
             foreach ($equipesByClub as $equipeFFTT){
@@ -71,7 +71,7 @@ class ResultatController extends AbstractController
         }
         
         $calendrierPhase1 = $rencontreRepo->findByPhase(1);//dd($calendrierPhase1);
-
+        //dd($tabClassement);
         $calendrierPhase2 = $rencontreRepo->findByPhase(2);
         return $this->render('resultat/resultat.html.twig', [
             'resultats' => $rencontreRepo->findAll(),
