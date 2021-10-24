@@ -108,6 +108,46 @@ class ApiRequest
         return $result;
     }
     
+    
+    public function getClassementPouleByLienDivision(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
+    public function getJoueursByClub(string $request, array $params = [], string $queryParameter = null){
+        $chaine = $this->prepare($request, $params, $queryParameter);
+        try{
+            $result =  $this->send($chaine);
+        }
+        catch (ClientException $ce){
+            throw new URIPartNotValidException($request);
+        }
+        
+        if(!$result){
+            throw new InvalidURIParametersException($request, $params);
+        }
+        if(array_key_exists('0', $result)){
+            throw new NoFFTTResponseException($chaine);
+        }
+        return $result;
+    }
+    
+    
+    
     public function getHistoriqueJoueurByLicence(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
@@ -214,9 +254,10 @@ class ApiRequest
         $contenu = str_replace("&ugrave;", "ù", $contenu);
         $contenu = str_replace("&ocirc;", "ô", $contenu);
         $contenu = str_replace("&acirc;", "â", $contenu);
+        //$contenu = str_replace("/", "", $contenu);
         $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
        // $content = preg_replace('/\r|\n/', '', $content);
-        $xml = simplexml_load_string($content);
+        $xml = simplexml_load_string($content);//dd($xml);
         return json_decode(json_encode($xml), true);
     }
     
@@ -316,6 +357,7 @@ class ApiRequest
     public function getPartiesParLicenceStatsSaison(string $request, array $params = [],string $annee,string $mois,string $queryParameter = null){
         //$params['licence'] = '853451';
         $chaine = $this->prepare($request, $params, $queryParameter);
+        //dd($chaine);
         try{
             $result =  $this->send($chaine);
             //if($params["licence"]=="188857"){ dd($result,$request, $params, $queryParameter,$chaine);}
@@ -363,6 +405,7 @@ class ApiRequest
         $chaine = $this->prepare($request, $params, $queryParameter);
         try{
             $result =  $this->send($chaine);
+           // if($params["licence"]=="8524640"){dd($result,$chaine);};
         }
         catch (ClientException $ce){
             throw new URIPartNotValidException($request);

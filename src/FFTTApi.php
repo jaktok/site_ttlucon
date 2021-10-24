@@ -178,7 +178,7 @@ class FFTTApi
     public function getJoueursByClub(string $clubId): array
     {
         try {
-            $arrayJoueurs = $this->apiRequest->get('xml_liste_joueur_o', [
+            $arrayJoueurs = $this->apiRequest->getJoueursByClub('xml_liste_joueur_o', [
                     'club' => $clubId,
                 ]
             );
@@ -342,7 +342,7 @@ class FFTTApi
             ]);
             
             if ($joueurDetails==null){
-                return new Classement(new \DateTime(), "500", "500", "500", "0", "0", "0", "500", "500");
+                return new Classement(new \DateTime(), "0", "0", "0", "0", "0", "0", "0", "0");
             }
             
             
@@ -680,7 +680,7 @@ class FFTTApi
      */
     public function getClassementPouleByLienDivision(string $lienDivision): array
     {
-        $data = $this->apiRequest->get('xml_result_equ', ["action" => "classement"], $lienDivision)['classement'];
+        $data = $this->apiRequest->getClassementPouleByLienDivision('xml_result_equ', ["action" => "classement"], $lienDivision)['classement'];
         $result = [];
         $lastClassment = 0;
         foreach ($data as $equipePouleData) {
@@ -688,7 +688,7 @@ class FFTTApi
             if (!is_string($equipePouleData['equipe'])) {
                 break;
             }
-
+           //dd($equipePouleData);
             $result[] = new EquipePoule(
                 $equipePouleData['clt'] === '-' ? $lastClassment : intval($equipePouleData['clt']),
                 $equipePouleData['equipe'],
@@ -698,7 +698,11 @@ class FFTTApi
                 intval($equipePouleData['totvic']),
                 intval($equipePouleData['totdef']),
                 intval($equipePouleData['idequipe']),
-                $equipePouleData['idclub']
+                $equipePouleData['idclub'],
+                intval($equipePouleData['vic']),
+                intval($equipePouleData['def']),
+                intval($equipePouleData['nul']),
+                intval($equipePouleData['pf'])
             );
             $lastClassment = $equipePouleData['clt'] == "-" ? $lastClassment : intval($equipePouleData['clt']);
         }
