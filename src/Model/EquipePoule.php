@@ -17,6 +17,11 @@ class EquipePoule
     private $defaites;
     private $idEquipe;
     private $idCLub;
+    private $nbVic;
+    private $nbDef;
+    private $nbNull;
+    private $nbForfaits;
+    
 
     public function __construct(
         int $classement,
@@ -27,7 +32,12 @@ class EquipePoule
         int $victoires,
         int $defaites,
         int $idEquipe,
-        string $idCLub)
+        string $idCLub,
+        int $nbVic,
+        int $nbDef,
+        int $nbNull,
+        int $nbForfaits
+        )
     {
         $this->classement = $classement;
         $this->nomEquipe = $nomEquipe;
@@ -38,6 +48,43 @@ class EquipePoule
         $this->defaites = $defaites;
         $this->idEquipe = $idEquipe;
         $this->idCLub = $idCLub;
+        $this->nbVic = $nbVic;
+        $this->nbDef = $nbDef;
+        $this->nbNull = $nbNull;
+        $this->nbForfaits = $nbForfaits;
+        
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbVic()
+    {
+        return $this->nbVic;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbDef()
+    {
+        return $this->nbDef;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbNull()
+    {
+        return $this->nbNull;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbForfaits()
+    {
+        return $this->nbForfaits;
     }
 
     public function getClassement(): int
