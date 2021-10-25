@@ -92,17 +92,13 @@ class StatistiqueController extends AbstractController
                 $i ++;
             }
         }
-        
+        $pointsActuel = array_column($tabJoueursLucon, 'pointsActuel');
+        $pourcentDouble = array_column($tabJoueursLucon, 'pourcentDouble');
+        $victoires = array_column($tabJoueursLucon, 'victoires');
         $pourcentage = array_column($tabJoueursLucon, 'pourcent');
         $progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
-        array_multisort($progressionAnnuelle, SORT_DESC,$pourcentage,SORT_DESC, $tabJoueursLucon);
-     
-        
-        // tri du tableau par progression
-        /*$progressionAnnuelle = array_column($tabJoueursLucon, 'progressionAnnuelle');
-        array_multisort($progressionAnnuelle, SORT_DESC, $tabJoueursLucon);
-        $pourcentage = array_column($tabJoueursLucon, 'pourcent');
-        array_multisort($pourcentage, SORT_DESC, $tabJoueursLucon);*/
+        array_multisort($progressionAnnuelle, SORT_DESC,$pourcentage,SORT_DESC,$victoires,SORT_DESC,$pourcentDouble,SORT_DESC, $victoires,SORT_DESC,$pointsActuel,SORT_DESC, $tabJoueursLucon);
+       //dd($tabJoueursLucon);
         
         $pos = 1;
         for($i=0; $i < sizeof($tabJoueursLucon); $i++){
