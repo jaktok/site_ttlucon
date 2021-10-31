@@ -31,7 +31,7 @@ class IndividuelController extends AbstractController
     
         $tabMatchs = array();
         $j = 0;
-        
+        $i = 0;
         foreach ($listeCompet as $compet){
             $competition = new Competition();
             $competition = $compet;
@@ -40,6 +40,8 @@ class IndividuelController extends AbstractController
                     $competition->setTypeCompetition($typeCompet);
                 }
             }
+            
+           // dd($compet,$listeCompet[$i]->getDate());
             
             // rechercher les matchs liés à l id competition
             $matchsCompet = $matchsRepo->findByIdCompet($compet->getId());
@@ -96,11 +98,15 @@ class IndividuelController extends AbstractController
             case "Adapte":
                 $this->categorie = "Adapte";
         }
+        $dtjour = new \DateTime();
+        
+       // dd($listeCompet,$tabMatchs);
         return $this->render('individuel/individuel.html.twig', [
             'formCompets' =>  $form->createView(),
             'compets'   => $listeCompet,
             'tabMatchs' => $tabMatchs,
             'categorie' => $this->categorie,
+            'date' => $dtjour,
         ]);
     }
 }
