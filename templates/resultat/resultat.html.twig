@@ -25,7 +25,7 @@ endblock %} {% block body %}
 		
 		{% for classement in tabClassement %}
 		
-		<div class="col-sm-6 margin-top">
+		<div class="col-sm-6 margin-top" style="background-color:#FEFEFE">
 			<div align="center">{{ classement['equipe'] }} </div>
 			  <table class="table table-striped table-sm">
 			    <thead>
@@ -49,65 +49,65 @@ endblock %} {% block body %}
 			    	{% for class in classement['classement']  %}
 			               <tr>
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="background-color:#73C2FB">{{ myVal }}</td>
+			                 	<td  style="background-color:#A9EAFE">{{ myVal }}</td>
 			                 {% else %}
 			                 	<td>{{ myVal }}</td>
 			                 {% endif %}
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="background-color:#73C2FB">{{ class.nomEquipe }} </td>
+			                 	<td  style="background-color:#A9EAFE">{{ class.nomEquipe }} </td>
 			                 {% else %}
 			                 	<td>{{ class.nomEquipe }} </td>
 			                 {% endif %}
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.points }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.points }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.points }}</td>
 			                 {% endif %}
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.matchJouees }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.matchJouees }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.matchJouees }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbVic }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.nbVic }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.nbVic }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbNull }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.nbNull }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.nbNull }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbDef }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.nbDef }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.nbDef }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.nbForfaits }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.nbForfaits }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.nbForfaits }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.victoires }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.victoires }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.victoires }}</td>
 			                 {% endif %}
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.defaites }}</td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.defaites }}</td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.defaites }}</td>
 			                 {% endif %}
 			                 
 			                 
 			                 {% if classement['equipe'] == class.nomEquipe %}
-			                 	<td  style="text-align: center;background-color:#73C2FB">{{ class.victoires - class.defaites}} </td>
+			                 	<td  style="text-align: center;background-color:#A9EAFE">{{ class.victoires - class.defaites}} </td>
 			                 {% else %}
 			                 	<td style="text-align: center;">{{ class.victoires - class.defaites}} </td>
 			                 {% endif %}
@@ -148,14 +148,15 @@ endblock %} {% block body %}
 			      <tr class="align-middle">
 			        <th>Date</th>
 			        <th>Adversaire</th>
-			        <th>Victoire</th>
 			        <th>Resultat</th>
+			        <th>Detail</th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			    {% if calendrierPhase1 is defined %}
 			    	{% set myVal = 1 %}
-			        {% for rencontre in calendrierPhase1 %}
+			    	{% for rencontre in calendrierPhase1 %}
+			                {% set exem = 0 %}
 			                {% if rencontre.equipeType.id == equipe.id %}
 			                    <tr>
 			                        <td>{{ rencontre.dateRencontre|date('d/m/Y') }}</td>
@@ -165,6 +166,7 @@ endblock %} {% block body %}
                                     {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA != 'EXEMPT' and rencontre.equipeB != 'EXEMPT')   %}
                                     <td>Match à venir</td>
                                     {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA == 'EXEMPT' or rencontre.equipeB == 'EXEMPT')   %}
+                                    {% set exem = 1 %}
                                     <td>EXEMPT</td>
                                     {% elseif rencontre.scoreA == rencontre.scoreB %}
                                     <td>Egalité</td>
@@ -179,7 +181,9 @@ endblock %} {% block body %}
                                     {% else  %}
                                     <td>Défaite</td>
                                     {% endif %}
-                                    {% if rencontre.fichier is defined and rencontre.fichier != null %} 
+                                    {% if exem == 1  %}
+                                    <td>EXEMPT</td>
+                                    {% elseif rencontre.fichier is defined and rencontre.fichier != null %} 
                                     <td><a href="{{ path('resultat_rencontre', { 'id': rencontre.id}) }}" class="btn btn-primary btn-sm" target="_blank">Consulter</a></td>
                                     {% else %}
                                     <td>indisponible</td>
