@@ -62,9 +62,19 @@
 						<div class="col-sm-3 align-items-center" align="left">
 							<p>Progr. pts annuel :</p>
 						</div>
-						<div class="col-sm-3" align="left">
-							<h4> {{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison}} points</h4>
-						</div>
+						 {% if (joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison) > 0 %}
+			                 	<div class="col-sm-3 text-success" align="left">
+									<h4> {{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison}} points</h4>
+								</div>
+			             {% elseif (joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison) < 0 %}
+			             		<div class="col-sm-3 text-danger" align="left">
+									<h4> {{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison}} points</h4>
+								</div>
+			             {% else %}
+			                 	<div class="col-sm-3" align="left">
+									<h4> {{ joueurA.joueur.pointsActuel - joueurA.joueur.pointsDebSaison}} points</h4>
+								</div>
+			            {% endif %}
 						<div class="col-sm-3 align-items-center" align="left">
 							<p>Progr. pts mensuel :</p>
 						</div>
@@ -142,20 +152,38 @@
 						<div class="col-sm-3 align-items-center" align="left">
 							<p>Progr. pts annuel :</p>
 						</div>
-						<div class="col-sm-3" align="left">
-							<h4> {{ joueur.pointsActuel - joueur.pointsDebutSaison}} points</h4>
-						</div>
+						{% if (joueur.pointsActuel - joueur.pointsDebutSaison) > 0 %}
+			                 	<div class="col-sm-3 text-success" align="left">
+									<h4> {{joueur.pointsActuel - joueur.pointsDebutSaison}} points</h4>
+								</div>
+			             {% elseif (joueur.pointsActuel - joueur.pointsDebutSaison) < 0 %}
+			             		<div class="col-sm-3 text-danger" align="left">
+									<h4> {{ joueur.pointsActuel - joueur.pointsDebutSaison}} points</h4>
+								</div>
+			             {% else %}
+			                 	<div class="col-sm-3" align="left">
+									<h4> {{ joueur.pointsActuel - joueur.pointsDebutSaison}} points</h4>
+								</div>
+			            {% endif %}
 						<div class="col-sm-3 align-items-center" align="left">
 							<p>Progr. pts mensuel :</p>
 						</div>
-						<div class="col-sm-3" align="left">
-							<h4>{{ joueur.pointsActuel - joueur.pointsMoisDernier}} points</h4>
-						</div>
-					
+						{% if (joueur.pointsActuel - joueur.pointsMoisDernier) > 0 %}
+			                 	<div class="col-sm-3 text-success" align="left">
+									<h4> {{joueur.pointsActuel - joueur.pointsMoisDernier}} points</h4>
+								</div>
+			             {% elseif (joueur.pointsActuel - joueur.pointsMoisDernier) < 0 %}
+			             		<div class="col-sm-3 text-danger" align="left">
+									<h4> {{ joueur.pointsActuel - joueur.pointsMoisDernier}} points</h4>
+								</div>
+			             {% else %}
+			                 	<div class="col-sm-3" align="left">
+									<h4> {{ joueur.pointsActuel - joueur.pointsMoisDernier}} points</h4>
+								</div>
+			            {% endif %}
 					</div>
 				</div>
 			</div>
-			
 			<div class="row mt-4" align="center"  style="background-color: #FFF0BC">
 				<div class="col-sm-2 align-items-center" align="left">
 					<h4>Victoires : </h4>
