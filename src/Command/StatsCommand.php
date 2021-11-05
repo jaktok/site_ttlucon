@@ -69,6 +69,7 @@ class StatsCommand extends Command
             // on recupere le joueur chez nous
             $joueurTTL = $this->joueurRepo->findOneByLicenceActif($noLicence);
             if ($joueurTTL != null) {
+                $isResultLocal = false;
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
                 // gestion du classement debut non gere a ce jour par fftt ...
                 $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence($noLicence);
