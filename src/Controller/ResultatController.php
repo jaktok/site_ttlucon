@@ -92,14 +92,8 @@ class ResultatController extends AbstractController
             $rencontre = $rencontreRepo->find($id);
         }
         $fichier = $rencontre->getFichier();
-        //$fichier = $rencontreRepo->findOneByFichier($idFichier);
         $nom = $fichier->getNom();
-        //dd($nom);
         $projetcRoot = $kernelInterface->getProjectDir();
-        //dd($projetcRoot);
-
-        //return $this->file($projetcRoot.'/public/resultats/'.$nom);
-        //return readfile($projetcRoot.'/public/resultats/'.$nom);
-        return new BinaryFileResponse($projetcRoot.'/public/resultats/'.$nom);
+            return new BinaryFileResponse($projetcRoot.'/public/resultats/'.$nom);
     }
 }
