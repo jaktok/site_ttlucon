@@ -329,6 +329,7 @@ class ResultatParamController extends AbstractController
                     // on recupere le resultat fftt
                     $detailRencontreByLien = $this->api->getDetailsRencontreByLien($rencontre->getIsRetour(),$this->idClub,$idAversaire);
                     $i = 0;
+                    //dd($detailRencontreByLien);
                     // on parcours la tableau des resultats
                     foreach ($detailRencontreByLien->getParties() as $parties){
                         $i++;
@@ -354,7 +355,6 @@ class ResultatParamController extends AbstractController
                                     $joueurTTLExiste = true;
                                 }
                             }
-                            
                             if(!$joueurTTLExiste){//dd($joueurTTLExiste,$adversaireA);
                                 if($adversaireA){
                                     $nomJoueur =   $parties->getAdversaireB();
@@ -366,11 +366,30 @@ class ResultatParamController extends AbstractController
                                 }
                             }
                             $tabNom = explode(" ", $nomJoueur);//dd($tabNom);
-                           if (sizeof($tabNom) == 2 ){
-                                $joueurByNom = $this->api->getJoueursByNom($tabNom[0],$tabNom[sizeof($tabNom)-1]);
+                            
+                           if (sizeof($tabNom) <= 3 ){
+                               if (sizeof($tabNom) == 3){
+                                   $nmJoueur = $tabNom[0]." ".$tabNom[1];
+                               }
+                               else{
+                                   $nmJoueur = $tabNom[0];
+                               }
+                               $joueurByNom = $this->api->getJoueursByNom($nmJoueur,$tabNom[sizeof($tabNom)-1]);
+                               if(sizeof($joueurByNom) > 1 ){
+                                   $cp = 0;
+                                   foreach ($joueurByNom as $jByNom){
+                                       if ($jByNom->getClubId()!=$this->idClub){
+                                           unset($joueurByNom[$cp]);
+                                           $joueurByNom = array_values($joueurByNom);
+                                       }
+                                       $cp++;
+                                   }
+                               }
+                               
+                              // if($nomJoueur=="BLANCHARD Thierry"){ dd($nomJoueur,$joueurTTLExiste,$joueurByNom);  }
                                 if (null == $joueurByNom){
                                     foreach ($joueurByClub as $joueur){
-                                        if ($joueur->getNom()==$tabNom[0] && $joueur->getPrenom()==$tabNom[1]){
+                                        if ($joueur->getNom()==$nmJoueur && $joueur->getPrenom()==$tabNom[sizeof($tabNom)-1]){
                                             $licence = $joueur->getLicence();
                                         }
                                     }
