@@ -470,19 +470,21 @@ class JoueursParamController extends AbstractController
             if ($joueurTTL != null) {
                 $isResultLocal = false;
                 $partieJoueurByLicence = $this->api->getPartiesParLicenceStatsSaison($noLicence,$annee,$mois);
-                
+               // dd($partieJoueurByLicence,$noLicence);
                 // gestion du classement debut non gere a ce jour par fftt ...
                 $histoJoueurByLicence = $this->api->getHistoriqueJoueurByLicence($noLicence);
+                
                 $classementDebut = 0;
                 foreach ($histoJoueurByLicence as $histo){
                     if($histo->getAnneeDebut() == $anneeEncours  && $histo->getPhase() == $phase){
                         $classementDebut = $histo->getPoints();
                     }
                 }
-                
                // dd($partieJoueurByLicence,$joueurTTL);
                 //if($joueurTTL->getId()=="97"){dd($tabResultLocal,$joueurTTL->getId(),$partieJoueurByLicence);}
-                if( (!empty($partieJoueurByLicence) && ($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0)) || empty($partieJoueurByLicence)){
+               $nbMatchsEnregistres = $matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId()) + $matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
+               // rajout du local dans le cas ou les derniers matchs n'ont pas été remontés par FFTT .... 
+               if( (!empty($partieJoueurByLicence) && (($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0) || $partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"] < $nbMatchsEnregistres) ) || empty($partieJoueurByLicence)){
                     $tabResultLocal["vict"] = $matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId());
                     $tabResultLocal["def"] = $matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
                     $isResultLocal = true;
@@ -492,6 +494,7 @@ class JoueursParamController extends AbstractController
 
                 // on va chercher le classement du joueur
                 $joueurByLicence = $this->api->getClassementJoueurByLicence($noLicence);
+                //if($noLicence=="8524640"){dd($histoJoueurByLicence,$anneeEncours,$phase,$classementDebut,$joueurByLicence);}
                 $pointsDebutSaison = $joueurByLicence->getPointsInitials();
                 $pointsActuel = $joueurByLicence->getPoints();
                 $pointsMoisDernier = $joueurByLicence->getAnciensPoints();
