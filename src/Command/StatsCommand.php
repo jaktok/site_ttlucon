@@ -80,7 +80,7 @@ class StatsCommand extends Command
                     }
                 }
                 
-                $nbMatchsEnregistres = $matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId()) + $matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
+                $nbMatchsEnregistres = $this->matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId()) + $this->matchsRepo->findDefaitesByIdJoueur($joueurTTL->getId());
                 // rajout du local dans le cas ou les derniers matchs n'ont pas été remontés par FFTT ....
                 if( (!empty($partieJoueurByLicence) && (($partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"]<=0) || $partieJoueurByLicence["vict"]+$partieJoueurByLicence["def"] < $nbMatchsEnregistres) ) || empty($partieJoueurByLicence)){
                     $tabResultLocal["vict"] = $this->matchsRepo->findVictoiresByIdJoueur($joueurTTL->getId());
