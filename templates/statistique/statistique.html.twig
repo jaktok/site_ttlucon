@@ -111,12 +111,11 @@
 			 {% set place = 1 %}
 			 {% for joueur in tabJoueursTTL %}
 		<div class="container border" style="background-color: #D2CAEC">
-			<div class="row mt-3 align-items-center" align="center">
 				<div class="col-sm-1 align-items-center" style="background-color: #CC5500" align="center">
-					<h4>N° {{ joueur.position }}</h4>
-				</div>
+					N° {{ joueur.position }}
+			
 		</div>	
-			<div class="row mt-3 align-items-center" align="center">
+			<div class="row align-items-center" align="center">
 				<div class="col-sm-5">
 					<div class="row" align="center">
 						{% if joueur.joueur.photo is defined  and joueur.joueur.photo is not null  %}
@@ -184,7 +183,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row mt-4" align="center"  style="background-color: #FFF0BC">
+			<div class="row mt-1" align="center"  style="background-color: #FFF0BC">
 				<div class="col-sm-2 align-items-center" align="left">
 					<h4>Victoires : </h4>
 				</div>
@@ -199,7 +198,7 @@
 				</div>
 			</div>
 			
-			<div class="row mt-4 align-items-center" align="center"  style="background-color: #F0FFFF">
+			<div class="row mt-1 align-items-center" align="center"  style="background-color: #F0FFFF">
 				<div class="col-sm-4 align-items-center" align="center">
 					N° {{ joueur.rangDep }} Départemental&nbsp;
 				</div>
