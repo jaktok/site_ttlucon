@@ -305,11 +305,11 @@ class FFTTApi
         $pointsMensuel = "500";
         if($data['initm'] == ""){
             $pointsInit = floatval($data['point']);
-            $pointsMensuel = floatval($data['point']);
+            $pointsMensuel = floatval($data['pointm']);
         }
         else{
             $pointsInit = floatval($data['initm']);
-            $pointsMensuel = floatval($data['point']);
+            $pointsMensuel = floatval($data['pointm']);
         }
         $joueurDetails = new JoueurDetails(
             $licenceId,
