@@ -362,11 +362,11 @@ class ApiRequest
     public function getPartiesParLicenceStatsSaison(string $request, array $params = [],string $annee,string $mois,string $queryParameter = null){
         //$params['licence'] = '853451';
         $chaine = $this->prepare($request, $params, $queryParameter);
-        //dd($chaine);
+         
         try{
             $result =  $this->send($chaine);
-            //if($params["licence"]=="188857"){ dd($result,$request, $params, $queryParameter,$chaine);}
-            if($result){
+            //if($params["licence"]!="8529982"){ dd($result,sizeof($result),$request, $params, $queryParameter,$chaine);}
+            if(null != $result && !empty($result) && isset($result["partie"])){
                 $vict = 0;
                 $def = 0;
                 foreach ($result["partie"] as $resultat){
@@ -396,7 +396,7 @@ class ApiRequest
             throw new URIPartNotValidException($request);
         }
         
-        if(!$result){
+        if(!$result || !isset($result["partie"])){
             return null;
         }
         if(array_key_exists('0', $result)){
