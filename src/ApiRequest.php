@@ -53,8 +53,8 @@ class ApiRequest
         }
        
         $contenu = $response->getBody()->getContents();
-        $contenu = str_replace("&ugrave;", "ù", $contenu);
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $contenu = str_replace("&ugrave;", "Ã¹", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
         return json_decode(json_encode($xml), true);
     }
@@ -73,7 +73,7 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
         $tabEquipes = array();
         for ($i = 0; $i < sizeof($xml); $i++) {
@@ -200,7 +200,7 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         $xml = simplexml_load_string($content);
         $tabRencontres = array();
         for ($i = 0; $i < sizeof($xml); $i++) {
@@ -250,13 +250,18 @@ class ApiRequest
             throw new \DomainException("Request ".$uri." returns an error");
         }
         
+        
         $contenu = $response->getBody()->getContents();
         $contenu = str_replace("&ugrave;", "ù", $contenu);
         $contenu = str_replace("&ocirc;", "ô", $contenu);
         $contenu = str_replace("&acirc;", "â", $contenu);
+        $contenu = str_replace("&uuml;", "ü", $contenu);
+        //$contenu = str_replace("", "", $contenu);
         //$contenu = str_replace("/", "", $contenu);
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
        // $content = preg_replace('/\r|\n/', '', $content);
+        //dd($contenu);
+        //dd($content);
         $xml = simplexml_load_string($content);//dd($xml);
         return json_decode(json_encode($xml), true);
     }
@@ -422,7 +427,7 @@ class ApiRequest
     }
     
     
-    // creee pour gérer le cas de maj auto si on ne trouve pas avec le numéro de licence 
+    // creee pour gÃ©rer le cas de maj auto si on ne trouve pas avec le numÃ©ro de licence 
     // on renvoie null pour gerer le cas plutot qu une exception
     public function getJoueurDetail(string $request, array $params = [], string $queryParameter = null){
         $chaine = $this->prepare($request, $params, $queryParameter);
@@ -454,8 +459,8 @@ class ApiRequest
         }
         
         $contenu = $response->getBody()->getContents();
-        $contenu = str_replace("&ugrave;", "ù", $contenu);
-        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","ê",$contenu));
+        $contenu = str_replace("&ugrave;", "Ã¹", $contenu);
+        $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
         
         $xml = simplexml_load_string($content);
         $tabJoueur = array();

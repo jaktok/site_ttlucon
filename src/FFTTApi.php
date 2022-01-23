@@ -634,7 +634,7 @@ class FFTTApi
      * @throws Exception\URIPartNotValidException
      * @throws NoFFTTResponseException
      */
-    public function getEquipesByClub(string $clubId, string $type = null)
+    public function getEquipesByClub(string $clubId, string $type = null, $phase = null)
     {
         $params = [
             'numclu' => $clubId,
@@ -647,26 +647,31 @@ class FFTTApi
         
         if ($data = $this->apiRequest->getEquipeByClub('xml_equipe', $params
             )!= null){
-        
+                
                 $data = $this->apiRequest->getEquipeByClub('xml_equipe', $params
-        );
+                    );
                 
-        $data = $this->wrappedArrayIfUnique($data);
-        
-        $result = [];
-        
-            foreach ($data as $dataEquipe) {
-                $lienDivision = "";
-                if ($dataEquipe['liendivision']!=null){
-                    $lienDivision = str_replace("&amp;","&",$dataEquipe['liendivision']);
+                $data = $this->wrappedArrayIfUnique($data);
+                
+                $result = [];
+                
+                //dd($data);
+                
+                foreach ($data as $dataEquipe) {
+                    $lienDivision = "";
+                    if ($dataEquipe['liendivision']!=null){
+                        $lienDivision = str_replace("&amp;","&",$dataEquipe['liendivision']);
+                    }
+                    $numPhase = substr($dataEquipe['libequipe'], strlen($dataEquipe['libequipe'])-1);
+                    
+                    if(null != $phase && $phase == $numPhase){
+                        $result[] = new Equipe(
+                            $dataEquipe['libequipe'],
+                            $dataEquipe['libdivision'],
+                            $lienDivision
+                            );
+                    }
                 }
-                
-                $result[] = new Equipe(
-                    $dataEquipe['libequipe'],
-                    $dataEquipe['libdivision'],
-                    $lienDivision
-                );
-            }
         }
         return $result;
     }
@@ -789,11 +794,14 @@ class FFTTApi
      */
     public function getDetailsRencontreByLien(string $lienRencontre, string $clubEquipeA = "", string $clubEquipeB = ""): RencontreDetails
     {
+        
+        //dd($lienRencontre,$clubEquipeA,$clubEquipeB);
         $data = $this->apiRequest->getDetailRencontrByLien('xml_chp_renc', [], $lienRencontre);
         if (!(isset($data['resultat']) && isset($data['joueur']) && isset($data['partie']))) {
             throw new InvalidLienRencontre($lienRencontre);
         }
         $factory = new RencontreDetailsFactory($this);
+        //dd($factory->createFromArray($data, $clubEquipeA, $clubEquipeB));
         return $factory->createFromArray($data, $clubEquipeA, $clubEquipeB);
     }
     
@@ -827,9 +835,12 @@ class FFTTApi
         else{
             return $data;
         }
-  
         $result = [];
+       
         foreach ($data as $dataActualite) {
+            if(empty($dataActualite['description'])){
+                $dataActualite['description'] = $dataActualite['titre'];
+            }
             $result[] = new Actualite(
                 \DateTime::createFromFormat('Y-m-d', $dataActualite["date"]),
                 utf8_decode($dataActualite['titre']),
@@ -841,6 +852,7 @@ class FFTTApi
         }
         return $result;
     }
+
 
     private function wrappedArrayIfUnique($array): array
     {
