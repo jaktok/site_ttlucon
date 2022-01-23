@@ -26,14 +26,16 @@ class RencontreDetailsFactory
 
     public function createFromArray(array $array, string $clubEquipeA, string $clubEquipeB): RencontreDetails
     {
-
+        
         $joueursA = [];
         $joueursB = [];
         foreach ($array['joueur'] as $joueur) {
             $joueursA[] = [$joueur['xja'], $joueur['xca']];
             $joueursB[] = [$joueur['xjb'], $joueur['xcb']];
         }
+        
         $parties = $this->getParties($array['partie']);
+        //dd($array,$clubEquipeA,$clubEquipeB);
         if (is_array($array['resultat']['resa'])) {
             [$scoreA, $scoreB] = $this->getScores($parties);
         } else {
@@ -156,16 +158,18 @@ class RencontreDetailsFactory
     }
 
     private function getParties($data)
-    {
+    {//dd($data);
         $parties = [];
         foreach ($data as $partieData) {
-            $parties[] = new Partie(
-                $partieData['ja'],
-                $partieData['jb'],
-                $partieData['scorea'] === '-' ? 0 : intval($partieData['scorea']),
-                $partieData['scoreb'] === '-' ? 0 : intval($partieData['scoreb']),
-                $partieData['detail'] === '-' ? 0 : strval($partieData['detail'])
-            );
+                if(null != $partieData['ja'] && !empty($partieData['ja']) && null != $partieData['jb'] && !empty($partieData['jb']) ){
+                $parties[] = new Partie(
+                    $partieData['ja'],
+                    $partieData['jb'],
+                    $partieData['scorea'] === '-' ? 0 : intval($partieData['scorea']),
+                    $partieData['scoreb'] === '-' ? 0 : intval($partieData['scoreb']),
+                    $partieData['detail'] === '-' ? 0 : strval($partieData['detail'])
+                );
+            }
         }
         return $parties;
     }
