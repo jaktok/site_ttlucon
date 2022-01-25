@@ -256,7 +256,7 @@ class ApiRequest
         $contenu = str_replace("&ocirc;", "ô", $contenu);
         $contenu = str_replace("&acirc;", "â", $contenu);
         $contenu = str_replace("&uuml;", "ü", $contenu);
-        //$contenu = str_replace("", "", $contenu);
+        $contenu = str_replace("&laquo;", "Õ", $contenu);
         //$contenu = str_replace("/", "", $contenu);
         $content = preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', str_replace("&ecirc;","Ãª",$contenu));
        // $content = preg_replace('/\r|\n/', '', $content);
