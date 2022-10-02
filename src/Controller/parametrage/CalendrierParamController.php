@@ -106,8 +106,22 @@ class CalendrierParamController extends AbstractController
      */
     public function majAutoCalendrier(Request $request,RencontresRepository  $rencontreRepo, EquipeTypeRepository $equipeTypeRepo, int $id = null, int $idTeam=null): Response
     {
-        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipesByClub);
+        
+        // on récupère la phase
+        $phase = 2;
+        $moisEncours = date("m");
+        $tabPhase1 = array("08","09","10","11","12");
+        $tabPhase2 = array("01","02","03","04","05","06","07");
+        if (in_array($moisEncours, $tabPhase1)){
+            $phase = 1;
+        }
+        if (in_array($moisEncours, $tabPhase2)){
+            $phase = 2;
+        }
+        
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M",$phase);//dd($equipesByClub);
         $entityManager = $this->getDoctrine()->getManager();
+        //dd($this->idClub,"M",$equipesByClub);
         foreach ($equipesByClub as $equipeClub) {
             $nom = $equipeClub->getLibelle();
             $tabNom = explode(" ",$nom);
