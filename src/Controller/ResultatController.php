@@ -46,10 +46,22 @@ class ResultatController extends AbstractController
                 $this->categorie = "Adulte";
         }
 
+        // on récupère la phase
+        $phase = 2;
+        $moisEncours = date("m");
+        $tabPhase1 = array("08","09","10","11","12");
+        $tabPhase2 = array("01","02","03","04","05","06","07");
+        if (in_array($moisEncours, $tabPhase1)){
+            $phase = 1;
+        }
+        if (in_array($moisEncours, $tabPhase2)){
+            $phase = 2;
+        }
+        
         $equipes = $equipeRepo->findBy(array(),array('nom' => 'ASC'));
         $tabClassement = array();
         
-        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M");//dd($equipes);
+        $equipesByClub = $this->api->getEquipesByClub($this->idClub,"M",$phase);//dd($equipes);
        //dd($equipesByClub);
         $i=0;
         foreach ($equipes as $equipe){
