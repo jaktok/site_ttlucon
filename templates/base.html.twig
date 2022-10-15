@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}TT Luçonnais{% endblock %}</title> {# Run `composer
+<title>{% block title %}TT Lu&ccedil;onnais{% endblock %}</title> {# Run `composer
 require symfony/webpack-encore-bundle` and uncomment the following
 Encore helpers to start using Symfony UX #} {% block stylesheets %} {{
 encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
@@ -71,14 +71,16 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('joueur', {'cat': cat} ) }}">Liste des joueurs</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
+						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Resultat Individuel</a>
+						<!-- <div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a> -->
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistiques_double', {'cat': cat} ) }}">Statistiques Doubles</a>
 						<div class="dropdown-divider"></div>
 						{% set categ = 'tous' %}
-						<a class="dropdown-item" href="{{ path ('statistique', {'cat': categ} ) }}">Stats toutes catégories</a>
+						<!-- <a class="dropdown-item" href="{{ path ('statistique', {'cat': categ} ) }}">Stats toutes catégories</a> -->
+						<!-- Mélange de toutesd kles catégoties pour les stats -->
+						<a class="dropdown-item" href="{{ path ('statistique', {'cat': categ} ) }}">Statistiques</a>
 					</div></li>
 
 				<li class="nav-item dropdown"><a
@@ -96,7 +98,7 @@ encore_entry_link_tags('app') }} {% endblock %} {% block javascripts %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('joueur',{'cat': cat} ) }}">Liste des joueurs</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Individuel</a>
+						<a class="dropdown-item" href="{{ path ('individuel', {'cat': cat} ) }}">Resultat Individuel</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="{{ path ('statistique', {'cat': cat} ) }}">Statistiques</a>
 						<div class="dropdown-divider"></div>
