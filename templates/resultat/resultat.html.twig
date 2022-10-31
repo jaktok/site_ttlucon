@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %} {% block title %}Résultats{%
+{% extends 'base.html.twig' %} {% block title %}RÃ©sultats{%
 endblock %} {% block body %}
-<!-- Insérer cette balise "link" après celle de Bootstrap -->
+<!-- InsÃ©rer cette balise "link" aprÃ¨s celle de Bootstrap -->
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
 
-<!-- Insérer cette balise "script" après celle de Bootstrap -->
+<!-- InsÃ©rer cette balise "script" aprÃ¨s celle de Bootstrap -->
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 
 
@@ -33,7 +33,7 @@ endblock %} {% block body %}
 			        <th></th>
 			        <th style="text-align: center;">Equipe</th>
 			        <th style="text-align: center;">Pts</th>
-			        <th style="text-align: center;">Joué</th>
+			        <th style="text-align: center;">JouÃ©</th>
 			        <th style="text-align: center;">V</th>
 			        <th style="text-align: center;">N</th>
 			        <th style="text-align: center;">D</th>
@@ -149,6 +149,7 @@ endblock %} {% block body %}
 			        <th>Date</th>
 			        <th>Adversaire</th>
 			        <th>Resultat</th>
+			        <th>Score</th>
 			        <th>Detail</th>
 			      </tr>
 			    </thead>
@@ -164,26 +165,30 @@ endblock %} {% block body %}
 			                        {% if rencontre.victoire == 'true'  %}
                                     <td>Victoire</td>
                                     {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA != 'EXEMPT' and rencontre.equipeB != 'EXEMPT')   %}
-                                    <td>Match à venir</td>
+                                    <td>Match Ã  venir</td>
+                                    <td></td>
                                     {% elseif (rencontre.scoreA == null and rencontre.scoreB == null) and (rencontre.equipeA == 'EXEMPT' or rencontre.equipeB == 'EXEMPT')   %}
                                     {% set exem = 1 %}
                                     <td>EXEMPT</td>
                                     {% elseif rencontre.scoreA == rencontre.scoreB %}
-                                    <td>Egalité</td>
+                                    <td>EgalitÃ©</td>
                                     {% elseif (rencontre.equipeA == 'LUCON '~myVal and rencontre.scoreA > rencontre.scoreB)  %}
                                     <td>Victoire</td>
                                     {% elseif (rencontre.equipeA == 'LUCON '~myVal and rencontre.scoreA < rencontre.scoreB)  %}
-                                    <td>Défaite</td>
+                                    <td>DÃ©faite</td>
                                     {% elseif (rencontre.equipeB == 'LUCON '~myVal and rencontre.scoreB > rencontre.scoreA)  %}
                                     <td>Victoire</td>
                                     {% elseif (rencontre.equipeB == 'LUCON '~myVal and rencontre.scoreB < rencontre.scoreA)  %}
-                                    <td>Défaite</td>
+                                    <td>DÃ©faite</td>
                                     {% else  %}
-                                    <td>Défaite</td>
+                                    <td>DÃ©faite</td>
+                                    {% endif %}
+                                    {% if rencontre.scoreA != null and rencontre.scoreB != null  %}
+                                    	<td style="text-align: center; vertical-align: middle;">{{rencontre.scoreA}} / {{rencontre.scoreB}}</td>
                                     {% endif %}
                                     {% if exem == 1  %}
                                     <td>EXEMPT</td>
-                                    {% elseif rencontre.fichier is defined and rencontre.fichier != null %} 
+                                    {% elseif rencontre.fichier is defined and rencontre.fichier != null %}
                                     <td><a href="{{ path('resultat_rencontre', { 'id': rencontre.id}) }}" class="btn btn-primary btn-sm" target="_blank">Consulter</a></td>
                                     {% else %}
                                     <td>indisponible</td>
@@ -214,10 +219,11 @@ endblock %} {% block body %}
 		    <table class="table table-striped table-sm" data-toggle="table" data-pagination="false">
 		      <thead>
 		        <tr class="align-middle">
-		          <th>Date</th>
-		          <th>Adversaire</th>
-		          <th>Victoire</th>
-		          <th>Resultat</th>
+			        <th>Date</th>
+			        <th>Adversaire</th>
+			        <th>Resultat</th>
+			        <th>Score</th>
+			        <th>Detail</th>
 		        </tr>
 		      </thead>
 		      <tbody>
@@ -230,11 +236,15 @@ endblock %} {% block body %}
 		                            {% if renc.victoire == 1  %}
                                         <td>Victoire</td>
                                     {% elseif renc.scoreA == null and renc.scoreB == null %}
-                                        <td>Match à venir</td>
+                                        <td>Match Ã  venir</td>
+                                         <td>indisponible</td>
                                     {% elseif renc.scoreA == renc.scoreB %}
-                                        <td>Egalité</td>
+                                        <td>EgalitÃ©</td>
                                     {% else  %}
-                                        <td>Défaite</td>
+                                        <td>DÃ©faite</td>
+                                    {% endif %}
+                                    {% if rencontre.scoreA != null and rencontre.scoreB != null  %}
+                                    	<td>{{rencontre.scoreA}} / {{rencontre.scoreB}}</td>
                                     {% endif %}
                                     {% if renc.fichier is defined and renc.fichier != null %} 
                                         <td><a href="{{ path('resultat_rencontre', { 'id': renc.id}) }}" class="btn btn-primary btn-sm" target="_blank">Consulter</a></td>
